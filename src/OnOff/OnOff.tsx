@@ -19,7 +19,9 @@ const Wrapper = styled.div`
   display: flex;
   justify-content: center;
   margin: 20px;
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const On = styled.button<{ toggle:boolean }>`
@@ -45,6 +47,7 @@ const Lamp = styled.div<{ toggle:boolean }>`
   display: flex;
   justify-content: center;
   align-items: center;
+  border: black solid 5px;
 `;
 
 const CenterText =styled.p`
