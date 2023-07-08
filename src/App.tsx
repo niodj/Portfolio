@@ -14,6 +14,7 @@ function App() {
         {/*<RubDollarApp />*/}
         {/*    <AppPractice3App />*/}
         {/*    <AppPractice3axis />*/}
+
             <OnOff />
 
         </div>
