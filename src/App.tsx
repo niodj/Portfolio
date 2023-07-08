@@ -3,6 +3,7 @@ import './App.css';
 import RubDollarApp from "./rubDollar/RubDollarApp";
 import AppPractice3App from "./practice3/AppPractice3App";
 import AppPractice3axis from "./practice3axis/AppPractice3axis";
+import {OnOff} from "./OnOff/OnOff";
 
 
 function App() {
@@ -12,7 +13,8 @@ function App() {
         <div className="App">
         {/*<RubDollarApp />*/}
         {/*    <AppPractice3App />*/}
-            <AppPractice3axis />
+        {/*    <AppPractice3axis />*/}
+            <OnOff />
 
         </div>
     );

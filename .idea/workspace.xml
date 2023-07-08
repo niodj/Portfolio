@@ -4,11 +4,23 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5ebde9bc-3770-409d-b057-726a0589f1a8" name="Changes" comment="add 3" />
+    <list default="true" id="5ebde9bc-3770-409d-b057-726a0589f1a8" name="Changes" comment="add 3">
+      <change afterPath="$PROJECT_DIR$/src/OnOff/OnOff.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/practice3axis/AppPractice3axis.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/practice3axis/AppPractice3axis.tsx" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="TypeScript File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
@@ -16,7 +28,7 @@
         <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/src/rubDollar" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/src/rubDollar/Country.tsx" root0="FORCE_HIGHLIGHTING" />
@@ -79,6 +91,8 @@
       <workItem from="1688817140411" duration="4921000" />
       <workItem from="1688823508781" duration="10000" />
       <workItem from="1688833306199" duration="694000" />
+      <workItem from="1688834010817" duration="4244000" />
+      <workItem from="1688838596613" duration="3220000" />
     </task>
     <task id="LOCAL-00001" summary="finished props styler">
       <created>1688716110870</created>
@@ -115,7 +129,14 @@
       <option name="project" value="LOCAL" />
       <updated>1688822521043</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="add 3">
+      <created>1688834573974</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1688834573974</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -148,6 +169,7 @@
     <MESSAGE value="finished props styler" />
     <MESSAGE value="add RubDollar" />
     <MESSAGE value="3" />
-    <option name="LAST_COMMIT_MESSAGE" value="3" />
+    <MESSAGE value="add 3" />
+    <option name="LAST_COMMIT_MESSAGE" value="add 3" />
   </component>
 </project>

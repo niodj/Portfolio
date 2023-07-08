@@ -54,7 +54,7 @@ function App() {
 
     return (
         <div className="App">
-            <button onClick={onClickHandler}>CLEAN POSTS</button>
+            <button onClick={onClickHandler}>Дима</button>
             <ul>
                 {todos.map(el => {
                     return (
