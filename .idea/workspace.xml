@@ -5,10 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5ebde9bc-3770-409d-b057-726a0589f1a8" name="Changes" comment="add OnOff">
-      <change afterPath="$PROJECT_DIR$/src/Ratting/Ratting.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/Rating/Rating.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/OnOff/OnOff.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/OnOff/OnOff.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Ratting/Ratting.tsx" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -93,7 +93,7 @@
       <workItem from="1688823508781" duration="10000" />
       <workItem from="1688833306199" duration="694000" />
       <workItem from="1688834010817" duration="4244000" />
-      <workItem from="1688838596613" duration="5540000" />
+      <workItem from="1688838596613" duration="10390000" />
     </task>
     <task id="LOCAL-00001" summary="finished props styler">
       <created>1688716110870</created>
@@ -151,7 +151,14 @@
       <option name="project" value="LOCAL" />
       <updated>1688842286497</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="add OnOff">
+      <created>1688849592973</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1688849592973</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
