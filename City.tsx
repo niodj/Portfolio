@@ -24,5 +24,6 @@ export const City = (props: CityPropsType) => {
 const Wrapper = styled.div`
 display:flex;
 flex-direction: row;
-flex-size: 38px
+flex-size: 38px;
+
 `;
