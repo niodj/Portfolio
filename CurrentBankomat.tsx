@@ -30,7 +30,6 @@ display: flex;
 const Value = styled.div`
 display: flex;
   justify-content: center;
-  font-size: 30px;
   margin-top: 30px;
   font-size: 90px;
 `
