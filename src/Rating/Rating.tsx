@@ -1,4 +1,4 @@
-import {useState} from "react";
+import React, {useState} from "react";
 import styled from "styled-components";
 import { AiOutlineStar, AiFillStar } from "react-icons/ai";
 
@@ -8,8 +8,9 @@ export function Rating() {
     const [selectedRating, setSelectedRating] = useState(0)
 
        return (
-        <div className='App'>
-            <div>My rating {selectedRating}. Choose by words</div>
+        <Wrapper>
+
+            <div>rating {selectedRating}. Choose by words</div>
                      <div>
                         {RATINGS.map(item => (
                 <Star selected={item<=selectedRating} key={item} onClick={() => setSelectedRating(item)}>Star </Star>
@@ -21,7 +22,8 @@ export function Rating() {
                     <span key={item} onClick={() => setSelectedRating(item)}> {item<=selectedRating? <AiFillStar /> : <AiOutlineStar />} </span>
                 ))}
             </div>
-        </div>
+
+        </Wrapper>
     );
 }
 
@@ -29,3 +31,7 @@ const Star = styled.span<{selected:boolean}>`
   
   ${(props) => (props.selected ? 'font-weight: bold':null)};
 `
+const Wrapper = styled.div`
+margin: 10px;
+`
+
