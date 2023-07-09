@@ -11,9 +11,9 @@ export const OnOff = () => {
         <Wrapper>
             <On onClick={() => setToggle(true)} toggle={toggle}>On</On>
             <Off onClick={() => setToggle(false)} toggle={toggle}>Off</Off>
-            <Lamp toggle={toggle}>
-                <CenterText> {toggle ? 'Work' : 'Stoped'  }  </CenterText>
-            </Lamp>
+            <LampContainer toggle={toggle}>
+                 <div> {toggle ? <RotatingDiv>Work</RotatingDiv> : 'Stoped'  }  </div>
+            </LampContainer>
         </Wrapper>
         </div>
     );
@@ -38,16 +38,24 @@ const On = styled.button<{ toggle:boolean }>`
   margin-right: 30px;
   margin-left: 30px;
   background: ${(props) => (props.toggle ? "green" : "grey")};
+  border: none;
+  &:hover {
+    border: 2px solid yellow;
+  }
+
 `;
 
 const Off = styled.button <{toggle:boolean}>`
   width: 100px;
   height: 50px;
   background: ${(props) => (props.toggle ? "grey":"red")};
-
+  border: none;
+  &:hover {
+    border: 2px solid yellow;
+  }
 `;
 
-const Lamp = styled.div<{ toggle:boolean }>`
+const LampContainer = styled.div<{ toggle:boolean }>`
   width: 100px;
   height: 50px;
   margin-left: 30px;
@@ -57,10 +65,22 @@ const Lamp = styled.div<{ toggle:boolean }>`
   justify-content: center;
   align-items: center;
   border: black solid 5px;
+  position: relative;
 `;
 
-const CenterText =styled.p`
-
-  
-  
-`
+const RotatingDiv = styled.div`
+  background-color: green;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  animation: rotation 1s infinite linear;
+  @keyframes rotation {
+    0% {
+      transform: translate(-50%, -50%) rotate(0deg);
+    }
+    100% {
+      transform: translate(-50%, -50%) rotate(360deg);
+    }
+  }
+    `
