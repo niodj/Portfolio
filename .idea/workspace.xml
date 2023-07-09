@@ -5,15 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5ebde9bc-3770-409d-b057-726a0589f1a8" name="Changes" comment="add startRating">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/public/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/EurosDollars/City.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/EurosDollars/City.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/EurosDollars/Country.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/EurosDollars/Country.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/EurosDollars/CurrentBankomat.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/EurosDollars/CurrentBankomat.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/EurosDollars/EuroDollarApp.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/EurosDollars/EuroDollarApp.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/OnOff/OnOff.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/OnOff/OnOff.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Rating/Rating.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/Rating/Rating.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rubDollar/City.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/rubDollar/City.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rubDollar/Country.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/rubDollar/Country.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rubDollar/CurrentBankomat.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/rubDollar/CurrentBankomat.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/rubDollar/RubDollarApp.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/src/rubDollar/EuroDollarApp.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -34,7 +31,7 @@
         <entry key="$PROJECT_DIR$" value="master" />
       </map>
     </option>
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/src/rubDollar" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/src/EurosDollars" />
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/src/rubDollar/Country.tsx" root0="FORCE_HIGHLIGHTING" />
@@ -102,6 +99,7 @@
       <workItem from="1688854409342" duration="524000" />
       <workItem from="1688854941252" duration="3705000" />
       <workItem from="1688885940575" duration="722000" />
+      <workItem from="1688886689781" duration="2995000" />
     </task>
     <task id="LOCAL-00001" summary="finished props styler">
       <created>1688716110870</created>
@@ -180,7 +178,28 @@
       <option name="project" value="LOCAL" />
       <updated>1688886014264</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="add startRating">
+      <created>1688886796864</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1688886796864</updated>
+    </task>
+    <task id="LOCAL-00013" summary="add startRating">
+      <created>1688886813689</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1688886813689</updated>
+    </task>
+    <task id="LOCAL-00014" summary="add startRating">
+      <created>1688887945215</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1688887945215</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

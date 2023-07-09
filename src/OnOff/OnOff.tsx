@@ -37,7 +37,7 @@ const On = styled.button<{ toggle:boolean }>`
   height: 50px;
   margin-right: 30px;
   margin-left: 30px;
-  background: ${(props) => (props.toggle ? "green" : "grey")};
+  background: ${(props) => (props.toggle ? "lightgreen" : "grey")};
   border: none;
   &:hover {
     border: 2px solid yellow;
@@ -60,7 +60,7 @@ const LampContainer = styled.div<{ toggle:boolean }>`
   height: 50px;
   margin-left: 30px;
   border-radius: 50px;
-  background: ${(props) => (props.toggle ? "green" : "grey")};
+  background: ${(props) => (props.toggle ? "lightgreen" : "grey")};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -69,7 +69,7 @@ const LampContainer = styled.div<{ toggle:boolean }>`
 `;
 
 const RotatingDiv = styled.div`
-  background-color: green;
+  background-color: lightgreen;
   position: absolute;
   top: 50%;
   left: 50%;
