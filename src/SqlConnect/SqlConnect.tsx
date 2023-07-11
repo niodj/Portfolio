@@ -95,7 +95,7 @@ const SqlConnect = () => {
 
 export default SqlConnect;
 
-// <?php
+//  <?php
 // $servername = "bora.cityhost.com.ua";
 // $username = "ch734841cc_admin";
 // $password = "Aa123456";
