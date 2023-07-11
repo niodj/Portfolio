@@ -2,7 +2,7 @@
   "name": "additionals",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://niodj.github.io/aditionals",
+  "homepage": "https://niodj.github.io/additional",
   "dependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
