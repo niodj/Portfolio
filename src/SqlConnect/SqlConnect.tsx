@@ -58,22 +58,22 @@ const SqlConnect = () => {
         <>
             <form onSubmit={handleSubmit}>
                 <label>
-                    Имя:
+                    Name:
                     <input type="text" value={firstName} onChange={e => setFirstName(e.target.value)}/>
                 </label>
                 <br/>
                 <label>
-                    Фамилия:
+                    NikName:
                     <input type="text" value={lastName} onChange={e => setLastName(e.target.value)}/>
                 </label>
                 <br/>
-                <input type="submit" value="Отправить"/>
+                <input type="submit" value="Add new member"/>
             </form>
             <table>
                 <thead>
                 <tr>
-                    <th>First Name</th>
-                    <th>Last Name</th>
+                    <th>Name</th>
+                    <th>NikName</th>
                     <th>Actions</th>
                 </tr>
                 </thead>
@@ -83,7 +83,7 @@ const SqlConnect = () => {
                         <td>{row.first_name}</td>
                         <td>{row.last_name}</td>
                         <td>
-                            <button onClick={() => handleDelete(row.id)}>Удалить</button>
+                            <button onClick={() => handleDelete(row.id)}>Delete</button>
                         </td>
                     </tr>
                 ))}
