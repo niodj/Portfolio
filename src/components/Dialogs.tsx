@@ -24,7 +24,7 @@ export const Dialogs = (props: any) => {
 
 const Wrapper = styled.div`
   display: flex;
-  background: yellow;
+
 
   .navlinks {
     display: flex;

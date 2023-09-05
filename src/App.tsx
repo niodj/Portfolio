@@ -26,6 +26,11 @@ function App() {
                             ))}
                         </Route>
 
+                        <Route path="profile" element={<Profile users={users}/>}>
+                            {users.map((item: any) => (
+                                <Route path={`${item.id}`} element={<div>{item.name}</div>}></Route>
+                            ))}
+                        </Route>
                         <Route path="profile" element={<Profile/>}></Route>
                     </Route>
                 </Routes>

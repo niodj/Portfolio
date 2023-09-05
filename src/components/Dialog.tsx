@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const Dialog = (props:any) => {
 
     return (
-        <Wrapper>{props.name}gh</Wrapper>
+        <Wrapper>{props.name}</Wrapper>
     )
 }
 
