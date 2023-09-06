@@ -8,7 +8,9 @@ export const Navbar = () =>{
         <Wrapper>
             <div>Navbar</div>
             <div><NavLink to="/dialogs">Dialog</NavLink></div>
+            <div><NavLink to="/posts">Posts</NavLink></div>
             <div><NavLink to="/profile">Profile</NavLink></div>
+            <div><NavLink to="/messages">messages</NavLink></div>
         </Wrapper>
     )
 }

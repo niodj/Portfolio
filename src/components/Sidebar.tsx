@@ -7,7 +7,7 @@ export const Sidebar = () =>{
 
     return(
         <Wrapper>
-
+Sidebar
             <Outlet />
 
         </Wrapper>
