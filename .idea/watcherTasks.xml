@@ -8,13 +8,13 @@
       <option name="exitCodeBehavior" value="ERROR" />
       <option name="fileExtension" value="*" />
       <option name="immediateSync" value="true" />
-      <option name="name" value="1" />
+      <option name="name" value="z" />
       <option name="output" value="" />
       <option name="outputFilters">
         <array />
       </option>
       <option name="outputFromStdout" value="false" />
-      <option name="program" value="C:/1" />
+      <option name="program" value="c:/1.bat" />
       <option name="runOnExternalChanges" value="true" />
       <option name="scopeName" value="Project Files" />
       <option name="trackOnlyRoot" value="false" />
