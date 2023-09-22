@@ -15,7 +15,7 @@ import {SocialNetworkApp} from "./SocialNetwork/SocialNetworkApp";
 import {Practice} from "./tools/Practice";
 import {Skills} from "./tools/Skills";
 import {ModalWindow} from "./tools/ModalWindow";
-import {OnOff} from "./OnOff/OnOff";
+import {SunMoon} from "./tools/SunMoon";
 
 
 function isNightTime() {
@@ -43,7 +43,7 @@ function App() {
 
     return (
         <Wrapper $dark={dark} $overflowHidden={isContentOverflowing}>
-            <OnOff dark={dark}/>
+            <SunMoon dark={dark}/>
             <div>
                 {/*<select onChange={(e) => selectHandler(e)}>*/}
                 {/*    <option value='day'>day</option>*/}

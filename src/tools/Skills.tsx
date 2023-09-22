@@ -14,7 +14,7 @@ export const Skills = () => {
                 <tbody>
                 <tr><td>Typescrypt</td></tr>
                 <tr><td>Redux</td></tr>
-                <tr><td>UseEffect</td></tr>
+                <tr><td>Context API</td></tr>
                 <tr><td>Axios</td></tr>
                 <tr><td>Cors</td></tr>
                 <tr><td>Apache</td></tr>
@@ -22,19 +22,23 @@ export const Skills = () => {
                 <tr><td>SQL</td></tr>
                 <tr><td>AWS</td></tr>
                 <tr><td>react-router-dom</td></tr>
+                <tr><td>localStorage</td></tr>
+                <tr><td>React.memo</td></tr>
                 <tr><td>useMemo</td></tr>
                 <tr><td>useCallback</td></tr>
+                <tr><td>useEffect</td></tr>
+                <tr><td>useState</td></tr>
+                <tr><td>useResize</td></tr>
+                <tr><td>useParam</td></tr>
                 <tr><td>storybook</td></tr>
                 <tr><td>map|filer|find</td></tr>
                 <tr><td>Set()</td></tr>
-                <tr><td>UseState</td></tr>
-                <tr><td>UseResize</td></tr>
-                <tr><td>UseParam</td></tr>
                 <tr><td>SpeechSynthesis</td></tr>
                 <tr><td>Styled Component</td></tr>
                 <tr><td>SCSS</td></tr>
-                <tr><td>Bootstrap</td></tr>
+                <tr><td>Animation</td></tr>
                 <tr><td>EditableSpan</td></tr>
+                <tr><td>Table</td></tr>
                 <tr><td>Date()</td></tr>
                 </tbody>
             </table>

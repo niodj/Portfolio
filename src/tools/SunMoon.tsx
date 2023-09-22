@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const OnOff = (props: any) => {
+export const SunMoon = (props: any) => {
     return (
         <RotatingDiv $dark={props.dark}>
 
@@ -19,8 +19,8 @@ export const OnOff = (props: any) => {
 };
 
 const RotatingDiv = styled.div<{$dark:boolean}>`
-  
-  animation: rotation 50s infinite linear;
+  margin-bottom: -50px;
+  animation: rotation 60s infinite linear;
   @keyframes rotation {
     0% {
       transform: rotate(0deg);
@@ -30,17 +30,19 @@ const RotatingDiv = styled.div<{$dark:boolean}>`
     }
   }
 
+
   .imgdark {
-    
-    width: 100px;
-    height: 100px;
+   position: absolute;
+    width: 200px;
+    height: 200px;
     transition: opacity 6s ease-in-out; /* Плавное изменение opacity */
     opacity: ${(props) => (props.$dark ? 1 : 0)}; /* Прозрачность зависит от props.dark */
   }
 
   .imgnodark {
-    width: 100px;
-    height: 100px;
+
+    width: 200px;
+    height: 200px;
     transition: opacity 6s ease-in-out; /* Плавное изменение opacity */
     opacity: ${(props) => (props.$dark ? 0 : 1)}; /* Прозрачность инвертирована относительно props.dark */
   }
