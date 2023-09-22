@@ -1,0 +1,59 @@
+import React from "react";
+import styled from "styled-components";
+
+
+export const Skills = () => {
+
+    return (
+        <Wrapper>
+            <table>
+                <thead>
+                <tr><th>Here used</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr><td>Typescrypt</td></tr>
+                <tr><td>Redux</td></tr>
+                <tr><td>UseEffect</td></tr>
+                <tr><td>Axios</td></tr>
+                <tr><td>Cors</td></tr>
+                <tr><td>Apache</td></tr>
+                <tr><td>PHP</td></tr>
+                <tr><td>SQL</td></tr>
+                <tr><td>AWS</td></tr>
+                <tr><td>react-router-dom</td></tr>
+                <tr><td>useMemo</td></tr>
+                <tr><td>useCallback</td></tr>
+                <tr><td>storybook</td></tr>
+                <tr><td>map|filer|find</td></tr>
+                <tr><td>Set()</td></tr>
+                <tr><td>UseState</td></tr>
+                <tr><td>UseResize</td></tr>
+                <tr><td>UseParam</td></tr>
+                <tr><td>SpeechSynthesis</td></tr>
+                <tr><td>Styled Component</td></tr>
+                <tr><td>SCSS</td></tr>
+                <tr><td>Bootstrap</td></tr>
+                <tr><td>EditableSpan</td></tr>
+                <tr><td>Date()</td></tr>
+                </tbody>
+            </table>
+        </Wrapper>
+    )
+}
+
+const Wrapper = styled.div`
+  height: 175px;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  table{
+    border-spacing: 5px;
+    padding-right: 5px;
+    padding-left: 5px;
+  }
+  td {
+    border-collapse: collapse;
+    border-bottom: solid 1px green;
+  }
+  
+`
