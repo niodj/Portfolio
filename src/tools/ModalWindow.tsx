@@ -5,6 +5,7 @@ import Modal from '@mui/material/Modal';
 import {TextField} from "@mui/material";
 import emailjs from '@emailjs/browser';
 import {useState} from "react";
+import styled from "styled-components";
 
 
 
@@ -15,7 +16,7 @@ import {useState} from "react";
             top: '50%',
             left: '50%',
             transform: 'translate(-50%, -50%)',
-            width: 400,
+            width: 320,
             bgcolor: 'background.paper',
             border: '2px solid #000',
             boxShadow: 24,
@@ -56,7 +57,7 @@ import {useState} from "react";
 
 
         return (
-            <div>
+            <Wrapper>
                 <Button onClick={handleOpen}>Message</Button>
                 <Modal
                     open={openMain}
@@ -84,7 +85,9 @@ import {useState} from "react";
                             <Button onClick={handleClose}>Close</Button>
                         </Box>
                     </Modal>}
-            </div>
+            </Wrapper>
         );
     }
+const Wrapper =styled.div`
 
+`

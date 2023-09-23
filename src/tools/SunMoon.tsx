@@ -20,7 +20,7 @@ export const SunMoon = (props: any) => {
 
 const RotatingDiv = styled.div<{$dark:boolean}>`
   margin-bottom: -50px;
-  animation: rotation 60s infinite linear;
+  animation: rotation 70s infinite linear;
   @keyframes rotation {
     0% {
       transform: rotate(0deg);
