@@ -67,8 +67,9 @@ import styled from "styled-components";
                 >
                     <Box sx={style}>
                         <TextField value={textInput} multiline maxRows={8} onChange={(e)=>{
-                            setTextInput(e.target.value)}}/>
-                        <p>Please, leave your contact</p>
+                            if (e.target.value!==''){
+                            setTextInput(e.target.value)}}}/>
+                        <p style={{textAlign:"center"}}>Please, leave your contact</p>
                         <Button onClick={handlerSend}>Send</Button>
                         <Button onClick={handleClose}>Close</Button>
                     </Box>

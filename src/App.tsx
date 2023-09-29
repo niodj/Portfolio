@@ -16,6 +16,7 @@ import {Practice} from "./tools/Practice";
 import {Skills} from "./tools/Skills";
 import {ModalWindow} from "./tools/ModalWindow";
 import {SunMoon} from "./tools/SunMoon";
+import { ClockApp } from './Clock/ClockApp';
 
 
 function isNightTime() {
@@ -44,7 +45,11 @@ function App() {
     return (
         <Wrapper $dark={dark} $overflowHidden={isContentOverflowing}>
             <SunMoon dark={dark}/>
-            <div>
+            <div className='clockWrapper'>
+                <ClockApp />
+            </div>
+            
+            <div className='buttons'>
                 {/*<select onChange={(e) => selectHandler(e)}>*/}
                 {/*    <option value='day'>day</option>*/}
                 {/*    <option value='night'>night</option>*/}
@@ -95,6 +100,14 @@ const Wrapper = styled.div<{ $dark: boolean; $overflowHidden: boolean }>`
   flex-direction: column;
   align-items: center;
 
+  .buttons{
+    margin-top:60px;
+  }
+
+  .clockWrapper{
+    position: absolute;
+    
+  }
   .bntModalandCv {
     display: flex;
     justify-content: space-around;

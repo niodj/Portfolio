@@ -42,7 +42,7 @@ export const Rating = () => {
                     (TypeScript)
                 </Link>
                 </td>
-                <td>{codewars?.ranks.overall.score} / 3218</td>
+                <td>{codewars?.ranks.overall.score}</td>
             </tr>
             <tr>
                 <td>
@@ -52,7 +52,7 @@ export const Rating = () => {
                         (JavaScript)
                     </Link>
                 </td>
-                <td>294 / 307</td>
+                <td>294</td>
             </tr>
             <tr>
                 <td>
@@ -62,7 +62,7 @@ export const Rating = () => {
                         (HTML+CSS)
                     </Link>
                 </td>
-                <td>437 / 1239</td>
+                <td>437</td>
             </tr>
             <tr>
                 <td>
