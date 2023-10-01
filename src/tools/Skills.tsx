@@ -31,6 +31,7 @@ export const Skills = () => {
                 <tr><td>useResize</td></tr>
                 <tr><td>useParam</td></tr>
                 <tr><td>storybook</td></tr>
+                <tr><td>GitHub</td></tr>
                 <tr><td>map|filer|find</td></tr>
                 <tr><td>Set()</td></tr>
                 <tr><td>SpeechSynthesis</td></tr>
@@ -40,6 +41,8 @@ export const Skills = () => {
                 <tr><td>EditableSpan</td></tr>
                 <tr><td>Table</td></tr>
                 <tr><td>Date()</td></tr>
+                <tr><td>setInterval()</td></tr>
+                <tr><td>Math()</td></tr>
                 </tbody>
             </table>
         </Wrapper>

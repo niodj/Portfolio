@@ -11,10 +11,11 @@ export const ClockApp = () => {
 
     return () => clearInterval(intervalId);
   }, []);
-  const hour = Math.floor((time.getHours() / 24) * 360);
+
+  const hour = Math.floor((time.getHours() /12) * 360);
   const min = Math.floor((time.getMinutes() / 60) * 360);
   const sec = Math.floor((time.getSeconds() / 60) * 360);
-
+console.log(hour)
     const getClockNumbers = () => {
       const numbers = [];
       for (let i = 1; i <= 12; i++) {
@@ -62,12 +63,13 @@ const Wrapper = styled.div<{ $hour: number; $min: number; $sec: number }>`
     &:after {
       content: "";
       height: 60px;
-      width: 5px;
+      width: 20px;
       background-color: blue;
       bottom: 0;
       position: absolute;
       transform: translateX(-50%);
       border-radius: 50%;
+      border: solid black 1px;
     }
   }
 
@@ -79,11 +81,13 @@ const Wrapper = styled.div<{ $hour: number; $min: number; $sec: number }>`
     left: 50%;
     top: 50%;
     border-radius: 50%;
+
     transform: rotate(${(props) => props.$min}deg);
     &:after {
       content: "";
       height: 80px;
-      width: 5px;
+      width: 10px;
+      border: solid black 1px;
       background-color: blue;
       bottom: 0;
       position: absolute;
