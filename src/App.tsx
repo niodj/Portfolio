@@ -16,7 +16,7 @@ import {Practice} from "./tools/Practice";
 import {Skills} from "./tools/Skills";
 import {ModalWindow} from "./tools/ModalWindow";
 import {SunMoon} from "./tools/SunMoon";
-import { ClockApp } from './Clock/ClockApp';
+import { ClockApp } from './tools/Clock/ClockApp';
 
 
 function isNightTime() {
