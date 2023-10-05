@@ -17,6 +17,7 @@ import {Skills} from "./tools/Skills";
 import {ModalWindow} from "./tools/ModalWindow";
 import {SunMoon} from "./tools/SunMoon";
 import { ClockApp } from './tools/Clock/ClockApp';
+import { useDispatch } from 'react-redux';
 
 
 function isNightTime() {
@@ -41,54 +42,70 @@ function App() {
         }, 1000)
     }, [])
 
-
+const dispatch = useDispatch()
     return (
-        <Wrapper $dark={dark} $overflowHidden={isContentOverflowing}>
-            <SunMoon dark={dark}/>
-            <div className='clockWrapper'>
-                <ClockApp />
-            </div>
-            
-            <div className='buttons'>
-                {/*<select onChange={(e) => selectHandler(e)}>*/}
-                {/*    <option value='day'>day</option>*/}
-                {/*    <option value='night'>night</option>*/}
-                {/*</select>*/}
-                {}
-                <Button variant={"outlined"} onClick={() => setDark((false))}>Day</Button>
-                <Button variant={"outlined"} color={'secondary'} onClick={() => setDark(true)}>Night</Button>
+      <Wrapper $dark={dark} $overflowHidden={isContentOverflowing}>
+        <SunMoon dark={dark} />
+        <div
+          className="clockWrapper"
+          onClick={() => {
+            dispatch({ type: "id" });
+          }}
+        >
+          <ClockApp />
+        </div>
 
-            </div>
-            <Title>
-                <div>Anton Potapenko JS/TS React Developer</div>
-                <div>Welcome to my pet projects portfolio page</div>
-                <div className="bntModalandCv">
-                    <a href={"https://asfalter.com.ua/CV_Anton_React.pdf"} target={"_blank"}><Button>Open my CV</Button></a>
-                    <ModalWindow />
-                </div>
-            </Title>
-            <div className='rattingAndSkils'>
-                <Rating/>
-                <Skills/>
-            </div>
+        <div className="buttons">
+          {/*<select onChange={(e) => selectHandler(e)}>*/}
+          {/*    <option value='day'>day</option>*/}
+          {/*    <option value='night'>night</option>*/}
+          {/*</select>*/}
+          {}
+          <Button variant={"outlined"} onClick={() => setDark(false)}>
+            Day
+          </Button>
+          <Button
+            variant={"outlined"}
+            color={"secondary"}
+            onClick={() => setDark(true)}
+          >
+            Night
+          </Button>
+        </div>
 
+        <Title>
+          <div>Anton Potapenko JS/TS React Developer</div>
+          <div>Welcome to my pet projects portfolio page</div>
+          <div className="bntModalandCv">
+            <a
+              href={"https://asfalter.com.ua/CV_Anton_React.pdf"}
+              target={"_blank"}
+            >
+              <Button>Open my CV</Button>
+            </a>
+            <ModalWindow />
+          </div>
+        </Title>
+        <div className="rattingAndSkils">
+          <Rating />
+          <Skills />
+        </div>
 
-            <Routes>
-                <Route path="/" element={<NavMenu dark={dark}/>}>
-                    <Route index element={<Practice/>}></Route>
-                    <Route path="costlist" element={<CostListApp/>}/>
-                    <Route path="counterapp" element={<CounterApp/>}/>
-                    <Route path="todolistapp" element={<TodolistApp/>}/>
-                    <Route path="queueapp" element={<QueueApp/>}/>
-                    <Route path="sqlconnect" element={<SqlConnect dark={dark}/>}/>
-                    <Route path="useparamsapp" element={<UseParamsApp/>}/>
-                    <Route path="socialnetworkapp/*" element={<SocialNetworkApp/>}/>
-                    <Route path="*" element={<div>.</div>}/>
-                </Route>
-            </Routes>
-        </Wrapper>
-
-    )
+        <Routes>
+          <Route path="/" element={<NavMenu dark={dark} />}>
+            <Route index element={<Practice />}></Route>
+            <Route path="costlist" element={<CostListApp />} />
+            <Route path="counterapp" element={<CounterApp />} />
+            <Route path="todolistapp" element={<TodolistApp />} />
+            <Route path="queueapp" element={<QueueApp />} />
+            <Route path="sqlconnect" element={<SqlConnect dark={dark} />} />
+            <Route path="useparamsapp" element={<UseParamsApp />} />
+            <Route path="socialnetworkapp/*" element={<SocialNetworkApp />} />
+            <Route path="*" element={<div>.</div>} />
+          </Route>
+        </Routes>
+      </Wrapper>
+    );
 }
 
 export default App;
@@ -104,6 +121,10 @@ const Wrapper = styled.div<{ $dark: boolean; $overflowHidden: boolean }>`
     margin-top:60px;
   }
 
+  .loader1{
+    width: 50px;
+    height: 50px;
+  }
   .clockWrapper{
     position: absolute;
     

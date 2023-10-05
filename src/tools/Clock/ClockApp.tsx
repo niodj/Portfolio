@@ -1,9 +1,14 @@
+import { any } from "prop-types";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
+import { Isloading } from "../IsLoading/IsLoading";
+
 
 export const ClockApp = () => {
   const [time, setTime] = useState(new Date());
 
+  
   useEffect(() => {
     const intervalId = setInterval(() => {
       setTime(new Date());
@@ -11,7 +16,6 @@ export const ClockApp = () => {
 
     return () => clearInterval(intervalId);
   }, []);
-
   
  
   const sec = Math.floor((time.getSeconds() / 60) * 360);
@@ -36,15 +40,22 @@ export const ClockApp = () => {
       }
 
       return numbers;
-    };
+  };
+  
+  const isLoading = useSelector((store: any) => store.isLoading)
+  
   return (
     <div>
-      <Wrapper $hour={hour} $min={min} $sec={sec}>
-        {getClockNumbers()}
-        <div className="hourHand"></div>
-        <div className="minHand"></div>
-        <div className="secondHand"></div>
-      </Wrapper>
+      {isLoading?
+        <Isloading />
+       :
+        <Wrapper $hour={hour} $min={min} $sec={sec}>
+          {getClockNumbers()}
+          <div className="hourHand"></div>
+          <div className="minHand"></div>
+          <div className="secondHand"></div>
+        </Wrapper>
+      }
     </div>
   );
 };
