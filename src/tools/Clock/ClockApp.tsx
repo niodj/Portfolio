@@ -42,7 +42,7 @@ export const ClockApp = () => {
       return numbers;
   };
   
-  const isLoading = useSelector((store: any) => store.isLoading)
+  const isLoading = useSelector((store: any) => store.isLoading.isLoading);
   
   return (
     <div>

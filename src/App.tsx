@@ -18,6 +18,7 @@ import {ModalWindow} from "./tools/ModalWindow";
 import {SunMoon} from "./tools/SunMoon";
 import { ClockApp } from './tools/Clock/ClockApp';
 import { useDispatch } from 'react-redux';
+import { JokeComponent } from "./tools/Weather/JokeComponent";
 
 
 function isNightTime() {
@@ -104,6 +105,7 @@ const dispatch = useDispatch()
             <Route path="*" element={<div>.</div>} />
           </Route>
         </Routes>
+        <JokeComponent />
       </Wrapper>
     );
 }

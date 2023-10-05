@@ -16,7 +16,8 @@ export const initialState = {
   sqlConnect: {},
   isLoadind: true
 };
-console.log(initialState.isLoadind)
+
+
 export const rootReducer = combineReducers({
   count: counterReducer,
   todolists: todoReducer,
