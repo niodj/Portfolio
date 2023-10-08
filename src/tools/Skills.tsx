@@ -15,13 +15,15 @@ export const Skills = () => {
                 <tr><td>Typescrypt</td></tr>
                 <tr><td>Redux</td></tr>
                 <tr><td>Context API</td></tr>
-                <tr><td>Axios</td></tr>
                 <tr><td>Cors</td></tr>
                 <tr><td>Apache</td></tr>
                 <tr><td>PHP</td></tr>
                 <tr><td>SQL</td></tr>
                 <tr><td>AWS</td></tr>
                 <tr><td>react-router-dom</td></tr>
+                <tr><td>Axios</td></tr>
+                <tr><td>Promises</td></tr>
+                <tr><td>Promises methods</td></tr>
                 <tr><td>localStorage</td></tr>
                 <tr><td>React.memo</td></tr>
                 <tr><td>useMemo</td></tr>

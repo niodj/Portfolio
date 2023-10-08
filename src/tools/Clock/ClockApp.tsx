@@ -11,7 +11,7 @@ export const ClockApp = () => {
   
   useEffect(() => {
     const intervalId = setInterval(() => {
-      setTime(new Date());
+      setTime(new Date() );
     }, 1000);
 
     return () => clearInterval(intervalId);
@@ -46,21 +46,30 @@ export const ClockApp = () => {
   
   return (
     <div>
-      {isLoading?
+      {isLoading ? (
         <Isloading />
-       :
-        <Wrapper $hour={hour} $min={min} $sec={sec}>
+      ) : (
+        <Wrapper>
           {getClockNumbers()}
-          <div className="hourHand"></div>
-          <div className="minHand"></div>
-          <div className="secondHand"></div>
+          <div
+            className="hourHand"
+            style={{ transform: `rotate(${hour}deg)` }}
+          ></div>
+          <div
+            className="minHand"
+            style={{ transform: `rotate(${min}deg)` }}
+          ></div>
+          <div
+            className="secondHand"
+            style={{ transform: `rotate(${sec}deg)`}}
+          ></div>
         </Wrapper>
-      }
+      )}
     </div>
   );
 };
 
-const Wrapper = styled.div<{ $hour: number; $min: number; $sec: number }>`
+const Wrapper = styled.div`
   height: 200px;
   width: 200px;
   border: 1px lightgreen solid;
@@ -75,7 +84,7 @@ const Wrapper = styled.div<{ $hour: number; $min: number; $sec: number }>`
     left: 50%;
     top: 50%;
     border-radius: 50%;
-    transform: rotate(${(props) => props.$hour}deg);
+    
     &:after {
       content: "";
       height: 60px;
@@ -97,7 +106,6 @@ const Wrapper = styled.div<{ $hour: number; $min: number; $sec: number }>`
     left: 50%;
     top: 50%;
     border-radius: 50%;
-    transform: rotate(${(props) => props.$min}deg);
     &:after {
       content: "";
       height: 80px;
@@ -118,7 +126,6 @@ const Wrapper = styled.div<{ $hour: number; $min: number; $sec: number }>`
     left: 50%;
     top: 50%;
     border-radius: 50%;
-    transform: rotate(${(props) => props.$sec}deg);
     &:after {
       content: "";
       height: 80px;
