@@ -5,7 +5,7 @@ import {TodolistApp} from "./Todolist/TodolistApp";
 import {QueueApp} from "./Queue/QueueApp";
 import {Rating} from "./tools/Rating";
 import React, {useEffect, useState} from "react";
-import SqlConnect from "./SqlConnect/SqlConnect";
+import { SqlConnect } from "./SqlConnect/SqlConnect";
 import {UseParamsApp} from "./tools/UseParamsApp";
 import useResize from "./tools/useResize";
 import {NavMenu} from "./tools/NavMenu";
@@ -28,7 +28,7 @@ function isNightTime() {
 
 const nightNow = isNightTime()
 
-function App() {
+export const App = React.memo(()=> {
 
 
     const [time, setTime] = useState(Date.now())
@@ -37,16 +37,15 @@ function App() {
     const isContentOverflowing = height > window.innerHeight;
 
 
-    useEffect(() => {
-        setInterval(() => {
-            setTime((new Date()).getSeconds())
-        }, 1000)
-    }, [])
 
 const dispatch = useDispatch()
     return (
       <Wrapper $dark={dark} $overflowHidden={isContentOverflowing}>
+
+
         <SunMoon dark={dark} />
+
+
         <div
           className="clockWrapper"
           onClick={() => {
@@ -108,9 +107,9 @@ const dispatch = useDispatch()
         <JokeComponent />
       </Wrapper>
     );
-}
+})
 
-export default App;
+
 
 const Wrapper = styled.div<{ $dark: boolean; $overflowHidden: boolean }>`
 

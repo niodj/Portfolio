@@ -9,7 +9,7 @@ type TableType = {
     last_name: string;
 }
 
-const SqlConnect = (props: { dark: boolean }) => {
+export const SqlConnect = (props: { dark: boolean }) => {
 
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
@@ -102,7 +102,7 @@ const SqlConnect = (props: { dark: boolean }) => {
     );
 }
 
-export default SqlConnect;
+
 const Wrapper = styled.div<{ $dark: boolean }>`
 
   display: flex;

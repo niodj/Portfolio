@@ -8,7 +8,7 @@ import {svgIconClasses} from "@mui/material";
 
 
 const LOCAL_STORAGE_KEY = "counterAppData";
-export const CounterApp = React.memo(() => {
+export const CounterApp = () => {
   const state = useSelector((state: any) => state.count);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -111,7 +111,7 @@ export const CounterApp = React.memo(() => {
       </Wrapper>
     </>
   );
-});
+}
 const Wrapper = styled.div`
 
   display: flex;

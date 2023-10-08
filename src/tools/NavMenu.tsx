@@ -4,7 +4,7 @@ import {NavLink, Outlet, useNavigate} from "react-router-dom";
 import {Button} from "@mui/material";
 
 
-export const NavMenu = (props: { dark: boolean }) => {
+export const NavMenu = React.memo((props: { dark: boolean }) => {
     const navigate = useNavigate()
     const backHandler = () => {
         navigate(-1)
@@ -33,7 +33,7 @@ export const NavMenu = (props: { dark: boolean }) => {
 </>
 )
 }
-
+)
 const Projects = styled.div<{ $dark: boolean }>`
   display: flex;
   flex-direction: row;

@@ -22,7 +22,7 @@ export const EditableSpan = (props:PropsEditType) => {
     const onChangeTitle = (event: ChangeEvent<HTMLInputElement>) => {
         setTitie(event.currentTarget.value)
     }
-    console.log('add')
+  
     return edit ? <Input value={title}
                              onChange={onChangeTitle}
                              onBlur={deactivateEditMode}

@@ -3,9 +3,10 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { Isloading } from "../IsLoading/IsLoading";
+import React from "react";
 
 
-export const ClockApp = () => {
+export const ClockApp = React.memo(() => {
   const [time, setTime] = useState(new Date());
 
   
@@ -40,7 +41,7 @@ export const ClockApp = () => {
       }
 
       return numbers;
-  };
+  }
   
   const isLoading = useSelector((store: any) => store.isLoading.isLoading);
   
@@ -67,7 +68,7 @@ export const ClockApp = () => {
       )}
     </div>
   );
-};
+})
 
 const Wrapper = styled.div`
   height: 200px;

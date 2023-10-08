@@ -19,12 +19,13 @@ export type StateType = {
     tasks: TaskType[];
 };
 
-export const TodolistApp = React.memo( () => {
+export const TodolistApp =() => {
     const todostate = useSelector((store:StoreType)=>store.todolists)
     const action = useDispatch();
     const addTodolist = (trimmedValue: string) => {
 
-        action({type: 'ADD-TODO', listTitle: trimmedValue, idList: v1()})
+        action({ type: 'ADD-TODO', listTitle: trimmedValue, idList: v1() })
+       
     }
     return (
         <Wrapper>
@@ -41,10 +42,10 @@ export const TodolistApp = React.memo( () => {
             </Lists>
         </Wrapper>
     )
-})
+}
 
 
-export default TodolistApp;
+
 
 const Wrapper = styled.div`
     

@@ -25,6 +25,7 @@ export const Skills = () => {
                 <tr><td>Promises</td></tr>
                 <tr><td>Promises methods</td></tr>
                 <tr><td>localStorage</td></tr>
+                <tr><td>why-did-you-render</td></tr>
                 <tr><td>React.memo</td></tr>
                 <tr><td>useMemo</td></tr>
                 <tr><td>useCallback</td></tr>
