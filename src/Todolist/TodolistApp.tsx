@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import {v1} from 'uuid';
 import {Todolist} from "./Todolist";
 import {InputForm} from "./InputForm";
@@ -22,11 +22,12 @@ export type StateType = {
 export const TodolistApp =() => {
     const todostate = useSelector((store:StoreType)=>store.todolists)
     const action = useDispatch();
-    const addTodolist = (trimmedValue: string) => {
-
-        action({ type: 'ADD-TODO', listTitle: trimmedValue, idList: v1() })
-       
-    }
+    const addTodolist = useCallback(
+      (trimmedValue: string) => {
+        action({ type: "ADD-TODO", listTitle: trimmedValue, idList: v1() });
+      },
+      [action]
+    );
     return (
         <Wrapper>
             <InputForm addFromInput={addTodolist} defaultInput={'New list'}/>

@@ -9,7 +9,7 @@ type propsType = {
     defaultInput:string
 
 }
-export const InputForm = React.memo((props: propsType) => {
+export const InputForm =React.memo ((props: propsType) => {
   const [titleInput, setInputTitle] = useState("");
   const [errorInput, setErrorInput] = useState<string>("");
   const trimmedValue = titleInput.trim();
@@ -32,7 +32,7 @@ export const InputForm = React.memo((props: propsType) => {
       submitHandler();
     }
   };
-  console.log("m");
+
   return (
     <>
       <Wrapper>
@@ -52,7 +52,7 @@ export const InputForm = React.memo((props: propsType) => {
       <div>press ctrl+Enter to add</div>
     </>
   );
-});
+})
 const Wrapper = styled.div`
     button {
     margin-left: 10px;

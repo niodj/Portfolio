@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import {InputForm} from "./InputForm";
 import styled from "styled-components";
 import {EditableSpan} from "../tools/EditableSpan";
@@ -16,7 +16,7 @@ type PropsType = {
     action: (action: ActionType) => void
 }
 
-export function Todolist(props: PropsType) {
+export const Todolist =React.memo((props: PropsType)=> {
 
     const removeTask = (idTask: string) => {
         props.action({type: 'REMOVE-TASK', idList: props.idList, idTask: idTask})
@@ -40,9 +40,16 @@ export function Todolist(props: PropsType) {
         setFilter(value);
     }
 
-    const addNewTask = (trimmedValue: string) => {
-        props.action({type: 'ADD-TASK', taskTitle: trimmedValue, idList: props.idList})
-    }
+    const addNewTask = useCallback(
+      (trimmedValue: string) => {
+        props.action({
+          type: "ADD-TASK",
+          taskTitle: trimmedValue,
+          idList: props.idList,
+        });
+      },
+      [props.action]
+    );
 
     return <Wrapper>
 
@@ -98,7 +105,7 @@ export function Todolist(props: PropsType) {
 
         <div>doubble click for edit list name or task name</div>
     </Wrapper>
-}
+})
 
 const Wrapper = styled.div`
   display: flex;
