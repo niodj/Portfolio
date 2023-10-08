@@ -4,32 +4,14 @@ import React, {ChangeEvent, useEffect} from "react";
 import {Counter} from "./Counter";
 import {Buttons} from "./Buttons";
 import {useDispatch, useSelector} from "react-redux";
-import {svgIconClasses} from "@mui/material";
 
 
-const LOCAL_STORAGE_KEY = "counterAppData";
+
+
 export const CounterApp = () => {
-  const state = useSelector((state: any) => state.count);
+  const state = useSelector((state: any) => state.counter);
   const dispatch = useDispatch();
-  useEffect(() => {
-    const dataFromLocalStorage = localStorage.getItem(LOCAL_STORAGE_KEY);
-    if (dataFromLocalStorage) {
-      const savedData = JSON.parse(dataFromLocalStorage);
-      dispatch({ type: "SETCOUNT", count: savedData.count });
-      dispatch({ type: "SETMIN", newmin: savedData.min });
-      dispatch({ type: "SETMAX", newmax: savedData.max });
-    }
-  }, []);
-
-  useEffect(() => {
-    const dataToSave = {
-      count: state.count,
-      min: state.min,
-      max: state.max,
-    };
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(dataToSave));
-  }, [state.count, state.min, state.max]);
-
+console.log(state)
   const setMinHandler = (event: ChangeEvent<HTMLInputElement>) => {
     const newmin = event.target.value.replace(/[^0-9]/g, "");
     dispatch({ type: "SETMIN", newmin: newmin });
