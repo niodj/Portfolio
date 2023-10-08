@@ -40,16 +40,15 @@ export const Todolist =React.memo((props: PropsType)=> {
         setFilter(value);
     }
 
-    const addNewTask = useCallback(
+    const addNewTask = 
       (trimmedValue: string) => {
         props.action({
           type: "ADD-TASK",
           taskTitle: trimmedValue,
           idList: props.idList,
         });
-      },
-      [props.action]
-    );
+      }
+    
 
     return <Wrapper>
 
