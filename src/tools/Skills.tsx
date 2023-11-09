@@ -24,6 +24,7 @@ export const Skills = () => {
                 <tr><td>Axios</td></tr>
                 <tr><td>Promises</td></tr>
                 <tr><td>Promises methods</td></tr>
+                <tr><td>Postman</td></tr>
                 <tr><td>localStorage</td></tr>
                 <tr><td>why-did-you-render</td></tr>
                 <tr><td>React.memo</td></tr>
@@ -33,6 +34,7 @@ export const Skills = () => {
                 <tr><td>useState</td></tr>
                 <tr><td>useResize</td></tr>
                 <tr><td>useParam</td></tr>
+                <tr><td>customHooks</td></tr>
                 <tr><td>storybook</td></tr>
                 <tr><td>GitHub</td></tr>
                 <tr><td>map|filer|find</td></tr>
@@ -65,5 +67,5 @@ const Wrapper = styled.div`
     border-collapse: collapse;
     border-bottom: solid 1px green;
   }
-  
+
 `

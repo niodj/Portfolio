@@ -1,3 +1,4 @@
+import React from "react";
 import {ButtonQ} from "./ButtonQ";
 import styled from "styled-components";
 
@@ -12,7 +13,7 @@ type PropsType = {
     message:string
 }
 
-export const Setting = (props: PropsType) => {
+export const Setting = React.memo((props: PropsType) => {
 
     return <Wrapper>
         <Item $message={props.message}>Start value</Item>
@@ -23,7 +24,7 @@ export const Setting = (props: PropsType) => {
         <ButtonQ name={'Set'} buttonFunction={props.setCounterHandler} ifActiveButton={props.buttonSetState}></ButtonQ>
         </SetButton>
         </Wrapper>
-}
+})
 
 const Wrapper = styled.div`
   display: flex;

@@ -3,7 +3,6 @@ import styled from "styled-components";
 import {NavLink, Outlet, useNavigate} from "react-router-dom";
 import {Button} from "@mui/material";
 
-
 export const NavMenu = React.memo((props: { dark: boolean }) => {
     const navigate = useNavigate()
     const backHandler = () => {

@@ -96,10 +96,10 @@ const Wrapper = styled.div`
     border-collapse: collapse;
     border: 1px solid grey;
     text-align: left;
-    border-spacing: 0; 
-    
-    
-      
+    border-spacing: 0;
+
+
+
   }
 
   th, td {

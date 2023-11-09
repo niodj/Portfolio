@@ -7,13 +7,13 @@ type PropsType = {
     ifRedCount: boolean
 }
 
-export const Counter = (props: PropsType) => {
-
-    return <Wrapper>
-        <Count $ifRedCount={props.ifRedCount}>{props.count}</Count>
-
+export const Counter = React.memo((props: PropsType) => {
+  return (
+    <Wrapper>
+      <Count $ifRedCount={props.ifRedCount}>{props.count}</Count>
     </Wrapper>
-}
+  );
+});
 const Count = styled.div<{ $ifRedCount: boolean }>`
   color: ${(props: { $ifRedCount: boolean }) => (!props.$ifRedCount ? "lightgreen" : "red")};
 `

@@ -157,14 +157,14 @@ const Error = styled.div`
 // $password = "Aa123456";
 // $dbname = "ch734841cc_todolist";
 //
-// // Создаем соединение с базой данных
+// // Create connection to database
 // $conn = new mysqli($servername, $username, $password, $dbname);
-// // Проверяем соединение
+// // Check connection
 // if ($conn->connect_error) {
 //     die("Connection failed: " . $conn->connect_error);
 // }
 //
-// // Получаем данные из React-компонента
+// // Get data from database
 // $data = json_decode(file_get_contents('php://input'), true);
 // $action = $data['action'];
 // $id = $data['id'];
@@ -172,7 +172,7 @@ const Error = styled.div`
 // $lastName = $data['lastName'];
 //
 // if ($action === 'delete') {
-//     // Удаляем запись из базы данных
+//     // Remove from database
 //     $stmt = $conn->prepare("DELETE FROM todolist WHERE id = ?");
 //     $stmt->bind_param("i", $id);
 //     if ($stmt->execute()) {
@@ -182,7 +182,7 @@ const Error = styled.div`
 //     }
 //     $stmt->close();
 // } else {
-//     // Записываем данные в базу данных
+//     // Write to database
 //     $stmt = $conn->prepare("INSERT INTO todolist (first_name, last_name) VALUES (?, ?)");
 //     $stmt->bind_param("ss", $firstName, $lastName);
 //     if ($stmt->execute()) {

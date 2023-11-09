@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import {Setting} from "./Setting";
-import React, {ChangeEvent, useEffect} from "react";
+import React, {ChangeEvent, useCallback, useEffect} from "react";
 import {Counter} from "./Counter";
 import {Buttons} from "./Buttons";
 import {useDispatch, useSelector} from "react-redux";
@@ -8,11 +8,10 @@ import {useDispatch, useSelector} from "react-redux";
 
 
 
-export const CounterApp = () => {
+export const CounterApp = React.memo(() => {
   const state = useSelector((state: any) => state.counter);
   const dispatch = useDispatch();
-console.log(state)
-  const setMinHandler = (event: ChangeEvent<HTMLInputElement>) => {
+  const setMinHandler = useCallback( (event: ChangeEvent<HTMLInputElement>) => {
     const newmin = event.target.value.replace(/[^0-9]/g, "");
     dispatch({ type: "SETMIN", newmin: newmin });
     dispatch({ type: "COUNTSTATE", countstate: true });
@@ -21,9 +20,9 @@ console.log(state)
     } else {
       dispatch({ type: "SETBUTTON", buttonStatus: false });
     }
-  };
+  },[dispatch, state.max])
 
-  const setMaxHandler = (event: ChangeEvent<HTMLInputElement>) => {
+  const setMaxHandler = useCallback((event: ChangeEvent<HTMLInputElement>) => {
     const newmax = event.target.value.replace(/[^0-9]/g, "");
     dispatch({ type: "SETMAX", newmax: newmax });
     dispatch({ type: "COUNTSTATE", countstate: true });
@@ -34,19 +33,19 @@ console.log(state)
       dispatch({ type: "SETBUTTON", buttonStatus: false });
       dispatch({ type: "SETMESSAGE", message: "incorect input" });
     }
-  };
+  },[dispatch, state.min])
 
-  const addCount = () => {
+  const addCount = useCallback( () => {
     if (state.count >= +state.min && state.count <= +state.max - 1)
       dispatch({ type: "INC" });
-  };
+  }, [dispatch, state.count, state.max, state.min])
 
-  const resetCount = () => {
+  const resetCount = useCallback( () => {
     dispatch({ type: "RESET" });
-  };
-  const setCounterHandler = () => {
+  },[dispatch])
+  const setCounterHandler = useCallback(() => {
     dispatch({ type: "SET" });
-  };
+  },[dispatch])
 
   let ifActiveIncButton =
     state.count >= +state.min &&
@@ -93,7 +92,7 @@ console.log(state)
       </Wrapper>
     </>
   );
-}
+})
 const Wrapper = styled.div`
 
   display: flex;

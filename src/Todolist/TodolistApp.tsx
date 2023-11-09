@@ -1,10 +1,11 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import {v1} from 'uuid';
 import {Todolist} from "./Todolist";
 import {InputForm} from "./InputForm";
 import styled from "styled-components";
 import {useDispatch, useSelector} from "react-redux";
 import {StoreType} from "../store";
+import axios from 'axios';
 
 export type TaskType = {
     idTask: string;
@@ -19,7 +20,12 @@ export type StateType = {
     tasks: TaskType[];
 };
 
-export const TodolistApp =() => {
+export const TodolistApp = () => {
+
+  // useEffect(() => {
+  //   const responce = axios.get("http://localhost:4444/todolists/");
+  // })
+
     const todostate = useSelector((store:StoreType)=>store.todolists)
     const action = useDispatch();
     const addTodolist = useCallback(
@@ -49,7 +55,7 @@ export const TodolistApp =() => {
 
 
 const Wrapper = styled.div`
-    
+
 `
 
 const Lists = styled.div`

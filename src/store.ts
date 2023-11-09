@@ -2,11 +2,19 @@ import { combineReducers, createStore } from "redux";
 import { counterReducer } from "./Counter/counterReducer";
 import { todoReducer } from "./Todolist/todoReducer";
 import { isLoadingReducer } from "./tools/IsLoading/isLoadingReducer";
-
+import { stepsReducer } from "./tools/Steps/stepsReducer";
+import { UserReducer } from "./tools/Login/reducer";
 
 export const initialState = {
+  user: {
+    email: "",
+    password: "",
+    loggedIn: false,
+    userEmail: "",
+  },
+
   counter: {
-  count: 0,
+    count: 0,
     min: "",
     max: "",
     buttonStatus: false,
@@ -14,48 +22,33 @@ export const initialState = {
   },
   todolists: [],
   sqlConnect: {},
-  isLoading: true, 
+  isLoading: true,
+  steps: [
+    {
+      formState: false,
+      startButtonState: true,
+    },
+    {
+      name: "step1",
+      display: true,
+      text: "step1",
+    },
+    {
+      name: "step2",
+      display: false,
+      text: "step2",
+    },
+  ],
 };
-
-
-const saveStateToLocalStorage = (state:any) => {
-  try {
-    const serializedState = JSON.stringify(state);
-    localStorage.setItem("reduxState", serializedState);
-  } catch (error) {
-    alert('error save to local storage')
-  }
-};
-
-
-const loadStateFromLocalStorage = () => {
-  try {
-    const serializedState = localStorage.getItem("reduxState");
-    if (serializedState === null) {
-      return initialState; 
-    }
-    return JSON.parse(serializedState);
-  } catch (error) {
-    alert("error read from local storage");
-    return initialState; 
-  }
-};
-
 
 export const rootReducer = combineReducers({
   counter: counterReducer,
   todolists: todoReducer,
   isLoading: isLoadingReducer,
+  steps: stepsReducer,
+  user: UserReducer,
 });
 
-
-export const store = createStore(rootReducer, loadStateFromLocalStorage());
-
-
-store.subscribe(() => {
-  const state = store.getState();
-  saveStateToLocalStorage(state);
-});
+export const store = createStore(rootReducer);
 
 export type StoreType = ReturnType<typeof rootReducer>;
-

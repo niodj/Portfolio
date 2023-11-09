@@ -9,7 +9,7 @@ type PropsType = {
     resetCount: () => void;
 };
 
-export const Buttons = (props: PropsType) => {
+export const Buttons = React.memo((props: PropsType) => {
     return (
         <Wrapper>
             <ButtonWrapper>
@@ -28,7 +28,7 @@ export const Buttons = (props: PropsType) => {
             </ButtonWrapper>
         </Wrapper>
     );
-};
+})
 
 const Wrapper = styled.div`
   display: flex;
