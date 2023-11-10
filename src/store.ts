@@ -3,7 +3,7 @@ import { counterReducer } from "./Counter/counterReducer";
 import { todoReducer } from "./Todolist/todoReducer";
 import { isLoadingReducer } from "./tools/IsLoading/isLoadingReducer";
 import { stepsReducer } from "./tools/Steps/stepsReducer";
-import { UserReducer } from "./tools/Login/reducer";
+import { UserReducer } from "./tools/Login/loginReducer";
 
 export const initialState = {
   user: {

@@ -1,108 +1,199 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {InputForm} from "./InputForm";
 import styled from "styled-components";
 import {EditableSpan} from "../tools/EditableSpan";
 import { Button, Checkbox, IconButton } from "@mui/material";
 import { blue } from "@mui/material/colors";
 import DeleteIcon from "@mui/icons-material/Delete";
-import {TaskType} from "./TodolistApp";
-import {ActionType} from "./todoReducer";
+import {TaskType, fetchTodoListsByUserId} from "./TodolistApp";
+import axios from 'axios';
+import Cookies from 'js-cookie';
+import { v1 } from 'uuid';
+import { useDispatch } from 'react-redux';
 
-const todolists = []
+
 
 type PropsType = {
     idList: string
     listTitle: string
     filter: string
     tasks: TaskType[]
-    action: (action: ActionType) => void
+    action: (action: any) => void
 }
 
-export const Todolist =React.memo((props: PropsType)=> {
+export const Todolist =(props: any)=> {
+  const dispatch = useDispatch();
 
   const addNewTask =
-    (trimmedValue: string) => {
-      props.action({
-        type: "ADD-TASK",
-        taskTitle: trimmedValue,
-        idList: props.idList,
+    async (trimmedValue: string) => {
+  try {
+    const token = Cookies.get("token");
+    const email = Cookies.get("email");
+    if (token && email) {
+      const config = {
+        headers: {
+          Authorization: token,
+        },
+      };
+      ;
+      const newTodoList = {
+        taskid:v1(),
+        name: trimmedValue,
+        checked: false,
+
+      };
+
+      const response = await axios.post(
+        `http://localhost:4444/tasks/${props.idList}`,
+        newTodoList,
+        config
+      );
+
+      fetchTodoListsByUserId().then((data) => {
+        dispatch({ type: "RECIVE-TODO", payload: data });
       });
     }
-    const removeTask = (idTask: string) => {
-        props.action({type: 'REMOVE-TASK', idList: props.idList, idTask: idTask})
+  } catch (error) {
+    console.error("Ошибка при добавлении тудулиста:", error);
+  }
+};
+
+
+
+//удаление таски
+  const removeTask = async (taskid: string) => {
+    console.log(taskid);
+    try {
+      const token = Cookies.get("token");
+      const email = Cookies.get("email");
+      if (token && email) {
+        const config = {
+          headers: {
+            Authorization: token,
+          },
+        };
+        const response = await axios.delete(
+          `http://localhost:4444/tasks/${props.idList}/${taskid}`,
+          config
+        );
+            fetchTodoListsByUserId().then((data) => {
+              dispatch({ type: "RECIVE-TODO", payload: data });
+            });
+      }
+    } catch (error) {
+      console.error("Ошибка при получении списка тудулистов:", error);
     }
+  };
+
+
 
     let [filter, setFilter] = useState("all");
     let filtered = [...props.tasks]
     if (filter === "all") {
-        filtered = (props.tasks.map((item: TaskType) => item))
+        filtered = (props.tasks.map((item: any) => item))
     }
 
     if (filter === "active") {
-        filtered = (props.tasks.filter((item: TaskType) => item.isDone === false))
+        filtered = props.tasks.filter((item: any) => item.checked === false);
     }
 
     if (filter === "completed") {
-        filtered = (props.tasks.filter((item: TaskType) => item.isDone === true))
+        filtered = props.tasks.filter((item: any) => item.checked === true);
     }
 
     function changeFilter(value: string) {
         setFilter(value);
     }
 
+  //удаление листа
+  const removeListHandler = async () => {
+     try {
+        const token = Cookies.get("token");
+        const email = Cookies.get("email");
+        if (token && email) {
+          const config = {
+            headers: {
+              Authorization: token,
+            },
+          };
+          const response = await axios.delete(
+            `http://localhost:4444/todolists/${props.idList}`,
+            config
+          );
+              fetchTodoListsByUserId().then((data) => {
+                dispatch({ type: "RECIVE-TODO", payload: data });
+              });
+        }
+      } catch (error) {
+        console.error("Ошибка при получении списка тудулистов:", error);
+      }
+    };
+
+  //обновление checked
+const updateChecked = async (taskid: string, checked: boolean) => {
+  try {
+    const token = Cookies.get("token");
+    const email = Cookies.get("email");
+    if (token && email) {
+      const config = {
+        headers: {
+          Authorization: token,
+        },
+      };
+      const data = {
+        checked: !checked, // Передайте состояние "checked" в объекте "data"
+      };
+      const response = await axios.put(
+        `http://localhost:4444/tasks/${props.idList}/${taskid}`,
+        data,
+        config
+      );
+          fetchTodoListsByUserId().then((data) => {
+            dispatch({ type: "RECIVE-TODO", payload: data });
+          });
+    }
+  } catch (error) {
+    console.error("Ошибка при обновлении состояния задачи:", error);
+  }
+};
+
 
     return (
       <Wrapper>
         <Title>
           <EditableSpan title={props.listTitle} />
-          <IconButton
-            onClick={() =>
-              props.action({ type: "REMOVE-LIST", idList: props.idList })
-            }
-          >
-            <DeleteIcon color="primary" />
+          <IconButton onClick={removeListHandler}>
+            <DeleteIcon color='primary' />
           </IconButton>
         </Title>
         <div>
           <InputForm addFromInput={addNewTask} defaultInput={"New task"} />
         </div>
         <ul>
-          {
-            filtered.map((item: TaskType) => (
-              <LiItem key={item.idTask} $isDone={item.isDone}>
-                <Checkbox
-                  defaultChecked
-                  sx={{
-                    color: blue[800],
-                    "&.Mui-checked": {
-                      color: blue[600],
-                    },
-                  }}
-                  checked={item.isDone}
-                  onChange={() =>
-                    props.action({
-                      type: "CHECKBOX-TOG",
-                      idList: props.idList,
-                      idTask: item.idTask,
-                    })
-                  }
-                />
-                <EditableSpan title={item.taskTitle} />
-                <IconButton
-                  onClick={() => {
-                    removeTask(item.idTask);
-                  }}
-                >
-                  {" "}
-                  <DeleteIcon color="primary" />
-                </IconButton>
-              </LiItem>
-            ))
-            //     .sort((a: { title: { toLowerCase: () => number; }; }, b: {
-            //     title: { toLowerCase: () => number; };
-            // }) => a.title.toLowerCase() < b.title.toLowerCase() ? -1 : 1)
-            //
-          }
+          {filtered.map((item: any) => (
+            <LiItem key={item.taskid} $checked={item.checked}>
+              <Checkbox
+                defaultChecked
+                sx={{
+                  color: blue[800],
+                  "&.Mui-checked": {
+                    color: blue[600],
+                  },
+                }}
+                checked={item.checked}
+                onChange={()=>{updateChecked(item.taskid, item.checked);}}
+              />
+              <EditableSpan title={item.name} />
+              <IconButton
+                onClick={() => {
+                  removeTask(item.taskid);
+                }}
+              >
+                {" "}
+                <DeleteIcon color='primary' />
+              </IconButton>
+            </LiItem>
+          ))}
         </ul>
 
         <FilterButtonGroup>
@@ -135,7 +226,7 @@ export const Todolist =React.memo((props: PropsType)=> {
         <div>doubble click for edit list name or task name</div>
       </Wrapper>
     );
-})
+}
 
 const Wrapper = styled.div`
   display: flex;
@@ -155,10 +246,9 @@ const FilterButtonGroup = styled.div`
 
 `
 
-const LiItem = styled.div<{ $isDone: boolean }>`
-  ${(props) => (props.$isDone && 'opacity: 0.5;')}
-
-`
+const LiItem = styled.div<{ $checked: boolean }>`
+  ${(props) => props.$checked && "opacity: 0.5;"}
+`;
 const Title = styled.div`
   font-weight: bold;
   font-size: 25px;
