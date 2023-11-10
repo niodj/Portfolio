@@ -86,6 +86,10 @@ const addTodolist = async (trimmedValue: string) => {
 
     return (
       <Wrapper>
+        <h4>
+          this component works with the node js server, which is hosted on aws
+          linux. The database is cloud MongoDB.
+        </h4>
         <InputForm addFromInput={addTodolist} defaultInput={"New list"} />
         <Lists>
           {todoLists.map((item: any) => (

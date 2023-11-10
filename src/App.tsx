@@ -12,7 +12,7 @@ import { NavMenu } from "./tools/NavMenu";
 import { Button } from "@mui/material";
 import { CostListApp } from "./Costlist/CostListApp";
 import { SocialNetworkApp } from "./SocialNetwork/SocialNetworkApp";
-import { Steps } from "./tools/Steps/Steps";
+
 import { Skills } from "./tools/Skills";
 import { ModalWindow } from "./tools/ModalWindow";
 import { SunMoon } from "./tools/SunMoon";
@@ -79,7 +79,7 @@ export const App = React.memo(() => {
         <Rating />
         <Skills />
       </div>
-          <Steps />
+         
       <Routes>
         <Route path='/' element={<NavMenu dark={dark} />}>
           <Route index element={<Practice />}></Route>

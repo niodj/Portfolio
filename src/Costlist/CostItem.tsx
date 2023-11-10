@@ -28,20 +28,26 @@ export const CostItem = (props:any) => {
 
 
     return (
-        <Wrapper>
-                <CostDate date={props.date} />
-                <Block2>
+      <Wrapper>
+        <CostDate date={props.date} />
+        <Block2>
+          <Description>
+            <EditableSpan
+              title={props.description}
+              
+            />
+          </Description>
 
-                    <Description>
-                    <EditableSpan title={props.description} />
-                    </Description>
-
-                <Price><EditableSpan title={'$'+props.amount} /></Price>
-                <div>
-                    <Button variant={"contained"} onClick={removeButtonClick}>Remove</Button>
-                </div>
-                </Block2>
-        </Wrapper>
+          <Price>
+            <EditableSpan title={"$" + props.amount} />
+          </Price>
+          <div>
+            <Button variant={"contained"} onClick={removeButtonClick}>
+              Remove
+            </Button>
+          </div>
+        </Block2>
+      </Wrapper>
     );
 };
 

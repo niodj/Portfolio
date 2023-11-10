@@ -24,43 +24,38 @@ type PropsType = {
 export const Todolist =(props: any)=> {
   const dispatch = useDispatch();
 
-  const addNewTask =
-    async (trimmedValue: string) => {
-  try {
-    const token = Cookies.get("token");
-    const email = Cookies.get("email");
-    if (token && email) {
-      const config = {
-        headers: {
-          Authorization: token,
-        },
-      };
-      ;
-      const newTodoList = {
-        taskid:v1(),
-        name: trimmedValue,
-        checked: false,
+  const addNewTask = async (trimmedValue: string) => {
+    try {
+      const token = Cookies.get("token");
+      const email = Cookies.get("email");
+      if (token && email) {
+        const config = {
+          headers: {
+            Authorization: token,
+          },
+        };
+        const newTodoList = {
+          taskid: v1(),
+          name: trimmedValue,
+          checked: false,
+        };
 
-      };
+        const response = await axios.post(
+          `http://localhost:4444/tasks/${props.idList}`,
+          newTodoList,
+          config
+        );
 
-      const response = await axios.post(
-        `http://localhost:4444/tasks/${props.idList}`,
-        newTodoList,
-        config
-      );
-
-      fetchTodoListsByUserId().then((data) => {
-        dispatch({ type: "RECIVE-TODO", payload: data });
-      });
+        fetchTodoListsByUserId().then((data) => {
+          dispatch({ type: "RECIVE-TODO", payload: data });
+        });
+      }
+    } catch (error) {
+      console.error("Ошибка при добавлении тудулиста:", error);
     }
-  } catch (error) {
-    console.error("Ошибка при добавлении тудулиста:", error);
-  }
-};
+  };
 
-
-
-//удаление таски
+  //удаление таски
   const removeTask = async (taskid: string) => {
     console.log(taskid);
     try {
@@ -76,156 +71,221 @@ export const Todolist =(props: any)=> {
           `http://localhost:4444/tasks/${props.idList}/${taskid}`,
           config
         );
-            fetchTodoListsByUserId().then((data) => {
-              dispatch({ type: "RECIVE-TODO", payload: data });
-            });
+        fetchTodoListsByUserId().then((data) => {
+          dispatch({ type: "RECIVE-TODO", payload: data });
+        });
       }
     } catch (error) {
       console.error("Ошибка при получении списка тудулистов:", error);
     }
   };
 
+  let [filter, setFilter] = useState("all");
+  let filtered = [...props.tasks];
+  if (filter === "all") {
+    filtered = props.tasks.map((item: any) => item);
+  }
 
+  if (filter === "active") {
+    filtered = props.tasks.filter((item: any) => item.checked === false);
+  }
 
-    let [filter, setFilter] = useState("all");
-    let filtered = [...props.tasks]
-    if (filter === "all") {
-        filtered = (props.tasks.map((item: any) => item))
-    }
+  if (filter === "completed") {
+    filtered = props.tasks.filter((item: any) => item.checked === true);
+  }
 
-    if (filter === "active") {
-        filtered = props.tasks.filter((item: any) => item.checked === false);
-    }
-
-    if (filter === "completed") {
-        filtered = props.tasks.filter((item: any) => item.checked === true);
-    }
-
-    function changeFilter(value: string) {
-        setFilter(value);
-    }
+  function changeFilter(value: string) {
+    setFilter(value);
+  }
 
   //удаление листа
   const removeListHandler = async () => {
-     try {
-        const token = Cookies.get("token");
-        const email = Cookies.get("email");
-        if (token && email) {
-          const config = {
-            headers: {
-              Authorization: token,
-            },
-          };
-          const response = await axios.delete(
-            `http://localhost:4444/todolists/${props.idList}`,
-            config
-          );
-              fetchTodoListsByUserId().then((data) => {
-                dispatch({ type: "RECIVE-TODO", payload: data });
-              });
-        }
-      } catch (error) {
-        console.error("Ошибка при получении списка тудулистов:", error);
+    try {
+      const token = Cookies.get("token");
+      const email = Cookies.get("email");
+      if (token && email) {
+        const config = {
+          headers: {
+            Authorization: token,
+          },
+        };
+        const response = await axios.delete(
+          `http://localhost:4444/todolists/${props.idList}`,
+          config
+        );
+        fetchTodoListsByUserId().then((data) => {
+          dispatch({ type: "RECIVE-TODO", payload: data });
+        });
       }
-    };
+    } catch (error) {
+      console.error("Ошибка при получении списка тудулистов:", error);
+    }
+  };
 
   //обновление checked
-const updateChecked = async (taskid: string, checked: boolean) => {
-  try {
-    const token = Cookies.get("token");
-    const email = Cookies.get("email");
-    if (token && email) {
-      const config = {
-        headers: {
-          Authorization: token,
-        },
-      };
-      const data = {
-        checked: !checked, // Передайте состояние "checked" в объекте "data"
-      };
-      const response = await axios.put(
-        `http://localhost:4444/tasks/${props.idList}/${taskid}`,
-        data,
-        config
-      );
-          fetchTodoListsByUserId().then((data) => {
-            dispatch({ type: "RECIVE-TODO", payload: data });
-          });
+  const updateChecked = async (taskid: string, checked: boolean) => {
+    try {
+      const token = Cookies.get("token");
+      const email = Cookies.get("email");
+      if (token && email) {
+        const config = {
+          headers: {
+            Authorization: token,
+          },
+        };
+        const data = {
+          checked: !checked, // Передайте состояние "checked" в объекте "data"
+        };
+        const response = await axios.put(
+          `http://localhost:4444/tasks/${props.idList}/${taskid}`,
+          data,
+          config
+        );
+        fetchTodoListsByUserId().then((data) => {
+          dispatch({ type: "RECIVE-TODO", payload: data });
+        });
+      }
+    } catch (error) {
+      console.error("Ошибка при обновлении состояния задачи:", error);
     }
-  } catch (error) {
-    console.error("Ошибка при обновлении состояния задачи:", error);
-  }
-};
+  };
 
+  //обновление имени task
+  const updateTaskName = async (idList: string, taskid: string, newName: string) => {
 
-    return (
-      <Wrapper>
-        <Title>
-          <EditableSpan title={props.listTitle} />
-          <IconButton onClick={removeListHandler}>
-            <DeleteIcon color='primary' />
-          </IconButton>
-        </Title>
-        <div>
-          <InputForm addFromInput={addNewTask} defaultInput={"New task"} />
-        </div>
-        <ul>
-          {filtered.map((item: any) => (
-            <LiItem key={item.taskid} $checked={item.checked}>
-              <Checkbox
-                defaultChecked
-                sx={{
-                  color: blue[800],
-                  "&.Mui-checked": {
-                    color: blue[600],
-                  },
-                }}
-                checked={item.checked}
-                onChange={()=>{updateChecked(item.taskid, item.checked);}}
-              />
-              <EditableSpan title={item.name} />
-              <IconButton
-                onClick={() => {
-                  removeTask(item.taskid);
-                }}
-              >
-                {" "}
-                <DeleteIcon color='primary' />
-              </IconButton>
-            </LiItem>
-          ))}
-        </ul>
+    try {
+      const token = Cookies.get("token");
+      const email = Cookies.get("email");
+      if (token && email) {
+        const config = {
+          headers: {
+            Authorization: token,
+          },
+        };
+        const data = {
+          name: newName,
+        };
+        const response = await axios.put(
+          `http://localhost:4444/tasks/${idList}/${taskid}`,
+          data,
+          config
+        );
+        fetchTodoListsByUserId().then((data) => {
+          dispatch({ type: "RECIVE-TODO", payload: data });
+        });
+      }
+    } catch (error) {
+      console.error("Ошибка при обновлении состояния задачи:", error);
+    }
+  };
 
-        <FilterButtonGroup>
-          <Button
-            variant={props.filter === "all" ? "contained" : "text"}
-            color={"primary"}
-            onClick={() => changeFilter("all")}
-          >
-            {" "}
-            all
-          </Button>
+  //обновление имени todo
+  const updateTodoName = async (idList: string, newName: string) => {
+    console.log(idList);
+    try {
+      const token = Cookies.get("token");
+      const email = Cookies.get("email");
+      if (token && email) {
+        const config = {
+          headers: {
+            Authorization: token,
+          },
+        };
+        const data = {
+          name: newName,
+        };
+        const response = await axios.put(
+          `http://localhost:4444/todolists/${idList}`,
+          data,
+          config
+        );
+        fetchTodoListsByUserId().then((data) => {
+          dispatch({ type: "RECIVE-TODO", payload: data });
+        });
+      }
+    } catch (error) {
+      console.error("Ошибка при обновлении состояния задачи:", error);
+    }
+  };
 
-          <Button
-            color={"secondary"}
-            variant={props.filter === "active" ? "contained" : "text"}
-            onClick={() => changeFilter("active")}
-          >
-            active
-          </Button>
+  return (
+    <Wrapper>
+      <Title>
+        <EditableSpan
+          title={props.listTitle}
+          onSave={(newName) => updateTodoName(props.idList, newName)}
+        />
+        <IconButton onClick={removeListHandler}>
+          <DeleteIcon color='primary' />
+        </IconButton>
+      </Title>
+      <div>
+        <InputForm addFromInput={addNewTask} defaultInput={"New task"} />
+      </div>
+      <ul>
+        {filtered.map((item: any) => (
+          <LiItem key={item.taskid} $checked={item.checked}>
+            <Checkbox
+              defaultChecked
+              sx={{
+                color: blue[800],
+                "&.Mui-checked": {
+                  color: blue[600],
+                },
+              }}
+              checked={item.checked}
+              onChange={() => {
+                updateChecked(item.taskid, item.checked);
+              }}
+            />
+            <EditableSpan
+              title={item.name}
+              onSave={(newName) =>
+                updateTaskName(props.idList, item.taskid, newName)
+              }
+            />
+            <IconButton
+              onClick={() => {
+                removeTask(item.taskid);
+              }}
+            >
+              {" "}
+              <DeleteIcon color='primary' />
+            </IconButton>
+          </LiItem>
+        ))}
+      </ul>
 
-          <Button
-            color={"success"}
-            variant={props.filter === "completed" ? "contained" : "text"}
-            onClick={() => changeFilter("completed")}
-          >
-            completed
-          </Button>
-        </FilterButtonGroup>
+      <FilterButtonGroup>
+        <Button
+          variant={props.filter === "all" ? "contained" : "text"}
+          color={"primary"}
+          onClick={() => changeFilter("all")}
+        >
+          {" "}
+          all
+        </Button>
 
-        <div>doubble click for edit list name or task name</div>
-      </Wrapper>
-    );
+        <Button
+          color={"secondary"}
+          variant={props.filter === "active" ? "contained" : "text"}
+          onClick={() => changeFilter("active")}
+        >
+          active
+        </Button>
+
+        <Button
+          color={"success"}
+          variant={props.filter === "completed" ? "contained" : "text"}
+          onClick={() => changeFilter("completed")}
+        >
+          completed
+        </Button>
+      </FilterButtonGroup>
+
+      <div>doubble click for edit list name or task name</div>
+    </Wrapper>
+  );
 }
 
 const Wrapper = styled.div`
