@@ -22,7 +22,6 @@ export type StateType = {
 };
 
  //получение тудулиста
-
       export const fetchTodoListsByUserId = async () => {
         try {
           const token = Cookies.get("token");
@@ -64,11 +63,11 @@ const addTodolist = async (trimmedValue: string) => {
       };
       const todoid = v1(); // Генерируйте уникальный идентификатор для нового тудулиста
       const newTodoList = {
-        todoid,
+        email: email,
+        todoid: todoid,
         name: trimmedValue,
         filter: "all",
         tasks: [],
-        userid: email, // Добавьте свойство userid
       };
 
       const response = await axios.post(
