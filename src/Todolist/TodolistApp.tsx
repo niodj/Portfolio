@@ -33,7 +33,7 @@ export type StateType = {
               },
             };
             const response = await axios.get(
-              `http://localhost:4444/todolists/${email}`,
+              `http://34.229.150.72:4444/todolists/${email}`,
               config
             );
             return response.data;
@@ -71,7 +71,7 @@ const addTodolist = async (trimmedValue: string) => {
       };
 
       const response = await axios.post(
-        `http://localhost:4444/todolists`,
+        `http://34.229.150.72:4444/todolists`,
         newTodoList,
         config
       );
@@ -87,8 +87,7 @@ const addTodolist = async (trimmedValue: string) => {
     return (
       <Wrapper>
         <h4>
-          this component works with the node js server, which is hosted on aws
-          linux. The database is cloud MongoDB.
+          this component works with the node js server, with cloud MongoDB
         </h4>
         <InputForm addFromInput={addTodolist} defaultInput={"New list"} />
         <Lists>

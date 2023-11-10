@@ -41,7 +41,7 @@ export const Todolist =(props: any)=> {
         };
 
         const response = await axios.post(
-          `http://localhost:4444/tasks/${props.idList}`,
+          `http://34.229.150.72:4444/tasks/${props.idList}`,
           newTodoList,
           config
         );
@@ -68,7 +68,7 @@ export const Todolist =(props: any)=> {
           },
         };
         const response = await axios.delete(
-          `http://localhost:4444/tasks/${props.idList}/${taskid}`,
+          `http://34.229.150.72:4444/tasks/${props.idList}/${taskid}`,
           config
         );
         fetchTodoListsByUserId().then((data) => {
@@ -110,7 +110,7 @@ export const Todolist =(props: any)=> {
           },
         };
         const response = await axios.delete(
-          `http://localhost:4444/todolists/${props.idList}`,
+          `http://34.229.150.72:4444/todolists/${props.idList}`,
           config
         );
         fetchTodoListsByUserId().then((data) => {
@@ -137,7 +137,7 @@ export const Todolist =(props: any)=> {
           checked: !checked, // Передайте состояние "checked" в объекте "data"
         };
         const response = await axios.put(
-          `http://localhost:4444/tasks/${props.idList}/${taskid}`,
+          `http://34.229.150.72:4444/tasks/${props.idList}/${taskid}`,
           data,
           config
         );
@@ -166,7 +166,7 @@ export const Todolist =(props: any)=> {
           name: newName,
         };
         const response = await axios.put(
-          `http://localhost:4444/tasks/${idList}/${taskid}`,
+          `http://34.229.150.72:4444/tasks/${idList}/${taskid}`,
           data,
           config
         );
@@ -195,7 +195,7 @@ export const Todolist =(props: any)=> {
           name: newName,
         };
         const response = await axios.put(
-          `http://localhost:4444/todolists/${idList}`,
+          `http://34.229.150.72:4444/todolists/${idList}`,
           data,
           config
         );
