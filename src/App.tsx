@@ -1,4 +1,5 @@
-import { Routes, Route } from "react-router-dom";
+import { HashRouter as Router, Routes, Route } from "react-router-dom";
+//import { Routes, Route } from "react-router-dom";
 import styled from "styled-components";
 import { CounterApp } from "./Counter/CounterApp";
 import { TodolistApp } from "./Todolist/TodolistApp";
@@ -19,7 +20,7 @@ import { SunMoon } from "./tools/SunMoon";
 import { ClockApp } from "./tools/Clock/ClockApp";
 import { useDispatch } from "react-redux";
 import { JokeComponent } from "./tools/Weather/JokeComponent";
-import  Login  from "./tools/Login/Login";
+import Login from "./tools/Login/Login";
 import { Practice } from "./Practice";
 
 function isNightTime() {
@@ -79,7 +80,7 @@ export const App = React.memo(() => {
         <Rating />
         <Skills />
       </div>
-         
+
       <Routes>
         <Route path='/' element={<NavMenu dark={dark} />}>
           <Route index element={<Practice />}></Route>
