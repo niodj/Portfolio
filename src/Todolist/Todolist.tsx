@@ -10,6 +10,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { v1 } from 'uuid';
 import { useDispatch } from 'react-redux';
+import { serverPatch } from '../store';
 
 
 
@@ -41,7 +42,7 @@ export const Todolist =(props: any)=> {
         };
 
         const response = await axios.post(
-          `http://34.229.150.72:4444/tasks/${props.idList}`,
+          `${serverPatch}/tasks/${props.idList}`,
           newTodoList,
           config
         );
@@ -68,7 +69,7 @@ export const Todolist =(props: any)=> {
           },
         };
         const response = await axios.delete(
-          `http://34.229.150.72:4444/tasks/${props.idList}/${taskid}`,
+          `${serverPatch}/tasks/${props.idList}/${taskid}`,
           config
         );
         fetchTodoListsByUserId().then((data) => {
@@ -110,7 +111,7 @@ export const Todolist =(props: any)=> {
           },
         };
         const response = await axios.delete(
-          `http://34.229.150.72:4444/todolists/${props.idList}`,
+          `${serverPatch}/todolists/${props.idList}`,
           config
         );
         fetchTodoListsByUserId().then((data) => {
@@ -137,7 +138,7 @@ export const Todolist =(props: any)=> {
           checked: !checked, // Передайте состояние "checked" в объекте "data"
         };
         const response = await axios.put(
-          `http://34.229.150.72:4444/tasks/${props.idList}/${taskid}`,
+          `${serverPatch}/tasks/${props.idList}/${taskid}`,
           data,
           config
         );
@@ -166,7 +167,7 @@ export const Todolist =(props: any)=> {
           name: newName,
         };
         const response = await axios.put(
-          `http://34.229.150.72:4444/tasks/${idList}/${taskid}`,
+          `${serverPatch}/tasks/${idList}/${taskid}`,
           data,
           config
         );
@@ -195,7 +196,7 @@ export const Todolist =(props: any)=> {
           name: newName,
         };
         const response = await axios.put(
-          `http://34.229.150.72:4444/todolists/${idList}`,
+          `${serverPatch}/todolists/${idList}`,
           data,
           config
         );

@@ -7,6 +7,7 @@ import {useDispatch, useSelector} from "react-redux";
 
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { serverPatch } from '../store';
 
 export type TaskType = {
     idTask: string;
@@ -33,7 +34,7 @@ export type StateType = {
               },
             };
             const response = await axios.get(
-              `http://34.229.150.72:4444/todolists/${email}`,
+              `${serverPatch}/todolists/${email}`,
               config
             );
             return response.data;
@@ -71,7 +72,7 @@ const addTodolist = async (trimmedValue: string) => {
       };
 
       const response = await axios.post(
-        `http://34.229.150.72:4444/todolists`,
+        `${serverPatch}/todolists`,
         newTodoList,
         config
       );

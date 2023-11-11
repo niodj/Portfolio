@@ -4,6 +4,8 @@ import { todoReducer } from "./Todolist/todoReducer";
 import { isLoadingReducer } from "./tools/IsLoading/isLoadingReducer";
 
 import { UserReducer } from "./tools/Login/loginReducer";
+//адрес без / в конце
+export const serverPatch = "https://backend.asfalter.com.ua";
 
 export const initialState = {
   user: {
@@ -23,7 +25,6 @@ export const initialState = {
   todolists: [],
   sqlConnect: {},
   isLoading: true,
-
 };
 
 export const rootReducer = combineReducers({
