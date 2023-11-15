@@ -4,12 +4,13 @@ import React, {ChangeEvent, useCallback, useEffect} from "react";
 import {Counter} from "./Counter";
 import {Buttons} from "./Buttons";
 import {useDispatch, useSelector} from "react-redux";
+import { CounterStateType } from "../state";
 
 
 
 
 export const CounterApp = React.memo(() => {
-  const state = useSelector((state: any) => state.counter);
+  const state = useSelector((state: CounterStateType) => state.count);
   const dispatch = useDispatch();
   const setMinHandler = useCallback( (event: ChangeEvent<HTMLInputElement>) => {
     const newmin = event.target.value.replace(/[^0-9]/g, "");
@@ -56,7 +57,7 @@ export const CounterApp = React.memo(() => {
   let ifActiveResetButton = state.count > 0;
   let ifRedCount = state.count === +state.max && state.count !== +state.min;
 
-  
+
   return (
     <>
       <Title>

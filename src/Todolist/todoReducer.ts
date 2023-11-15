@@ -1,6 +1,52 @@
-import {StateType, TaskType} from "./TodolistApp";
+import Cookies from "js-cookie";
+import { initialState, serverPatch } from "../state";
+import { TodoType, TaskType } from "./TodolistApp";
 import {v1} from "uuid";
-import {initialState} from "../store";
+import axios from "axios";
+import {  Dispatch } from "redux";
+import { ThunkAction } from "redux-thunk";
+
+
+export type ReceiveTodoAction = { type: "RECEIVE_TODO"; payload: TodoType[] };
+
+export const todoReducer = (
+  state: TodoType[] = [],
+  action: ReceiveTodoAction
+): TodoType[] => {
+  switch (action.type) {
+    case 'RECEIVE_TODO':
+      return action.payload;
+    default:
+      return state;
+  }
+};
+
+export const fetchTodoListsThunk = () => {
+
+  return async (dispatch: Dispatch) => {
+    //   return async (dispatch: Dispatch<ReceiveTodoAction>): Promise<void> => {
+    try {
+      const token = Cookies.get("token");
+      const email = Cookies.get("email");
+      if (token && email) {
+        const config = {
+          headers: {
+            Authorization: token,
+          },
+        };
+        const response = await axios.get(
+          `${serverPatch}/todolists/${email}`,
+          config
+        );
+        dispatch({ type: "RECEIVE_TODO", payload: response.data });
+      }
+    } catch (error) {
+      console.error("Ошибка при получении списка тудулистов:", error);
+    }
+  };
+};
+
+
 
 // export type ActionType =
 //     RemoveListType
@@ -55,15 +101,3 @@ import {initialState} from "../store";
 //   type: "RECIVE-TODO";
 //   idList: string;
 // };
-
-export const todoReducer = (state: any=initialState.todolists, action: any): any => {
-
-    switch (action.type) {
-           case 'RECIVE-TODO':
-            return action.payload !== undefined && action.payload !== null
-        ? action.payload
-        : state;
-        default: return  state;
-    }
-}
-

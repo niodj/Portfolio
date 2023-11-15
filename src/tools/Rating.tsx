@@ -2,9 +2,17 @@ import React, {useEffect, useState} from "react";
 import axios from "axios";
 import styled from "styled-components";
 
+type Answer = {
+  ranks: {
+    overall: {
+      score: number;
+    };
+
+  };
+};
 
 export const Rating = () => {
-    const [codewars, setCodewars] = useState<any>()
+    const [codewars, setCodewars] = useState<Answer>();
 
     const [forGithub, setForGithub] = useState(0)
     const [forLinkidin, setForinkidin] = useState(0)
@@ -17,10 +25,12 @@ export const Rating = () => {
     }
 
     useEffect(() => {
-        axios.get<any>('https://www.codewars.com/api/v1/users/niodj').then(response => {
+        axios
+          .get<Answer>("https://www.codewars.com/api/v1/users/niodj")
+          .then((response) => {
             setCodewars(response.data);
-            ghday()
-        })
+            ghday();
+          });
     }, []);
     if (!codewars) {
         return null

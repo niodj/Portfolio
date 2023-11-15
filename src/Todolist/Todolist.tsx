@@ -1,29 +1,34 @@
-import React, {useEffect, useState} from 'react';
+import  { useState} from 'react';
 import {InputForm} from "./InputForm";
 import styled from "styled-components";
 import {EditableSpan} from "../tools/EditableSpan";
 import { Button, Checkbox, IconButton } from "@mui/material";
 import { blue } from "@mui/material/colors";
 import DeleteIcon from "@mui/icons-material/Delete";
-import {TaskType, fetchTodoListsByUserId} from "./TodolistApp";
+
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { v1 } from 'uuid';
 import { useDispatch } from 'react-redux';
-import { serverPatch } from '../store';
+import { serverPatch } from '../state';
+import { ReceiveTodoAction, fetchTodoListsThunk } from "./todoReducer";
+import { TaskType } from './TodolistApp';
+import { ThunkDispatch } from 'redux-thunk/es/types';
+
+
+
 
 
 
 type PropsType = {
-    idList: string
-    listTitle: string
-    filter: string
-    tasks: TaskType[]
-    action: (action: any) => void
-}
+  todoid: string;
+  name: string;
+  filter: string;
+  tasks: TaskType[];
+};
 
-export const Todolist =(props: any)=> {
-  const dispatch = useDispatch();
+export const Todolist = (props: PropsType) => {
+   const dispatch: ThunkDispatch<[], any, ReceiveTodoAction> = useDispatch();
 
   const addNewTask = async (trimmedValue: string) => {
     try {
@@ -42,14 +47,14 @@ export const Todolist =(props: any)=> {
         };
 
         const response = await axios.post(
-          `${serverPatch}/tasks/${props.idList}`,
+          `${serverPatch}/tasks/${props.todoid}`,
           newTodoList,
           config
         );
 
-        fetchTodoListsByUserId().then((data) => {
-          dispatch({ type: "RECIVE-TODO", payload: data });
-        });
+
+         dispatch(fetchTodoListsThunk());
+
       }
     } catch (error) {
       console.error("Ошибка при добавлении тудулиста:", error);
@@ -69,12 +74,10 @@ export const Todolist =(props: any)=> {
           },
         };
         const response = await axios.delete(
-          `${serverPatch}/tasks/${props.idList}/${taskid}`,
+          `${serverPatch}/tasks/${props.todoid}/${taskid}`,
           config
         );
-        fetchTodoListsByUserId().then((data) => {
-          dispatch({ type: "RECIVE-TODO", payload: data });
-        });
+        dispatch(fetchTodoListsThunk()); // Обратите внимание на вызов thunk здесь
       }
     } catch (error) {
       console.error("Ошибка при получении списка тудулистов:", error);
@@ -84,15 +87,15 @@ export const Todolist =(props: any)=> {
   let [filter, setFilter] = useState("all");
   let filtered = [...props.tasks];
   if (filter === "all") {
-    filtered = props.tasks.map((item: any) => item);
+    filtered = props.tasks.map((item: TaskType) => item);
   }
 
   if (filter === "active") {
-    filtered = props.tasks.filter((item: any) => item.checked === false);
+    filtered = props.tasks.filter((item: TaskType) => item.checked === false);
   }
 
   if (filter === "completed") {
-    filtered = props.tasks.filter((item: any) => item.checked === true);
+    filtered = props.tasks.filter((item: TaskType) => item.checked === true);
   }
 
   function changeFilter(value: string) {
@@ -111,12 +114,10 @@ export const Todolist =(props: any)=> {
           },
         };
         const response = await axios.delete(
-          `${serverPatch}/todolists/${props.idList}`,
+          `${serverPatch}/todolists/${props.todoid}`,
           config
         );
-        fetchTodoListsByUserId().then((data) => {
-          dispatch({ type: "RECIVE-TODO", payload: data });
-        });
+         dispatch(fetchTodoListsThunk()); // Обратите внимание на вызов thunk здесь
       }
     } catch (error) {
       console.error("Ошибка при получении списка тудулистов:", error);
@@ -138,13 +139,11 @@ export const Todolist =(props: any)=> {
           checked: !checked, // Передайте состояние "checked" в объекте "data"
         };
         const response = await axios.put(
-          `${serverPatch}/tasks/${props.idList}/${taskid}`,
+          `${serverPatch}/tasks/${props.todoid}/${taskid}`,
           data,
           config
         );
-        fetchTodoListsByUserId().then((data) => {
-          dispatch({ type: "RECIVE-TODO", payload: data });
-        });
+        dispatch(fetchTodoListsThunk()); // Обратите внимание на вызов thunk здесь
       }
     } catch (error) {
       console.error("Ошибка при обновлении состояния задачи:", error);
@@ -152,8 +151,11 @@ export const Todolist =(props: any)=> {
   };
 
   //обновление имени task
-  const updateTaskName = async (idList: string, taskid: string, newName: string) => {
-
+  const updateTaskName = async (
+    idList: string,
+    taskid: string,
+    newName: string
+  ) => {
     try {
       const token = Cookies.get("token");
       const email = Cookies.get("email");
@@ -171,9 +173,7 @@ export const Todolist =(props: any)=> {
           data,
           config
         );
-        fetchTodoListsByUserId().then((data) => {
-          dispatch({ type: "RECIVE-TODO", payload: data });
-        });
+       dispatch(fetchTodoListsThunk()); // Обратите внимание на вызов thunk здесь
       }
     } catch (error) {
       console.error("Ошибка при обновлении состояния задачи:", error);
@@ -200,9 +200,7 @@ export const Todolist =(props: any)=> {
           data,
           config
         );
-        fetchTodoListsByUserId().then((data) => {
-          dispatch({ type: "RECIVE-TODO", payload: data });
-        });
+        dispatch(fetchTodoListsThunk()); // Обратите внимание на вызов thunk здесь
       }
     } catch (error) {
       console.error("Ошибка при обновлении состояния задачи:", error);
@@ -213,8 +211,8 @@ export const Todolist =(props: any)=> {
     <Wrapper>
       <Title>
         <EditableSpan
-          title={props.listTitle}
-          onSave={(newName) => updateTodoName(props.idList, newName)}
+          title={props.name}
+          onSave={(newName) => updateTodoName(props.todoid, newName)}
         />
         <IconButton onClick={removeListHandler}>
           <DeleteIcon color='primary' />
@@ -224,7 +222,7 @@ export const Todolist =(props: any)=> {
         <InputForm addFromInput={addNewTask} defaultInput={"New task"} />
       </div>
       <ul>
-        {filtered.map((item: any) => (
+        {filtered.map((item: TaskType) => (
           <LiItem key={item.taskid} $checked={item.checked}>
             <Checkbox
               defaultChecked
@@ -242,7 +240,7 @@ export const Todolist =(props: any)=> {
             <EditableSpan
               title={item.name}
               onSave={(newName) =>
-                updateTaskName(props.idList, item.taskid, newName)
+                updateTaskName(props.todoid, item.taskid, newName)
               }
             />
             <IconButton
@@ -287,7 +285,7 @@ export const Todolist =(props: any)=> {
       <div>doubble click for edit list name or task name</div>
     </Wrapper>
   );
-}
+};
 
 const Wrapper = styled.div`
   display: flex;

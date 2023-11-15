@@ -55,7 +55,7 @@ export const SqlConnect = (props: { dark: boolean }) => {
     };
     return (
         <Wrapper $dark={props.dark}>
-            <Title>This component keeps names on cloud AWS Linux server using Axios requests in SQL database.
+            <Title>This component keeps names in SQL database.
                 PHP script is also added into the .tsx in comments </Title>
 
             <TableForm onSubmit={handleSubmit}>
@@ -110,11 +110,11 @@ const Wrapper = styled.div<{ $dark: boolean }>`
   align-items: center;
 
   button {
-    
+
     padding:0;
 
   }
-  
+
 
   table {
     border-collapse: collapse;

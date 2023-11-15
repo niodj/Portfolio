@@ -11,8 +11,8 @@ export const NavMenu = React.memo((props: { dark: boolean }) => {
 
     return (<>
     <Projects $dark={props.dark}>
-        <Button><StyledNavLink to="/sqlconnect">SqlConnect</StyledNavLink></Button>
-        <Button><StyledNavLink to="/todolistapp">Todolists</StyledNavLink></Button>
+        <Button><StyledNavLink to="/sqlconnect">SqlConnect (PHP+SQL)</StyledNavLink></Button>
+        <Button><StyledNavLink to="/todolistapp">Todolists (AWS Linux + node.js+mongoDB)</StyledNavLink></Button>
         <Button><StyledNavLink to="/queueapp">electronic queue</StyledNavLink></Button>
         {/*<div className="dropdown">*/}
     {/*<Button><StyledNavLink to="/useparamsapp">UseParamsApp</StyledNavLink></Button>*/}

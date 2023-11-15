@@ -1,21 +1,20 @@
 import styled from "styled-components";
 
-export const SunMoon = (props: any) => {
-    return (
-        <RotatingDiv $dark={props.dark}>
-
-            <img
-                className='imgdark'
-                src="https://www.pngarts.com/files/2/Full-Moon-PNG-Image.png"
-                alt="Moon"
-            />
-            <img
-                className='imgnodark'
-                src="https://sunveter.ru/uploads/posts/2015-07/thumbs/1437676158_12.png"
-                alt="Moon"
-            />
-        </RotatingDiv>
-    );
+export const SunMoon = (props: { dark: boolean }) => {
+  return (
+    <RotatingDiv $dark={props.dark}>
+      <img
+        className='imgdark'
+        src='https://www.pngarts.com/files/2/Full-Moon-PNG-Image.png'
+        alt='Moon'
+      />
+      <img
+        className='imgnodark'
+        src='https://sunveter.ru/uploads/posts/2015-07/thumbs/1437676158_12.png'
+        alt='Moon'
+      />
+    </RotatingDiv>
+  );
 };
 
 const RotatingDiv = styled.div<{$dark:boolean}>`

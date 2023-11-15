@@ -4,47 +4,49 @@ import styled from "styled-components";
 import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { fetchTodoListsByUserId } from "../../Todolist/TodolistApp";
-import { serverPatch } from "../../store";
+import { StoreType, UserState, serverPatch } from "../../state";
+import {
+  ReceiveTodoAction,
+  fetchTodoListsThunk,
+} from "../../Todolist/todoReducer";
+import { Dispatch } from "redux";
+import { ThunkDispatch } from "redux-thunk";
+import { UserAction } from "./loginReducer";
+
 
 
 const Login: React.FC = () => {
-  const dispatch = useDispatch();
-  const [render, setRender] = useState(false);
 
-  const email = useSelector((store: any) => store.user.email);
-  const password = useSelector((store: any) => store.user.password);
-  const loggedIn = useSelector((store: any) => store.user.loggedIn);
-  const userEmail = useSelector((store: any) => store.user.userEmail);
+  const email = useSelector((store: StoreType) => store.user.email);
+  const password = useSelector((store: StoreType) => store.user.password);
+  const loggedIn = useSelector((store: StoreType) => store.user.loggedIn);
+  const userEmail = useSelector((store: StoreType) => store.user.userEmail);
 
-  //проверка залогинености при входе
+  const dispatch: ThunkDispatch<UserState, any, UserAction> = useDispatch();
+
+
+
   useEffect(() => {
     const checkLoginStatus = async () => {
       const token = Cookies.get("token");
       const emailFromCookie = Cookies.get("email");
       if (token && emailFromCookie) {
         try {
-          const response = await axios.post(
-            `${serverPatch}/checkToken`,
-            {
-              email: emailFromCookie,
-              token: token,
-            }
-          );
+          const response = await axios.post(`${serverPatch}/checkToken`, {
+            email: emailFromCookie,
+            token: token,
+          });
           dispatch({ type: "ADD_USER_setLoggedIn", loggedIn: true });
           dispatch({ type: "ADD_USER_USEREMAIL", userEmail: emailFromCookie });
-
         } catch (error) {
           console.error("Ошибка при проверке токена:", error);
         }
       }
     };
 
-    checkLoginStatus()
-      setRender(!render);
+    checkLoginStatus();
+
   }, []);
-
-
   //////////////////////////////////логинизация///////////////////////////
   const handleLogin = async () => {
     try {
@@ -63,9 +65,7 @@ const Login: React.FC = () => {
       dispatch({ type: "ADD_USER_USEREMAIL", userEmail: email });
 
       //обновление тудулистов при логине
-      fetchTodoListsByUserId().then((data) => {
-        dispatch({ type: "RECIVE-TODO", payload: data });
-      });
+     dispatch(fetchTodoListsThunk()); // Обратите внимание на вызов thunk здесь
     } catch (error) {
       alert(
         "Ошибка входа! Пожалуйста, проверьте правильность введенных данных."
@@ -88,13 +88,10 @@ const Login: React.FC = () => {
       });
       alert("Успешная регистрация!");
       console.log("Успешная регистрация!", response.data);
-      dispatch({ type: "ADD_USER_USEREMAIL", userEmail: email })
-handleLogin();
+      dispatch({ type: "ADD_USER_USEREMAIL", userEmail: email });
+      handleLogin();
       //обновление тудулистов при входе
-  fetchTodoListsByUserId().then((data) => {
-    dispatch({ type: "RECIVE-TODO", payload: data });
-  });
-
+      dispatch(fetchTodoListsThunk()) // Обратите внимание на вызов thunk здесь
     } catch (error) {
       alert("Ошибка регистрации! email занят.");
       console.error("Ошибка регистрации!", error);
@@ -117,15 +114,13 @@ handleLogin();
       dispatch({ type: "ADD_USER_EMAIL", email: "" });
       dispatch({ type: "ADD_USER_PASSWORD", password: "" });
       // Очистка токена из куков
-Cookies.remove("token");
+      Cookies.remove("token");
       //обновление листов при выходе
-       dispatch({ type: "RECIVE-TODO", payload: [] });
-
+      dispatch({ type: "RECEIVE_TODO", payload: [] });
     } catch (error) {
       console.error("Ошибка при выходе пользователя", error);
     }
   };
-
   if (loggedIn) {
     return (
       <Logout>

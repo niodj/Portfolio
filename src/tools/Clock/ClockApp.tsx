@@ -1,15 +1,16 @@
-import { any } from "prop-types";
+
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { Isloading } from "../IsLoading/IsLoading";
 import React from "react";
+import { StoreType } from "../../state";
 
 
 export const ClockApp = React.memo(() => {
   const [time, setTime] = useState(new Date());
 
-  
+
   useEffect(() => {
     const intervalId = setInterval(() => {
       setTime(new Date() );
@@ -17,12 +18,12 @@ export const ClockApp = React.memo(() => {
 
     return () => clearInterval(intervalId);
   }, []);
-  
- 
+
+
   const sec = Math.floor((time.getSeconds() / 60) * 360);
    const min = Math.floor((time.getMinutes() / 60) * 360 + sec / 60);
   const hour = Math.floor((time.getHours() / 12) * 360 + (min/12));
-  
+
     const getClockNumbers = () => {
       const numbers = [];
       for (let i = 1; i <= 12; i++) {
@@ -42,9 +43,11 @@ export const ClockApp = React.memo(() => {
 
       return numbers;
   }
-  
-  const isLoading = useSelector((store: any) => store.isLoading.isLoading);
-  
+
+  const isLoading = useSelector(
+    (store: StoreType) => store.isLoading.isLoading
+  );
+
   return (
     <div>
       {isLoading ? (
@@ -85,7 +88,7 @@ const Wrapper = styled.div`
     left: 50%;
     top: 50%;
     border-radius: 50%;
-    
+
     &:after {
       content: "";
       height: 60px;

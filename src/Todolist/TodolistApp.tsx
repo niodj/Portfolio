@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, {  useEffect } from 'react';
 import {v1} from 'uuid';
 import {Todolist} from "./Todolist";
 import {InputForm} from "./InputForm";
@@ -7,49 +7,36 @@ import {useDispatch, useSelector} from "react-redux";
 
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { serverPatch } from '../store';
+import { StoreType, TodoState, serverPatch } from '../state';
+import { ReceiveTodoAction, fetchTodoListsThunk } from "./todoReducer";
+import { ThunkDispatch } from 'redux-thunk/es/types';
+
+
 
 export type TaskType = {
-    idTask: string;
-    taskTitle: string;
-    isDone: boolean;
+  taskid: string;
+  name: string;
+  checked: boolean;
 };
 
-export type StateType = {
-    idList: string;
-    listTitle: string;
-    filter: string;
-    tasks: TaskType[];
+export type TodoType = {
+  todoid: string;
+  name: string;
+  filter: string;
+  tasks: TaskType[];
 };
 
- //получение тудулиста
-      export const fetchTodoListsByUserId = async () => {
-        try {
-          const token = Cookies.get("token");
-          const email = Cookies.get("email");
-          if (token && email) {
-            const config = {
-              headers: {
-                Authorization: token,
-              },
-            };
-            const response = await axios.get(
-              `${serverPatch}/todolists/${email}`,
-              config
-            );
-            return response.data;
-          }
-        } catch (error) {
-          console.error("Ошибка при получении списка тудулистов:", error);
-        }
-      };
+
 
 export const TodolistApp = () => {
 
- const todoLists = useSelector((state: any) => state.todolists);
-  const dispatch = useDispatch();
+ const todoLists = useSelector((state: StoreType) => state.todolists);
 
-  useEffect(() => { fetchTodoListsByUserId().then((data) => { dispatch({ type: "RECIVE-TODO", payload: data }) }) }, [dispatch]);
+ const dispatch: ThunkDispatch<[], any, ReceiveTodoAction> = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchTodoListsThunk())
+  }, []);
 
   //добавление листа
 const addTodolist = async (trimmedValue: string) => {
@@ -71,14 +58,13 @@ const addTodolist = async (trimmedValue: string) => {
         tasks: [],
       };
 
-      const response = await axios.post(
+      await axios.post(
         `${serverPatch}/todolists`,
         newTodoList,
         config
       );
-    } fetchTodoListsByUserId().then((data) => {
-      dispatch({ type: "RECIVE-TODO", payload: data });
-    });
+    }
+    dispatch(fetchTodoListsThunk());
   } catch (error) {
     console.error("Ошибка при добавлении тудулиста:", error);
   }
@@ -88,15 +74,16 @@ const addTodolist = async (trimmedValue: string) => {
     return (
       <Wrapper>
         <h4>
-          this component works with the node js server, with cloud MongoDB
+          this component works with the node js server on AWS Linux. Database is
+          MongoDB
         </h4>
         <InputForm addFromInput={addTodolist} defaultInput={"New list"} />
         <Lists>
-          {todoLists.map((item: any) => (
+          {todoLists.map((item: TodoType) => (
             <Todolist
               key={item.todoid}
-              idList={item.todoid}
-              listTitle={item.name}
+              todoid={item.todoid}
+              name={item.name}
               filter={item.filter}
               tasks={item.tasks}
             />
@@ -105,9 +92,6 @@ const addTodolist = async (trimmedValue: string) => {
       </Wrapper>
     );
 }
-
-
-
 
 const Wrapper = styled.div`
 

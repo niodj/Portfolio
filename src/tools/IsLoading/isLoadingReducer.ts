@@ -1,8 +1,20 @@
-import { initialState } from "../../store"
+import { initialState } from "../../state";
 
-export const isLoadingReducer=(state: any = initialState.isLoading, action: any): any => {
-    
-    if (action.type === 'ok') {
-        return {...state, isLoading:false}
-    } else return { ...state, isLoading: true };
-}
+export type IsLoadingState = {
+  isLoading: boolean;
+};
+
+type LoadingAction =
+  | { type: "ok" }
+
+
+export const isLoadingReducer = (
+  state: IsLoadingState = initialState, 
+  action: LoadingAction
+): IsLoadingState => {
+  if (action.type === "ok") {
+    return { ...state, isLoading: false };
+  } else {
+    return { ...state, isLoading: true };
+  }
+};
