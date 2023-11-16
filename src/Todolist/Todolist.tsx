@@ -5,15 +5,12 @@ import {EditableSpan} from "../tools/EditableSpan";
 import { Button, Checkbox, IconButton } from "@mui/material";
 import { blue } from "@mui/material/colors";
 import DeleteIcon from "@mui/icons-material/Delete";
-
-import axios from 'axios';
-import Cookies from 'js-cookie';
-import { v1 } from 'uuid';
 import { useDispatch } from 'react-redux';
-import { serverPatch } from '../state';
-import { ReceiveTodoAction, fetchTodoListsThunk } from "./todoReducer";
+import { StoreType, serverPatch } from '../state';
+import { ReceiveTodoAction } from "./todoReducer";
 import { TaskType } from './TodolistApp';
 import { ThunkDispatch } from 'redux-thunk/es/types';
+import { addNewTaskThunk,  removeTaskThunk, removeTodoThunk, updateCheckedThunk, updateTaskNameThunk, updateTodoNameThunk } from './thunksActions';
 
 
 
@@ -28,60 +25,16 @@ type PropsType = {
 };
 
 export const Todolist = (props: PropsType) => {
-   const dispatch: ThunkDispatch<[], any, ReceiveTodoAction> = useDispatch();
+  const dispatch: ThunkDispatch<StoreType, any, ReceiveTodoAction> =
+    useDispatch();
 
   const addNewTask = async (trimmedValue: string) => {
-    try {
-      const token = Cookies.get("token");
-      const email = Cookies.get("email");
-      if (token && email) {
-        const config = {
-          headers: {
-            Authorization: token,
-          },
-        };
-        const newTodoList = {
-          taskid: v1(),
-          name: trimmedValue,
-          checked: false,
-        };
-
-        const response = await axios.post(
-          `${serverPatch}/tasks/${props.todoid}`,
-          newTodoList,
-          config
-        );
-
-
-         dispatch(fetchTodoListsThunk());
-
-      }
-    } catch (error) {
-      console.error("Ошибка при добавлении тудулиста:", error);
-    }
+    await dispatch(addNewTaskThunk(props.todoid, trimmedValue));
   };
 
   //удаление таски
   const removeTask = async (taskid: string) => {
-    console.log(taskid);
-    try {
-      const token = Cookies.get("token");
-      const email = Cookies.get("email");
-      if (token && email) {
-        const config = {
-          headers: {
-            Authorization: token,
-          },
-        };
-        const response = await axios.delete(
-          `${serverPatch}/tasks/${props.todoid}/${taskid}`,
-          config
-        );
-        dispatch(fetchTodoListsThunk()); // Обратите внимание на вызов thunk здесь
-      }
-    } catch (error) {
-      console.error("Ошибка при получении списка тудулистов:", error);
-    }
+    await dispatch(removeTaskThunk(props.todoid, taskid));
   };
 
   let [filter, setFilter] = useState("all");
@@ -104,107 +57,22 @@ export const Todolist = (props: PropsType) => {
 
   //удаление листа
   const removeListHandler = async () => {
-    try {
-      const token = Cookies.get("token");
-      const email = Cookies.get("email");
-      if (token && email) {
-        const config = {
-          headers: {
-            Authorization: token,
-          },
-        };
-        const response = await axios.delete(
-          `${serverPatch}/todolists/${props.todoid}`,
-          config
-        );
-         dispatch(fetchTodoListsThunk()); // Обратите внимание на вызов thunk здесь
-      }
-    } catch (error) {
-      console.error("Ошибка при получении списка тудулистов:", error);
-    }
+    await dispatch(removeTodoThunk(props.todoid));
   };
 
   //обновление checked
   const updateChecked = async (taskid: string, checked: boolean) => {
-    try {
-      const token = Cookies.get("token");
-      const email = Cookies.get("email");
-      if (token && email) {
-        const config = {
-          headers: {
-            Authorization: token,
-          },
-        };
-        const data = {
-          checked: !checked, // Передайте состояние "checked" в объекте "data"
-        };
-        const response = await axios.put(
-          `${serverPatch}/tasks/${props.todoid}/${taskid}`,
-          data,
-          config
-        );
-        dispatch(fetchTodoListsThunk()); // Обратите внимание на вызов thunk здесь
-      }
-    } catch (error) {
-      console.error("Ошибка при обновлении состояния задачи:", error);
-    }
+    await dispatch(updateCheckedThunk(props.todoid, taskid, checked));
   };
 
   //обновление имени task
-  const updateTaskName = async (
-    idList: string,
-    taskid: string,
-    newName: string
-  ) => {
-    try {
-      const token = Cookies.get("token");
-      const email = Cookies.get("email");
-      if (token && email) {
-        const config = {
-          headers: {
-            Authorization: token,
-          },
-        };
-        const data = {
-          name: newName,
-        };
-        const response = await axios.put(
-          `${serverPatch}/tasks/${idList}/${taskid}`,
-          data,
-          config
-        );
-       dispatch(fetchTodoListsThunk()); // Обратите внимание на вызов thunk здесь
-      }
-    } catch (error) {
-      console.error("Ошибка при обновлении состояния задачи:", error);
-    }
+  const updateTaskName = async (taskid: string, newName: string) => {
+    dispatch(updateTaskNameThunk(props.todoid, taskid, newName));
   };
 
   //обновление имени todo
-  const updateTodoName = async (idList: string, newName: string) => {
-    console.log(idList);
-    try {
-      const token = Cookies.get("token");
-      const email = Cookies.get("email");
-      if (token && email) {
-        const config = {
-          headers: {
-            Authorization: token,
-          },
-        };
-        const data = {
-          name: newName,
-        };
-        const response = await axios.put(
-          `${serverPatch}/todolists/${idList}`,
-          data,
-          config
-        );
-        dispatch(fetchTodoListsThunk()); // Обратите внимание на вызов thunk здесь
-      }
-    } catch (error) {
-      console.error("Ошибка при обновлении состояния задачи:", error);
-    }
+  const updateTodoName = async (newName: string) => {
+    dispatch(updateTodoNameThunk(props.todoid, newName));
   };
 
   return (
@@ -212,7 +80,7 @@ export const Todolist = (props: PropsType) => {
       <Title>
         <EditableSpan
           title={props.name}
-          onSave={(newName) => updateTodoName(props.todoid, newName)}
+          onSave={(newName) => updateTodoName(newName)}
         />
         <IconButton onClick={removeListHandler}>
           <DeleteIcon color='primary' />
@@ -240,7 +108,7 @@ export const Todolist = (props: PropsType) => {
             <EditableSpan
               title={item.name}
               onSave={(newName) =>
-                updateTaskName(props.todoid, item.taskid, newName)
+                updateTaskName( item.taskid, newName)
               }
             />
             <IconButton

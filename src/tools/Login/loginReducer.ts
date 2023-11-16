@@ -1,6 +1,6 @@
 
 import { StoreType, UserState, initialState } from "../../state";
-
+import { ReceiveTodoAction } from "../../Todolist/todoReducer";
 
 export type AddUserEmailAction = {
   type: "ADD_USER_EMAIL";
@@ -25,7 +25,7 @@ export type RECEIVE_TODO = {
   type: "RECEIVE_TODO";
   loggedIn: boolean;
 };
-export type ReceiveTodoAction = { type: "RECEIVE_TODO"; payload: [] };
+//type ReceiveTodoAction = { type: "RECEIVE-TODO"; payload: [] };
 
 
 

@@ -5,26 +5,19 @@ import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { StoreType, UserState, serverPatch } from "../../state";
-import {
-  ReceiveTodoAction,
-  fetchTodoListsThunk,
-} from "../../Todolist/todoReducer";
+
 import { Dispatch } from "redux";
 import { ThunkDispatch } from "redux-thunk";
 import { UserAction } from "./loginReducer";
-
-
+import { fetchTodoListsThunk } from "../../Todolist/thunksActions";
 
 const Login: React.FC = () => {
-
   const email = useSelector((store: StoreType) => store.user.email);
   const password = useSelector((store: StoreType) => store.user.password);
   const loggedIn = useSelector((store: StoreType) => store.user.loggedIn);
   const userEmail = useSelector((store: StoreType) => store.user.userEmail);
 
   const dispatch: ThunkDispatch<UserState, any, UserAction> = useDispatch();
-
-
 
   useEffect(() => {
     const checkLoginStatus = async () => {
@@ -45,7 +38,6 @@ const Login: React.FC = () => {
     };
 
     checkLoginStatus();
-
   }, []);
   //////////////////////////////////логинизация///////////////////////////
   const handleLogin = async () => {
@@ -65,7 +57,7 @@ const Login: React.FC = () => {
       dispatch({ type: "ADD_USER_USEREMAIL", userEmail: email });
 
       //обновление тудулистов при логине
-     dispatch(fetchTodoListsThunk()); // Обратите внимание на вызов thunk здесь
+      dispatch(fetchTodoListsThunk()); // Обратите внимание на вызов thunk здесь
     } catch (error) {
       alert(
         "Ошибка входа! Пожалуйста, проверьте правильность введенных данных."
@@ -73,7 +65,6 @@ const Login: React.FC = () => {
       console.error("Ошибка входа!", error);
     }
   };
-
 
   ///////////регистрация/////////////////////
   const handleRegister = async () => {
@@ -91,7 +82,7 @@ const Login: React.FC = () => {
       dispatch({ type: "ADD_USER_USEREMAIL", userEmail: email });
       handleLogin();
       //обновление тудулистов при входе
-      dispatch(fetchTodoListsThunk()) // Обратите внимание на вызов thunk здесь
+      dispatch(fetchTodoListsThunk()); // Обратите внимание на вызов thunk здесь
     } catch (error) {
       alert("Ошибка регистрации! email занят.");
       console.error("Ошибка регистрации!", error);
@@ -136,9 +127,9 @@ const Login: React.FC = () => {
       <Modal>
         <h2>Welcom</h2>
         <p>
-          Registration is simplified as much as possible. Please enter something, at least 1 1. It is necessary to save your
-          token in cookies for your personal data in the application, such as
-          the todolist.
+          Registration is simplified as much as possible. Please enter
+          something, at least 1 1. It is necessary to save your token in cookies
+          for your personal data in the application, such as the todolist.
         </p>
         <input
           type='text'
@@ -171,8 +162,7 @@ const Logout = styled.div`
   position: fixed;
   top: 10px;
   right: 10px;
-;
-`
+`;
 const Backdrop = styled.div`
   position: fixed;
   top: 0;
