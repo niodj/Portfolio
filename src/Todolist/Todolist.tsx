@@ -7,7 +7,7 @@ import { blue } from "@mui/material/colors";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch } from 'react-redux';
 import { StoreType, serverPatch } from '../state';
-import { ReceiveTodoAction } from "./todoReducer";
+import { todoActions } from "./todoReducer";
 import { TaskType } from './TodolistApp';
 import { ThunkDispatch } from 'redux-thunk/es/types';
 import { addNewTaskThunk,  removeTaskThunk, removeTodoThunk, updateCheckedThunk, updateTaskNameThunk, updateTodoNameThunk } from './thunksActions';
@@ -25,8 +25,7 @@ type PropsType = {
 };
 
 export const Todolist = (props: PropsType) => {
-  const dispatch: ThunkDispatch<StoreType, any, ReceiveTodoAction> =
-    useDispatch();
+  const dispatch: ThunkDispatch<StoreType, any, todoActions> = useDispatch();
 
   const addNewTask = async (trimmedValue: string) => {
     await dispatch(addNewTaskThunk(props.todoid, trimmedValue));

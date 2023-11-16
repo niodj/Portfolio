@@ -1,6 +1,6 @@
 
 import { StoreType, UserState, initialState } from "../../state";
-import { ReceiveTodoAction } from "../../Todolist/todoReducer";
+import { todoActions } from "../../Todolist/todoReducer";
 
 export type AddUserEmailAction = {
   type: "ADD_USER_EMAIL";
@@ -35,7 +35,7 @@ export type UserAction =
   | AddUserPasswordAction
   | AddUserUserEmailAction
   | AddUserSetLoggedInAction
-  | ReceiveTodoAction
+  | todoActions;
 
 
 export const UserReducer = (

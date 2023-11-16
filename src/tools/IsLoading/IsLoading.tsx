@@ -4,12 +4,6 @@ import styled from "styled-components";
 
 export const Isloading = () => {
   const dispatch = useDispatch();
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      dispatch({ type: "ok" });
-    }, 1000);
-    return () => clearTimeout(timeout);
-  }, [dispatch]);
   return (
     <Wrapper>
       <img

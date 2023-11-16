@@ -5,16 +5,17 @@ export type IsLoadingState = {
 };
 
 type LoadingAction =
-  | { type: "ok" }
+  | { type: "LOADED" }
+  | { type: "LOADING" }
 
+export const isLoadingReducer = (state: any = initialState.isLoading, action:LoadingAction) => {
 
-export const isLoadingReducer = (
-  state: IsLoadingState = initialState, 
-  action: LoadingAction
-): IsLoadingState => {
-  if (action.type === "ok") {
-    return { ...state, isLoading: false };
-  } else {
-    return { ...state, isLoading: true };
+  switch (action.type) {
+    case "LOADED":
+      return { ...state, isLoading: false };
+    case "LOADING":
+      return { ...state, isLoading: true };
+    default:
+      return state;
   }
 };

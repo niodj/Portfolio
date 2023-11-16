@@ -1,17 +1,16 @@
 import React, { useEffect } from "react";
-import { v1 } from "uuid";
+
 import { Todolist } from "./Todolist";
 import { InputForm } from "./InputForm";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-
-import axios from "axios";
-import Cookies from "js-cookie";
 import { StoreType, TodoState, serverPatch } from "../state";
 
 import { ThunkDispatch } from "redux-thunk/es/types";
 import {  addTodoListThunk, fetchTodoListsThunk } from "./thunksActions";
-import { ReceiveTodoAction } from "./todoReducer";
+import { todoActions } from "./todoReducer";
+import { Isloading } from "../tools/IsLoading/IsLoading";
+
 
 export type TaskType = {
   taskid: string;
@@ -27,44 +26,58 @@ export type TodoType = {
 };
 
 export const TodolistApp = () => {
-  const todoLists = useSelector((state: StoreType) => state.todolists);
+  const { todolists, isLoading } = useSelector((state: StoreType) => state);
 
-  const dispatch: ThunkDispatch<StoreType, any, ReceiveTodoAction> =
+  const dispatch: ThunkDispatch<StoreType, any, todoActions> =
     useDispatch();
+  const dispatchLoading = useDispatch()
 
   //получение тудулистов
   useEffect(() => {
-    dispatch(fetchTodoListsThunk());
-  
+    const fetchData = async () => {
+      dispatchLoading({ type: "LOADING" });
+      await dispatch(fetchTodoListsThunk());
+      dispatchLoading({ type: "LOADED" });
+    };
+
+    fetchData();
   }, []);
 
   //добавление листа
   const addTodolist = async (trimmedValue: string) => {
-    await dispatch(addTodoListThunk( trimmedValue));
+    dispatchLoading({ type: "LOADING" });
+    await dispatch(addTodoListThunk(trimmedValue));
     await dispatch(fetchTodoListsThunk());
+     dispatchLoading({ type: "LOADED" });
   };
-
+  console.log(isLoading.isLoading);
   return (
     <Wrapper>
-      <h4>
-        this component works with the node js server on AWS Linux. Database is
-        MongoDB
-      </h4>
-      <InputForm addFromInput={addTodolist} defaultInput={"New list"} />
-      <Lists>
-        {todoLists.map((item: TodoType) => (
-          <Todolist
-            key={item.todoid}
-            todoid={item.todoid}
-            name={item.name}
-            filter={item.filter}
-            tasks={item.tasks}
-          />
-        ))}
-      </Lists>
+      {isLoading.isLoading ? (
+        <Isloading />
+      ) : (
+        <>
+          <h4>
+            this component works with the node js server on AWS Linux. Database is
+            MongoDB
+          </h4>
+          <InputForm addFromInput={addTodolist} defaultInput={"New list"} />
+          <Lists>
+            {todolists.map((item: TodoType) => (
+              <Todolist
+                key={item.todoid}
+                todoid={item.todoid}
+                name={item.name}
+                filter={item.filter}
+                tasks={item.tasks}
+              />
+            ))}
+          </Lists>
+        </>
+      )}
     </Wrapper>
   );
-};
+}
 
 const Wrapper = styled.div``;
 
