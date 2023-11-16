@@ -4,11 +4,9 @@ import { Todolist } from "./Todolist";
 import { InputForm } from "./InputForm";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { StoreType, TodoState, serverPatch } from "../state";
-
+import { RootAction, StoreType } from "../state";
 import { ThunkDispatch } from "redux-thunk/es/types";
 import {  addTodoListThunk, fetchTodoListsThunk } from "./thunksActions";
-import { todoActions } from "./todoReducer";
 import { Isloading } from "../tools/IsLoading/IsLoading";
 
 
@@ -27,30 +25,23 @@ export type TodoType = {
 
 export const TodolistApp = () => {
   const { todolists, isLoading } = useSelector((state: StoreType) => state);
-
-  const dispatch: ThunkDispatch<StoreType, any, todoActions> =
-    useDispatch();
-  const dispatchLoading = useDispatch()
-
+  const dispatch: ThunkDispatch<StoreType, any, RootAction> = useDispatch();
   //получение тудулистов
   useEffect(() => {
-    const fetchData = async () => {
-      dispatchLoading({ type: "LOADING" });
-      await dispatch(fetchTodoListsThunk());
-      dispatchLoading({ type: "LOADED" });
-    };
-
-    fetchData();
+    dispatch({ type: "LOADING" });
+    dispatch(fetchTodoListsThunk()).then(() => {
+      dispatch({ type: "LOADED" }); 
+    });
   }, []);
 
   //добавление листа
-  const addTodolist = async (trimmedValue: string) => {
-    dispatchLoading({ type: "LOADING" });
-    await dispatch(addTodoListThunk(trimmedValue));
-    await dispatch(fetchTodoListsThunk());
-     dispatchLoading({ type: "LOADED" });
+  const addTodolist = (trimmedValue: string) => {
+     dispatch({ type: "LOADING" });
+  dispatch(addTodoListThunk(trimmedValue))
+    .then(() => dispatch(fetchTodoListsThunk()))
+    .then(() => dispatch({ type: "LOADED" }));
   };
-  console.log(isLoading.isLoading);
+
   return (
     <Wrapper>
       {isLoading.isLoading ? (
@@ -63,7 +54,7 @@ export const TodolistApp = () => {
           </h4>
           <InputForm addFromInput={addTodolist} defaultInput={"New list"} />
           <Lists>
-            {todolists.map((item: TodoType) => (
+            {todolists.map((item: any) => (
               <Todolist
                 key={item.todoid}
                 todoid={item.todoid}

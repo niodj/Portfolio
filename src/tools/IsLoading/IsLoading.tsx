@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+
 import styled from "styled-components";
 
+
 export const Isloading = () => {
-  const dispatch = useDispatch();
+
   return (
     <Wrapper>
       <img

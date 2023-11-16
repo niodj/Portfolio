@@ -6,16 +6,11 @@ import { Button, Checkbox, IconButton } from "@mui/material";
 import { blue } from "@mui/material/colors";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch } from 'react-redux';
-import { StoreType, serverPatch } from '../state';
+import { RootAction, StoreType, serverPatch } from '../state';
 import { todoActions } from "./todoReducer";
 import { TaskType } from './TodolistApp';
 import { ThunkDispatch } from 'redux-thunk/es/types';
 import { addNewTaskThunk,  removeTaskThunk, removeTodoThunk, updateCheckedThunk, updateTaskNameThunk, updateTodoNameThunk } from './thunksActions';
-
-
-
-
-
 
 type PropsType = {
   todoid: string;
@@ -25,15 +20,21 @@ type PropsType = {
 };
 
 export const Todolist = (props: PropsType) => {
-  const dispatch: ThunkDispatch<StoreType, any, todoActions> = useDispatch();
 
-  const addNewTask = async (trimmedValue: string) => {
-    await dispatch(addNewTaskThunk(props.todoid, trimmedValue));
+  const dispatch: ThunkDispatch<StoreType, any, RootAction> = useDispatch();
+
+  const addNewTask =  (trimmedValue: string) => {
+    dispatch({ type: "LOADING" });
+    dispatch(addNewTaskThunk(props.todoid, trimmedValue)).then(()=>{dispatch({ type: "LOADED" });});
+    ;
   };
 
   //удаление таски
-  const removeTask = async (taskid: string) => {
-    await dispatch(removeTaskThunk(props.todoid, taskid));
+  const removeTask =  (taskid: string) => {
+    dispatch({ type: "LOADING" });
+     dispatch(removeTaskThunk(props.todoid, taskid)).then(() => {
+      dispatch({ type: "LOADED" });
+    });
   };
 
   let [filter, setFilter] = useState("all");
@@ -55,23 +56,35 @@ export const Todolist = (props: PropsType) => {
   }
 
   //удаление листа
-  const removeListHandler = async () => {
-    await dispatch(removeTodoThunk(props.todoid));
+  const removeListHandler =  () => {
+     dispatch({ type: "LOADING" });
+     dispatch(removeTodoThunk(props.todoid)).then(() => {
+       dispatch({ type: "LOADED" });
+     });;
   };
 
   //обновление checked
-  const updateChecked = async (taskid: string, checked: boolean) => {
-    await dispatch(updateCheckedThunk(props.todoid, taskid, checked));
+  const updateChecked =  (taskid: string, checked: boolean) => {
+    dispatch({ type: "LOADING" });
+    dispatch(updateCheckedThunk(props.todoid, taskid, checked)).then(() => {
+      dispatch({ type: "LOADED" });
+    });
   };
 
   //обновление имени task
-  const updateTaskName = async (taskid: string, newName: string) => {
-    dispatch(updateTaskNameThunk(props.todoid, taskid, newName));
+  const updateTaskName = (taskid: string, newName: string) => {
+    dispatch({ type: "LOADING" });
+    dispatch(updateTaskNameThunk(props.todoid, taskid, newName)).then(() => {
+      dispatch({ type: "LOADED" });
+    });;
   };
 
   //обновление имени todo
   const updateTodoName = async (newName: string) => {
-    dispatch(updateTodoNameThunk(props.todoid, newName));
+    dispatch({ type: "LOADING" });
+    dispatch(updateTodoNameThunk(props.todoid, newName)).then(() => {
+      dispatch({ type: "LOADED" });
+    });;
   };
 
   return (

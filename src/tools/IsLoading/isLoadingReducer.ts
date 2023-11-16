@@ -1,15 +1,12 @@
-import { initialState } from "../../state";
+import { IsLoadingState, initialState } from "../../state";
 
-export type IsLoadingState = {
-  isLoading: boolean;
-};
 
-type LoadingAction =
-  | { type: "LOADED" }
-  | { type: "LOADING" }
 
-export const isLoadingReducer = (state: any = initialState.isLoading, action:LoadingAction) => {
+export type LoadingAction = { type: "LOADED" } | { type: "LOADING" };
 
+export const isLoadingReducer = (state: IsLoadingState = { isLoading: initialState.isLoading },
+  action: LoadingAction
+) => {
   switch (action.type) {
     case "LOADED":
       return { ...state, isLoading: false };
