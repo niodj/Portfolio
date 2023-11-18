@@ -89,6 +89,7 @@ export const Todolist = (props: PropsType) => {
 
   return (
     <Wrapper>
+
       <Title>
         <EditableSpan
           title={props.name}
@@ -121,6 +122,7 @@ export const Todolist = (props: PropsType) => {
             <EditableSpan
               title={item.name}
               onSave={(newName) => updateTaskName(item.taskid, newName)}
+
             />
 
               <IconButton
@@ -207,7 +209,8 @@ width: 300px;
   ${(props) => props.$checked && "opacity: 0.5;"}
 `;
 const Title = styled.div`
+
   font-weight: bold;
   font-size: 25px;
-`
+`;
 

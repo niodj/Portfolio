@@ -57,7 +57,6 @@ export const EditableSpan: React.FC<EditableSpanProps> = (props) => {
       >
         <Box sx={style}>
           <TextField
-            
             multiline
             maxRows={8}
             autoFocus
@@ -73,7 +72,9 @@ export const EditableSpan: React.FC<EditableSpanProps> = (props) => {
       </Modal>
     </>
   ) : (
-    <span onClick={activateEditMode}>{props.title}</span>
+    <span style={{ display: "flex", alignItems: "center" }} onClick={activateEditMode}>
+  {props.title}
+</span>
   );
 };
 
@@ -90,3 +91,4 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
+
