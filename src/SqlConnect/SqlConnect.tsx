@@ -2,6 +2,8 @@ import React, {useState, useEffect} from 'react';
 import styled from "styled-components";
 import axios from "axios";
 import {Button} from "@mui/material";
+import { useSelector } from 'react-redux';
+import { StoreType } from '../state';
 
 type TableType = {
     id: number;
@@ -9,13 +11,14 @@ type TableType = {
     last_name: string;
 }
 
-export const SqlConnect = (props: { dark: boolean }) => {
+export const SqlConnect = () => {
 
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [tableData, setTableData] = useState<TableType[]>([]);
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState<null | string>(null)
+    const dark = useSelector((state:StoreType)=>state.dark.dark)
     useEffect(() => {
         axios.get<any>('https://asfalter.com.ua/script.php').then(response => {
             setTableData(response.data);
@@ -54,7 +57,7 @@ export const SqlConnect = (props: { dark: boolean }) => {
             });
     };
     return (
-        <Wrapper $dark={props.dark}>
+        <Wrapper $dark={dark}>
             <Title>This component keeps names in SQL database.
                 PHP script is also added into the .tsx in comments </Title>
 

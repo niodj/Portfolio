@@ -8,57 +8,42 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch } from 'react-redux';
 import { RootAction, StoreType, serverPatch } from '../state';
 import { todoActions } from "./todoReducer";
-import { TaskType } from './TodolistApp';
+import { TaskType, TodoType } from './TodolistApp';
 import { ThunkDispatch } from 'redux-thunk/es/types';
 import { addNewTaskThunk,  removeTaskThunk, removeTodoThunk, updateCheckedThunk, updateTaskNameThunk, updateTodoNameThunk } from './thunksActions';
+import { useSelector } from 'react-redux';
 
 type PropsType = {
-  todoid: string;
-  name: string;
-  filter: string;
-  tasks: TaskType[];
+  currentTodolist: TodoType;
 };
 
 export const Todolist = (props: PropsType) => {
-
+ const dark = useSelector((state:StoreType)=>state.dark.dark)
   const dispatch: ThunkDispatch<StoreType, any, RootAction> = useDispatch();
 
   const addNewTask =  (trimmedValue: string) => {
     dispatch({ type: "LOADING" });
-    dispatch(addNewTaskThunk(props.todoid, trimmedValue)).then(()=>{dispatch({ type: "LOADED" });});
+    dispatch(addNewTaskThunk(props.currentTodolist.todoid, trimmedValue)).then(
+      () => {
+        dispatch({ type: "LOADED" });
+      }
+    );
     ;
   };
 
   //удаление таски
   const removeTask =  (taskid: string) => {
     dispatch({ type: "LOADING" });
-     dispatch(removeTaskThunk(props.todoid, taskid)).then(() => {
-      dispatch({ type: "LOADED" });
-    });
+     dispatch(removeTaskThunk(props.currentTodolist.todoid, taskid)).then(() => {
+       dispatch({ type: "LOADED" });
+     });
   };
 
-  let [filter, setFilter] = useState("all");
-  let filtered = [...props.tasks];
-  if (filter === "all") {
-    filtered = props.tasks.map((item: TaskType) => item);
-  }
-
-  if (filter === "active") {
-    filtered = props.tasks.filter((item: TaskType) => item.checked === false);
-  }
-
-  if (filter === "completed") {
-    filtered = props.tasks.filter((item: TaskType) => item.checked === true);
-  }
-
-  function changeFilter(value: string) {
-    setFilter(value);
-  }
 
   //удаление листа
   const removeListHandler =  () => {
      dispatch({ type: "LOADING" });
-     dispatch(removeTodoThunk(props.todoid)).then(() => {
+     dispatch(removeTodoThunk(props.currentTodolist.todoid)).then(() => {
        dispatch({ type: "LOADED" });
      });;
   };
@@ -66,7 +51,9 @@ export const Todolist = (props: PropsType) => {
   //обновление checked
   const updateChecked =  (taskid: string, checked: boolean) => {
     dispatch({ type: "LOADING" });
-    dispatch(updateCheckedThunk(props.todoid, taskid, checked)).then(() => {
+    dispatch(
+      updateCheckedThunk(props.currentTodolist.todoid, taskid, checked)
+    ).then(() => {
       dispatch({ type: "LOADED" });
     });
   };
@@ -74,7 +61,9 @@ export const Todolist = (props: PropsType) => {
   //обновление имени task
   const updateTaskName = (taskid: string, newName: string) => {
     dispatch({ type: "LOADING" });
-    dispatch(updateTaskNameThunk(props.todoid, taskid, newName)).then(() => {
+    dispatch(
+      updateTaskNameThunk(props.currentTodolist.todoid, taskid, newName)
+    ).then(() => {
       dispatch({ type: "LOADED" });
     });;
   };
@@ -82,31 +71,54 @@ export const Todolist = (props: PropsType) => {
   //обновление имени todo
   const updateTodoName = async (newName: string) => {
     dispatch({ type: "LOADING" });
-    dispatch(updateTodoNameThunk(props.todoid, newName)).then(() => {
-      dispatch({ type: "LOADED" });
-    });;
+    dispatch(updateTodoNameThunk(props.currentTodolist.todoid, newName)).then(
+      () => {
+        dispatch({ type: "LOADED" });
+      }
+    );;
   };
 
+ let [filter, setFilter] = useState("all");
+ let filtered = [...props.currentTodolist.tasks];
+ if (filter === "all") {
+   filtered = props.currentTodolist.tasks.map((item: TaskType) => item);
+ }
+
+ if (filter === "active") {
+   filtered = props.currentTodolist.tasks.filter(
+     (item: TaskType) => item.checked === false
+   );
+ }
+
+ if (filter === "completed") {
+   filtered = props.currentTodolist.tasks.filter(
+     (item: TaskType) => item.checked === true
+   );
+ }
+
+ function changeFilter(value: string) {
+   setFilter(value);
+ }
+
   return (
-    <Wrapper>
+    <Wrapper $dark={dark}>
       <div className='title'>
         <EditableSpan
-          title={props.name}
+          title={props.currentTodolist.name}
           onSave={(newName) => updateTodoName(newName)}
         />
         <IconButton onClick={removeListHandler}>
           <DeleteIcon color='primary' />
         </IconButton>
       </div>
-      <div>
+      <div className='inputTaskForm'>
         <InputForm addFromInput={addNewTask} defaultInput={"New task"} />
       </div>
 
       {filtered.map((item: TaskType) => (
-        <div className='taskWrapper'>
-          <LiItem key={item.taskid} $checked={item.checked}>
+        <div className='taskWrapper' key={item.taskid}>
+          <LiItem $checked={item.checked}>
             <Checkbox
-              defaultChecked
               sx={{
                 color: blue[800],
                 "&.Mui-checked": {
@@ -123,18 +135,17 @@ export const Todolist = (props: PropsType) => {
               onSave={(newName) => updateTaskName(item.taskid, newName)}
             />
 
-              <IconButton
-                onClick={() => {
-                  removeTask(item.taskid);
-                }}
-              >
-                {" "}
-                <DeleteIcon color='primary' />
-              </IconButton>
-
+            <IconButton
+              onClick={() => {
+                removeTask(item.taskid);
+              }}
+            >
+              {" "}
+              <DeleteIcon color='primary' />
+            </IconButton>
           </LiItem>
 
-          <svg height='1' width='350'>
+          {/* <svg height='1' width='350'>
             <line
               x1='50'
               y1='0'
@@ -142,13 +153,15 @@ export const Todolist = (props: PropsType) => {
               y2='0'
               style={{ stroke: "black", strokeWidth: 1 }}
             />
-          </svg>
+          </svg> */}
         </div>
       ))}
 
       <div className='filterButtonGroup'>
         <Button
-          variant={props.filter === "all" ? "contained" : "text"}
+          variant={
+            filter === "all" ? "contained" : "text"
+          }
           color={"primary"}
           onClick={() => changeFilter("all")}
         >
@@ -158,7 +171,9 @@ export const Todolist = (props: PropsType) => {
 
         <Button
           color={"secondary"}
-          variant={props.filter === "active" ? "contained" : "text"}
+          variant={
+            filter === "active" ? "contained" : "text"
+          }
           onClick={() => changeFilter("active")}
         >
           active
@@ -166,7 +181,9 @@ export const Todolist = (props: PropsType) => {
 
         <Button
           color={"success"}
-          variant={props.filter === "completed" ? "contained" : "text"}
+          variant={
+            filter === "completed" ? "contained" : "text"
+          }
           onClick={() => changeFilter("completed")}
         >
           completed
@@ -176,7 +193,7 @@ export const Todolist = (props: PropsType) => {
   );
 };
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ $dark: boolean }>`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -189,11 +206,13 @@ const Wrapper = styled.div`
     display: flex;
     flex-direction: column;
     justify-content: center;
+    border: solid 1px;
+    margin: 5px 0px 5px 0px;
   }
 
   .title {
     display: flex;
-    justify-content: space-between;
+
     font-weight: bold;
     font-size: 25px;
     height: auto;
@@ -204,6 +223,14 @@ const Wrapper = styled.div`
     display: flex;
     justify-content: center;
     margin: 20px;
+    background-color: ${(props: { $dark: boolean }) =>
+      props.$dark ? "lightblue" : ""};
+  }
+  .inputTaskForm {
+    width: 350px;
+    margin: 20px 0px 20px 0px;
+    background-color: ${(props: { $dark: boolean }) =>
+      props.$dark ? "grey" : ""};
   }
 `;
 
@@ -212,6 +239,7 @@ const LiItem = styled.div<{ $checked: boolean }>`
   justify-content: space-between;
 width: 350px;
   ${(props) => props.$checked && "opacity: 0.5;"}
+
 `;
 
 

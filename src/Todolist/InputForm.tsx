@@ -34,38 +34,39 @@ export const InputForm =React.memo ((props: propsType) => {
   };
 
   return (
-    <>
-      <Wrapper>
+    <Wrapper>
+      <TextField
+        sx={style}
+        multiline
+        maxRows={8}
+        error={!!errorInput}
+        helperText={errorInput && "empty name"}
+        label={props.defaultInput}
+        variant={"outlined"}
+        onChange={inputHandler}
+        value={titleInput}
+        onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) => onPressKey(e)}
+      />
 
-          <TextField
-            multiline
-            maxRows={8}
-            error={!!errorInput}
-            helperText={errorInput && "empty name"}
-            label={props.defaultInput}
-            variant={"outlined"}
-            onChange={inputHandler}
-            value={titleInput}
-            onKeyDown={(e: React.KeyboardEvent<HTMLDivElement>) =>
-              onPressKey(e)
-            }
-          />
-
-        <IconButton onClick={() => submitHandler()} color={"primary"}>
-          <QueueIcon />
-        </IconButton>
-      </Wrapper>
-    </>
+      <IconButton onClick={() => submitHandler()} color={"primary"}>
+        <QueueIcon />
+      </IconButton>
+    </Wrapper>
   );
 })
 const Wrapper = styled.div`
-
- 
+display: flex;
+  width: 100%;
   button {
     margin-left: 10px;
-    height: 55px;
   }
   input {
     background-color: rgba(255, 255, 255, 0.5);
+
   }
 `;
+
+const style = {
+
+  width: "100%",
+};

@@ -1,5 +1,4 @@
 import { HashRouter as Router, Routes, Route } from "react-router-dom";
-//import { Routes, Route } from "react-router-dom";
 import styled from "styled-components";
 import { CounterApp } from "./Counter/CounterApp";
 import { TodolistApp } from "./Todolist/TodolistApp";
@@ -13,7 +12,6 @@ import { NavMenu } from "./tools/NavMenu";
 import { Button } from "@mui/material";
 import { CostListApp } from "./Costlist/CostListApp";
 import { SocialNetworkApp } from "./SocialNetwork/SocialNetworkApp";
-
 import { Skills } from "./tools/Skills";
 import { ModalWindow } from "./tools/ModalWindow";
 import { SunMoon } from "./tools/SunMoon";
@@ -22,25 +20,31 @@ import { useDispatch } from "react-redux";
 import { JokeComponent } from "./tools/Weather/JokeComponent";
 import Login from "./tools/Login/Login";
 import { Practice } from "./Practice";
+import { useSelector } from "react-redux";
+import { StoreType } from "./state";
 
-function isNightTime() {
-  const currentHour = new Date().getHours();
-  return currentHour >= 19 || currentHour < 6;
-}
 
-const nightNow = isNightTime();
 
 export const App = React.memo(() => {
-  const [time, setTime] = useState(Date.now());
-  const [dark, setDark] = useState(nightNow);
   const [width, height] = useResize();
   const isContentOverflowing = height > window.innerHeight;
 
   const dispatch = useDispatch();
+
+  //////////dark mode
+  function isNightTime() {
+    const currentHour = new Date().getHours();
+    return currentHour >= 19 || currentHour < 6;
+  }
+  const dark = useSelector((state: StoreType) =>state.dark.dark);
+useEffect(() => {
+  dispatch({ type: "NIGHT_NOW", dark: isNightTime() });
+}, []);
+///////////////
   return (
     <Wrapper $dark={dark} $overflowHidden={isContentOverflowing}>
       <Login />
-      <SunMoon dark={dark} />
+      <SunMoon />
       <div
         className='clockWrapper'
         onClick={() => {
@@ -51,13 +55,16 @@ export const App = React.memo(() => {
       </div>
 
       <div className='buttons'>
-        <Button variant={"outlined"} onClick={() => setDark(false)}>
+        <Button
+          variant={"outlined"}
+          onClick={() => dispatch({ type: "DAY_NOW" })}
+        >
           Day
         </Button>
         <Button
           variant={"outlined"}
           color={"secondary"}
-          onClick={() => setDark(true)}
+          onClick={() => dispatch({ type: "NIGHT_NOW" })}
         >
           Night
         </Button>
@@ -88,7 +95,7 @@ export const App = React.memo(() => {
           <Route path='counterapp' element={<CounterApp />} />
           <Route path='todolistapp' element={<TodolistApp />} />
           <Route path='queueapp' element={<QueueApp />} />
-          <Route path='sqlconnect' element={<SqlConnect dark={dark} />} />
+          <Route path='sqlconnect' element={<SqlConnect />} />
           <Route path='useparamsapp' element={<UseParamsApp />} />
           <Route path='socialnetworkapp/*' element={<SocialNetworkApp />} />
           <Route path='*' element={<div>.</div>} />
@@ -151,3 +158,7 @@ const Title = styled.div`
   color: blueviolet;
   text-align: center;
 `;
+function dispatch(arg0: { type: string; isNigth: boolean; }) {
+  throw new Error("Function not implemented.");
+}
+

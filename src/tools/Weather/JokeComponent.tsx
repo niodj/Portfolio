@@ -25,39 +25,6 @@ const fetchJoke = async () => {
   }
 }
 
-
-
-
-  //  axios.get("https://v2.jokeapi.dev/joke/Programming?type=single")
-  //  axios.get("https://v2.jokeapi.dev/joke/Programming?type=single")
-  //    .then(console.log);
-
-  // Promise.all([response, response2] if one of promise was reject -  returns reject
-  //   const otherPromise = Promise.all([response, response2]);
-  //     otherPromise
-    //       .then((results) => {
-    //         console.log(results);
-    //         console.log(response);
-    //         console.log(response2);
-    //         console.log("finally");
-    //       })
-    //       .catch((error) => {
-    //         console.log('try later');
-    //       });
-    // };
-
-    // Promise.allSettled([response, response2] will resolve or reject separate
-    // const otherPromise2 = Promise.allSettled([response, response2])
-    //   .then((results) => {
-    //     console.log(results);
-    //   })
-
-    // const promiseResolve = Promise.resolve(100);
-    // const promiseReject = Promise.reject('error');
-
-
-
-
   useEffect(() => {
     const loadingTimeout = setTimeout(() => {
       fetchJoke();
@@ -84,7 +51,7 @@ const fetchJoke = async () => {
 
 const Wrapper = styled.div`
 margin: 20px;
-  cursor: default;
+  cursor: pointer;
   text-decoration: underline;
 
   &:hover {

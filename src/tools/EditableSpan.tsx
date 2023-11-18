@@ -3,6 +3,8 @@ import { Backdrop, Box, Button, TextField } from "@mui/material";
 
 import React, { ChangeEvent, useState, useEffect } from "react";
 import { styled } from "styled-components";
+import { useSelector } from "react-redux";
+import { StoreType } from "../state";
 
 type EditableSpanProps = {
   title: string;
@@ -80,7 +82,6 @@ export const EditableSpan: React.FC<EditableSpanProps> = (props) => {
 
 const TitleName = styled.div`
 display: flex;
-justify-content: center;
 align-items: center;
 width: 100%;
 `;

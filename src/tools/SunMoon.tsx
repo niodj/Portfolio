@@ -1,8 +1,11 @@
+import { useSelector } from "react-redux";
 import styled from "styled-components";
+import { StoreType } from "../state";
 
-export const SunMoon = (props: { dark: boolean }) => {
+export const SunMoon = () => {
+  const dark = useSelector((state:StoreType)=>state.dark.dark)
   return (
-    <RotatingDiv $dark={props.dark}>
+    <RotatingDiv $dark={dark}>
       <img
         className='imgdark'
         src='https://www.pngarts.com/files/2/Full-Moon-PNG-Image.png'

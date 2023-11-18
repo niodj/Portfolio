@@ -38,9 +38,7 @@ export type UserAction =
   | todoActions;
 
 
-export const UserReducer = (
-  state: UserState = initialState.user,
-  action: UserAction
+export const UserReducer = (  state: UserState = initialState.user,  action: UserAction
 ): UserState => {
   switch (action.type) {
     case "ADD_USER_EMAIL":
