@@ -238,7 +238,7 @@ const Wrapper = styled.div<{ $dark: boolean }>`
 const LiItem = styled.div<{ $checked: boolean }>`
   display: flex;
   justify-content: space-between;
-  width: 80%;
+
   ${(props) => props.$checked && "opacity: 0.5;"}
 `;
 

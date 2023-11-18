@@ -68,5 +68,5 @@ display: flex;
 
 const style = {
 
-  width: "80%",
+  width: "100%",
 };
