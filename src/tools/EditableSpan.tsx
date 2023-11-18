@@ -50,10 +50,11 @@ const Wrapper = styled.textarea`
   font-weight: bold;
   font-size: 25px;
   background-color: transparent;
-  color: white;
+  color: rosybrown;
   text-align: center;
   border: none;
   outline: none;
   background-color: rgba(255, 255, 255, 0.2);
   height: 30px;
+  resize: none;
 `;
