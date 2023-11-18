@@ -104,7 +104,7 @@ setCurrentTodo(todoid);
                 </div>
               ))}
             </div>
-            <div>
+            <div className="rightSide">
               <div className='inputTodoForm'>
                 <InputForm
                   addFromInput={addTodolist}
@@ -125,13 +125,22 @@ setCurrentTodo(todoid);
 };
 
 const Wrapper = styled.div<{ $dark: boolean }>`
+  width: 80%;
   .workWindow {
     display: flex;
     flex-direction: row;
   }
-  .todolistList {
+  .rightSide{
+    width: 80%;
     display: flex;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+  } .todolistList {
+    display: flex;
+    flex-direction: column;
+  
   }
   .todoMenu {
     text-decoration: underline;
@@ -140,7 +149,7 @@ const Wrapper = styled.div<{ $dark: boolean }>`
     }
   }
   .inputTodoForm {
-    width: 300px;
+    width: 80%;
     display: flex;
     justify-content: center;
     align-items: center;

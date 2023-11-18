@@ -199,7 +199,7 @@ const Wrapper = styled.div<{ $dark: boolean }>`
   justify-content: center;
   align-items: center;
   margin: 10px;
-  width: 370px;
+  width: 80%;
   border: solid 1px;
 
   .taskWrapper {
@@ -208,6 +208,7 @@ const Wrapper = styled.div<{ $dark: boolean }>`
     justify-content: center;
     border: solid 1px;
     margin: 5px 0px 5px 0px;
+    width: 80%;
   }
 
   .title {
@@ -216,7 +217,7 @@ const Wrapper = styled.div<{ $dark: boolean }>`
     font-weight: bold;
     font-size: 25px;
     height: auto;
-    width: 350px;
+    width: 80%;
   }
 
   .filterButtonGroup {
@@ -227,7 +228,7 @@ const Wrapper = styled.div<{ $dark: boolean }>`
       props.$dark ? "lightblue" : ""};
   }
   .inputTaskForm {
-    width: 350px;
+    width: 80%;
     margin: 20px 0px 20px 0px;
     background-color: ${(props: { $dark: boolean }) =>
       props.$dark ? "grey" : ""};
@@ -235,11 +236,10 @@ const Wrapper = styled.div<{ $dark: boolean }>`
 `;
 
 const LiItem = styled.div<{ $checked: boolean }>`
- display: flex;
+  display: flex;
   justify-content: space-between;
-width: 350px;
+  width: 80%;
   ${(props) => props.$checked && "opacity: 0.5;"}
-
 `;
 
 

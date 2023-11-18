@@ -153,7 +153,7 @@ const Login: React.FC = () => {
         />
         <button onClick={handleLogin}>Login</button>
         <button onClick={handleRegister}>Register</button>
-        {/* <button onClick={()=>{dispatch({ type: "ADD_USER_setLoggedIn", loggedIn: true });}}>Close</button> */}
+
       </Modal>
     </Wrapper>
   );
@@ -165,7 +165,8 @@ const Wrapper = styled.div``;
 const Logout = styled.div`
   position: fixed;
   top: 10px;
-  right: 10px;
+  right: 30px;
+
 `;
 const Backdrop = styled.div`
   position: fixed;
