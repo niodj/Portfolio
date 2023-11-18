@@ -1,6 +1,6 @@
-import React, { ChangeEvent, useState } from "react";
-//import { TextField } from "@mui/material";
+import React, { ChangeEvent, useState, KeyboardEvent } from "react";
 import styled from "styled-components";
+
 type EditableSpanProps = {
   title: string;
   onSave?: (newName: string) => void;
@@ -16,7 +16,6 @@ export const EditableSpan: React.FC<EditableSpanProps> = (props) => {
   };
 
   const deactivateEditMode = () => {
-
     if (title.trim() && props.onSave) {
       setEdit(false);
       props.onSave(title);
@@ -27,26 +26,25 @@ export const EditableSpan: React.FC<EditableSpanProps> = (props) => {
     setTitle(event.currentTarget.value);
   };
 
+  const onKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      deactivateEditMode();
+    }
+  };
+
   return edit ? (
     <Wrapper
       autoFocus
       value={title}
       onChange={onChangeTitle}
       onBlur={deactivateEditMode}
+      onKeyDown={onKeyDown}
     />
   ) : (
-    // <Input
-    //   value={title}
-    //   onChange={onChangeTitle}
-    //   onBlur={deactivateEditMode}
-    //   autoFocus
-
-    // />
     <span onClick={activateEditMode}>{props.title}</span>
   );
 };
-
-
 
 const Wrapper = styled.textarea`
   font-weight: bold;
@@ -58,14 +56,4 @@ const Wrapper = styled.textarea`
   outline: none;
   background-color: rgba(255, 255, 255, 0.2);
   height: 30px;
-  // const Input = styled(TextField)
 `;
-
-//   && input {
-//     background-color: rgba(255, 255, 255, 0.2);
-
-//   font-weight: bold;
-//   font-size: 25px;
-//   text-align: center;
-//   `;}
-
