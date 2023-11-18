@@ -90,9 +90,7 @@ setCurrentTodo(todoid);
             this component works with the node js server on AWS Linux. Database
             is MongoDB
           </h4>
-          <div className="inputTodoForm">
-            <InputForm addFromInput={addTodolist} defaultInput={"New list"} />
-          </div>
+
           <div className='workWindow'>
             <div className='todolistList'>
               <h4>Todolists</h4>
@@ -106,13 +104,19 @@ setCurrentTodo(todoid);
                 </div>
               ))}
             </div>
-            <Lists>
+            <div>
+              <div className='inputTodoForm'>
+                <InputForm
+                  addFromInput={addTodolist}
+                  defaultInput={"New list"}
+                />
+              </div>
               {currentTodolist ? (
                 <Todolist currentTodolist={currentTodolist} />
               ) : (
                 <div>No todolist yet</div>
               )}
-            </Lists>
+            </div>
           </div>
         </>
       )}
@@ -136,7 +140,7 @@ const Wrapper = styled.div<{ $dark: boolean }>`
     }
   }
   .inputTodoForm {
-    width: 480px;
+    width: 350px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -146,9 +150,6 @@ const Wrapper = styled.div<{ $dark: boolean }>`
   }
 `;
 
-const Lists = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
 
-`;
+
+
