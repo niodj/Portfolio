@@ -1,5 +1,7 @@
-import React, { ChangeEvent, useState, KeyboardEvent } from "react";
-import styled from "styled-components";
+import Modal from "@mui/material/Modal";
+import { Box, Button, TextField } from "@mui/material";
+
+import React, { ChangeEvent, useState, useEffect } from "react";
 
 type EditableSpanProps = {
   title: string;
@@ -9,6 +11,14 @@ type EditableSpanProps = {
 export const EditableSpan: React.FC<EditableSpanProps> = (props) => {
   const [edit, setEdit] = useState(false);
   const [title, setTitle] = useState(props.title);
+
+  useEffect(() => {
+    if (edit) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+  }, [edit]);
 
   const activateEditMode = () => {
     setEdit(true);
@@ -26,35 +36,57 @@ export const EditableSpan: React.FC<EditableSpanProps> = (props) => {
     setTitle(event.currentTarget.value);
   };
 
-  const onKeyDown = (event: KeyboardEvent<HTMLTextAreaElement>) => {
-    if (event.key === "Enter") {
-      event.preventDefault();
+  const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.ctrlKey && e.code === "Enter") {
+      e.preventDefault();
       deactivateEditMode();
     }
   };
 
+  const handleClose = () => {
+    setEdit(false);
+  };
+
   return edit ? (
-    <Wrapper
-      autoFocus
-      value={title}
-      onChange={onChangeTitle}
-      onBlur={deactivateEditMode}
-      onKeyDown={onKeyDown}
-    />
+    <>
+      <Modal
+        open={edit}
+        onClose={handleClose}
+        aria-labelledby='modal-modal-title'
+        aria-describedby='modal-modal-description'
+      >
+        <Box sx={style}>
+          <TextField
+            
+            multiline
+            maxRows={8}
+            autoFocus
+            value={title}
+            onChange={onChangeTitle}
+            onBlur={deactivateEditMode}
+            onKeyDown={onKeyDown}
+          />
+          <p>ctrl+enter for save</p>
+          <Button onClick={deactivateEditMode}>OK</Button>
+          <Button onClick={handleClose}>Cancel</Button>
+        </Box>
+      </Modal>
+    </>
   ) : (
     <span onClick={activateEditMode}>{props.title}</span>
   );
 };
 
-const Wrapper = styled.textarea`
-  font-weight: bold;
-  font-size: 25px;
-  background-color: transparent;
-  color: rosybrown;
-  text-align: center;
-  border: none;
-  outline: none;
-  background-color: rgba(255, 255, 255, 0.2);
-  height: 30px;
-  resize: none;
-`;
+const style = {
+  display: "flex",
+  flexDirection: "column",
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 320,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};

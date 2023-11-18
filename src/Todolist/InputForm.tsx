@@ -28,7 +28,7 @@ export const InputForm =React.memo ((props: propsType) => {
   };
 
   const onPressKey = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.ctrlKey && e.code === "Enter" && trimmedValue) {
+    if (e.code === "Enter" && trimmedValue) {
       submitHandler();
     }
   };
@@ -49,7 +49,7 @@ export const InputForm =React.memo ((props: propsType) => {
           <QueueIcon />
         </IconButton>
       </Wrapper>
-      <div>press ctrl+Enter to add</div>
+
     </>
   );
 })
@@ -59,5 +59,5 @@ const Wrapper = styled.div`
     height: 55px;
   }
  input{ background-color: rgba(255, 255, 255, 0.5)}
-  
+
 `

@@ -49,8 +49,8 @@ export const TodolistApp = () => {
       ) : (
         <>
           <h4>
-            this component works with the node js server on AWS Linux. Database is
-            MongoDB
+            this component works with the node js server on AWS Linux. Database
+            is MongoDB
           </h4>
           <InputForm addFromInput={addTodolist} defaultInput={"New list"} />
           <Lists>
@@ -63,6 +63,7 @@ export const TodolistApp = () => {
                 tasks={item.tasks}
               />
             ))}
+
           </Lists>
         </>
       )}

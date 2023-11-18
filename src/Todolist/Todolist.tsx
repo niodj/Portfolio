@@ -90,21 +90,20 @@ export const Todolist = (props: PropsType) => {
   return (
     <Wrapper>
       <Title>
-
-          <EditableSpan
-            title={props.name}
-            onSave={(newName) => updateTodoName(newName)}
-          />
-          <IconButton onClick={removeListHandler}>
-            <DeleteIcon color='primary' />
-          </IconButton>
-
+        <EditableSpan
+          title={props.name}
+          onSave={(newName) => updateTodoName(newName)}
+        />
+        <IconButton onClick={removeListHandler}>
+          <DeleteIcon color='primary' />
+        </IconButton>
       </Title>
       <div>
         <InputForm addFromInput={addNewTask} defaultInput={"New task"} />
       </div>
-      <ul>
-        {filtered.map((item: TaskType) => (
+
+      {filtered.map((item: TaskType) => (
+        <div className='taskWrapper'>
           <LiItem key={item.taskid} $checked={item.checked}>
             <Checkbox
               defaultChecked
@@ -123,17 +122,28 @@ export const Todolist = (props: PropsType) => {
               title={item.name}
               onSave={(newName) => updateTaskName(item.taskid, newName)}
             />
-            <IconButton
-              onClick={() => {
-                removeTask(item.taskid);
-              }}
-            >
-              {" "}
-              <DeleteIcon color='primary' />
-            </IconButton>
+
+              <IconButton
+                onClick={() => {
+                  removeTask(item.taskid);
+                }}
+              >
+                {" "}
+                <DeleteIcon color='primary' />
+              </IconButton>
+
           </LiItem>
-        ))}
-      </ul>
+          <svg height='1' width='300'>
+            <line
+              x1='0'
+              y1='0'
+              x2='300'
+              y2='0'
+              style={{ stroke: "black", strokeWidth: 1 }}
+            />
+          </svg>
+        </div>
+      ))}
 
       <FilterButtonGroup>
         <Button
@@ -161,8 +171,6 @@ export const Todolist = (props: PropsType) => {
           completed
         </Button>
       </FilterButtonGroup>
-
-    
     </Wrapper>
   );
 };
@@ -177,16 +185,25 @@ const Wrapper = styled.div`
   max-width: 600px;
   border: solid 1px;
 
-`
+  .taskWrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+      }
+`;
 
 const FilterButtonGroup = styled.div`
   display: flex;
   justify-content:center;
-
+margin: 20px;
 
 `
 
 const LiItem = styled.div<{ $checked: boolean }>`
+display: flex;
+  justify-content: space-between;
+width: 100%;
+width: 300px;
   ${(props) => props.$checked && "opacity: 0.5;"}
 `;
 const Title = styled.div`

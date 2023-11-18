@@ -9,20 +9,7 @@ import styled from "styled-components";
 
 
 
-    const style = {
-        display:'flex',
-        flexDirection: 'column',
-            position: 'absolute' as 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            width: 320,
-            bgcolor: 'background.paper',
-            border: '2px solid #000',
-            boxShadow: 24,
-            p: 4,
 
-    };
 
     export const ModalWindow =()=> {
         const [openMain, setOpenMain] = React.useState(false);
@@ -93,3 +80,16 @@ import styled from "styled-components";
 const Wrapper =styled.div`
 
 `
+const style = {
+  display: "flex",
+  flexDirection: "column",
+  position: "absolute" as "absolute",
+  top: "50%",
+  left: "50%",
+  transform: "translate(-50%, -50%)",
+  width: 320,
+  bgcolor: "background.paper",
+  border: "2px solid #000",
+  boxShadow: 24,
+  p: 4,
+};
