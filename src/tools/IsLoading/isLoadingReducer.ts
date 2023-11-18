@@ -1,7 +1,5 @@
 import { IsLoadingState, initialState } from "../../state";
 
-
-
 export type LoadingAction = { type: "LOADED" } | { type: "LOADING" };
 
 export const isLoadingReducer = (state: IsLoadingState = { isLoading: initialState.isLoading },

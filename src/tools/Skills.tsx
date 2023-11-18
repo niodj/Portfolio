@@ -17,7 +17,7 @@ export const Skills = () => {
               <td>Typescrypt</td>
             </tr>
             <tr>
-              <td>Redux/Thunk</td>
+              <td>Redux/Redux Toolkit</td>
             </tr>
             <tr>
               <td>Node.js/Express</td>

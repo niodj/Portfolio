@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { StoreType, UserState, serverPatch } from "../../state";
+import { RootAction, StoreType, UserState, serverPatch } from "../../state";
 
 import { Dispatch } from "redux";
 import { ThunkDispatch } from "redux-thunk";
@@ -17,7 +17,7 @@ const Login: React.FC = () => {
   const loggedIn = useSelector((store: StoreType) => store.user.loggedIn);
   const userEmail = useSelector((store: StoreType) => store.user.userEmail);
 
-  const dispatch: ThunkDispatch<UserState, any, UserAction> = useDispatch();
+  const dispatch: ThunkDispatch<UserState, any, RootAction> = useDispatch();
 
   useEffect(() => {
     const checkLoginStatus = async () => {
@@ -33,6 +33,7 @@ const Login: React.FC = () => {
           dispatch({ type: "ADD_USER_USEREMAIL", userEmail: emailFromCookie });
         } catch (error) {
           console.error("Ошибка при проверке токена:", error);
+          alert("Error token check. Check your internet conection or accses to cookes");
         }
       }
     };
@@ -60,7 +61,7 @@ const Login: React.FC = () => {
       dispatch(fetchTodoListsThunk()); // Обратите внимание на вызов thunk здесь
     } catch (error) {
       alert(
-        "Ошибка входа! Пожалуйста, проверьте правильность введенных данных."
+        "Please check your login and password. Also internet conection."
       );
       console.error("Ошибка входа!", error);
     }
@@ -84,7 +85,7 @@ const Login: React.FC = () => {
       //обновление тудулистов при входе
       dispatch(fetchTodoListsThunk()); // Обратите внимание на вызов thunk здесь
     } catch (error) {
-      alert("Ошибка регистрации! email занят.");
+      alert("Registration error. This login already used. Also check your internet connection");
       console.error("Ошибка регистрации!", error);
     }
   };
@@ -110,6 +111,9 @@ const Login: React.FC = () => {
       dispatch({ type: "RECEIVE_TODO", payload: [] });
     } catch (error) {
       console.error("Ошибка при выходе пользователя", error);
+      alert(
+        "Exit error. Check your internet connection."
+      );
     }
   };
   if (loggedIn) {

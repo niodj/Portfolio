@@ -30,7 +30,7 @@ export const TodolistApp = () => {
   useEffect(() => {
     dispatch({ type: "LOADING" });
     dispatch(fetchTodoListsThunk()).then(() => {
-      dispatch({ type: "LOADED" }); 
+    dispatch({ type: "LOADED" });
     });
   }, []);
 

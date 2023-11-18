@@ -90,13 +90,15 @@ export const Todolist = (props: PropsType) => {
   return (
     <Wrapper>
       <Title>
-        <EditableSpan
-          title={props.name}
-          onSave={(newName) => updateTodoName(newName)}
-        />
-        <IconButton onClick={removeListHandler}>
-          <DeleteIcon color='primary' />
-        </IconButton>
+
+          <EditableSpan
+            title={props.name}
+            onSave={(newName) => updateTodoName(newName)}
+          />
+          <IconButton onClick={removeListHandler}>
+            <DeleteIcon color='primary' />
+          </IconButton>
+
       </Title>
       <div>
         <InputForm addFromInput={addNewTask} defaultInput={"New task"} />
@@ -119,9 +121,7 @@ export const Todolist = (props: PropsType) => {
             />
             <EditableSpan
               title={item.name}
-              onSave={(newName) =>
-                updateTaskName( item.taskid, newName)
-              }
+              onSave={(newName) => updateTaskName(item.taskid, newName)}
             />
             <IconButton
               onClick={() => {
@@ -162,7 +162,7 @@ export const Todolist = (props: PropsType) => {
         </Button>
       </FilterButtonGroup>
 
-      <div>doubble click for edit list name or task name</div>
+    
     </Wrapper>
   );
 };
@@ -181,7 +181,8 @@ const Wrapper = styled.div`
 
 const FilterButtonGroup = styled.div`
   display: flex;
-  margin-bottom: 20px;
+  justify-content:center;
+
 
 `
 
@@ -192,3 +193,4 @@ const Title = styled.div`
   font-weight: bold;
   font-size: 25px;
 `
+
