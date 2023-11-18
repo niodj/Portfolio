@@ -140,7 +140,7 @@ const Wrapper = styled.div<{ $dark: boolean }>`
     }
   }
   .inputTodoForm {
-    width: 350px;
+    width: 300px;
     display: flex;
     justify-content: center;
     align-items: center;
