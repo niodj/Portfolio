@@ -1,7 +1,8 @@
 import Modal from "@mui/material/Modal";
-import { Box, Button, TextField } from "@mui/material";
+import { Backdrop, Box, Button, TextField } from "@mui/material";
 
 import React, { ChangeEvent, useState, useEffect } from "react";
+import { styled } from "styled-components";
 
 type EditableSpanProps = {
   title: string;
@@ -54,6 +55,7 @@ export const EditableSpan: React.FC<EditableSpanProps> = (props) => {
         onClose={handleClose}
         aria-labelledby='modal-modal-title'
         aria-describedby='modal-modal-description'
+
       >
         <Box sx={style}>
           <TextField
@@ -62,7 +64,7 @@ export const EditableSpan: React.FC<EditableSpanProps> = (props) => {
             autoFocus
             value={title}
             onChange={onChangeTitle}
-            onBlur={deactivateEditMode}
+            //onBlur={deactivateEditMode}
             onKeyDown={onKeyDown}
           />
           <p>ctrl+enter for save</p>
@@ -72,12 +74,16 @@ export const EditableSpan: React.FC<EditableSpanProps> = (props) => {
       </Modal>
     </>
   ) : (
-    <span style={{ display: "flex", alignItems: "center" }} onClick={activateEditMode}>
-  {props.title}
-</span>
+    <TitleName onClick={activateEditMode}>{props.title}</TitleName>
   );
 };
 
+const TitleName = styled.div`
+display: flex;
+justify-content: center;
+align-items: center;
+width: 100%;
+`;
 const style = {
   display: "flex",
   flexDirection: "column",

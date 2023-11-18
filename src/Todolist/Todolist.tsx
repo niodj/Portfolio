@@ -89,8 +89,7 @@ export const Todolist = (props: PropsType) => {
 
   return (
     <Wrapper>
-
-      <Title>
+      <div className='title'>
         <EditableSpan
           title={props.name}
           onSave={(newName) => updateTodoName(newName)}
@@ -98,7 +97,7 @@ export const Todolist = (props: PropsType) => {
         <IconButton onClick={removeListHandler}>
           <DeleteIcon color='primary' />
         </IconButton>
-      </Title>
+      </div>
       <div>
         <InputForm addFromInput={addNewTask} defaultInput={"New task"} />
       </div>
@@ -122,7 +121,6 @@ export const Todolist = (props: PropsType) => {
             <EditableSpan
               title={item.name}
               onSave={(newName) => updateTaskName(item.taskid, newName)}
-
             />
 
               <IconButton
@@ -135,9 +133,10 @@ export const Todolist = (props: PropsType) => {
               </IconButton>
 
           </LiItem>
-          <svg height='1' width='300'>
+
+          <svg height='1' width='350'>
             <line
-              x1='0'
+              x1='50'
               y1='0'
               x2='300'
               y2='0'
@@ -147,7 +146,7 @@ export const Todolist = (props: PropsType) => {
         </div>
       ))}
 
-      <FilterButtonGroup>
+      <div className='filterButtonGroup'>
         <Button
           variant={props.filter === "all" ? "contained" : "text"}
           color={"primary"}
@@ -172,7 +171,7 @@ export const Todolist = (props: PropsType) => {
         >
           completed
         </Button>
-      </FilterButtonGroup>
+      </div>
     </Wrapper>
   );
 };
@@ -184,33 +183,35 @@ const Wrapper = styled.div`
   align-items: center;
   margin: 10px;
   width: 370px;
-  max-width: 600px;
   border: solid 1px;
 
   .taskWrapper {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-      }
+    justify-content: center;
+  }
+
+  .title {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    font-size: 25px;
+    height: auto;
+    width: 350px;
+  }
+
+  .filterButtonGroup {
+    display: flex;
+    justify-content: center;
+    margin: 20px;
+  }
 `;
-
-const FilterButtonGroup = styled.div`
-  display: flex;
-  justify-content:center;
-margin: 20px;
-
-`
 
 const LiItem = styled.div<{ $checked: boolean }>`
-display: flex;
+ display: flex;
   justify-content: space-between;
-width: 100%;
-width: 300px;
+width: 350px;
   ${(props) => props.$checked && "opacity: 0.5;"}
 `;
-const Title = styled.div`
 
-  font-weight: bold;
-  font-size: 25px;
-`;
 
