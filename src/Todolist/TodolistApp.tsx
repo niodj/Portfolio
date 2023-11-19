@@ -153,6 +153,7 @@ const Wrapper = styled.div`
     top: 0;
     left: 0;
     width: 80%;
+    height: 100%;
     background-color: #fff;
     padding: 20px;
     z-index: 2; /* Чтобы .burgerMenu был выше .burger */
