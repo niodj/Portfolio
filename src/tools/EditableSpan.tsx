@@ -7,36 +7,44 @@ import { useSelector } from "react-redux";
 import { StoreType } from "../state";
 
 type EditableSpanProps = {
-  title: string;
+  title?: string;
+  value?: string;
   onSave?: (newName: string) => void;
+  editMode?: boolean
+  onCancel?: () => void;
+
 };
 
 export const EditableSpan: React.FC<EditableSpanProps> = (props) => {
   const [edit, setEdit] = useState(false);
-  const [title, setTitle] = useState(props.title);
+  const [value, setValue] = useState(props.value);
+
 
   useEffect(() => {
-    if (edit) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
+    if (props.editMode) {
+  setEdit(true)
+}
+  if (edit) {
+    document.body.style.overflow = "hidden";
+  } else {
+    document.body.style.overflow = "auto";
+  }
   }, [edit]);
 
   const activateEditMode = () => {
     setEdit(true);
-    setTitle(props.title);
+    setValue(props.value);
   };
 
   const deactivateEditMode = () => {
-    if (title.trim() && props.onSave) {
+    if (value?.trim() && props.onSave) {
       setEdit(false);
-      props.onSave(title);
+      props.onSave(value);
     }
   };
 
   const onChangeTitle = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    setTitle(event.currentTarget.value);
+    setValue(event.currentTarget.value);
   };
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -47,7 +55,9 @@ export const EditableSpan: React.FC<EditableSpanProps> = (props) => {
   };
 
   const handleClose = () => {
+
     setEdit(false);
+  props.onCancel && props.onCancel();
   };
 
   return edit ? (
@@ -57,16 +67,15 @@ export const EditableSpan: React.FC<EditableSpanProps> = (props) => {
         onClose={handleClose}
         aria-labelledby='modal-modal-title'
         aria-describedby='modal-modal-description'
-
       >
         <Box sx={style}>
+          <h4>{props.title}</h4>
           <TextField
             multiline
             maxRows={8}
             autoFocus
-            value={title}
+            value={value}
             onChange={onChangeTitle}
-            //onBlur={deactivateEditMode}
             onKeyDown={onKeyDown}
           />
           <p>ctrl+enter for save</p>
@@ -76,7 +85,7 @@ export const EditableSpan: React.FC<EditableSpanProps> = (props) => {
       </Modal>
     </>
   ) : (
-    <TitleName onClick={activateEditMode}>{props.title}</TitleName>
+    <TitleName onClick={activateEditMode}>{props.value}</TitleName>
   );
 };
 

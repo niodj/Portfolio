@@ -13,7 +13,7 @@ import { Button } from "@mui/material";
 import { CostListApp } from "./Costlist/CostListApp";
 import { SocialNetworkApp } from "./SocialNetwork/SocialNetworkApp";
 import { Skills } from "./tools/Skills";
-import { ModalWindow } from "./tools/ModalWindow";
+import {  SendMessage } from "./tools/SendMessage";
 import { SunMoon } from "./tools/SunMoon";
 import { ClockApp } from "./tools/Clock/ClockApp";
 import { useDispatch } from "react-redux";
@@ -23,8 +23,6 @@ import { Practice } from "./Practice";
 import { useSelector } from "react-redux";
 import { StoreType } from "./state";
 
-
-
 export const App = React.memo(() => {
   const [width, height] = useResize();
   const isContentOverflowing = height > window.innerHeight;
@@ -32,15 +30,14 @@ export const App = React.memo(() => {
   const dispatch = useDispatch();
 
   //////////dark mode
-  function isNightTime() {
-    const currentHour = new Date().getHours();
-    return currentHour >= 19 || currentHour < 6;
-  }
-  const dark = useSelector((state: StoreType) =>state.dark.dark);
-useEffect(() => {
-  dispatch({ type: "NIGHT_NOW", dark: isNightTime() });
-}, []);
-///////////////
+  const currentHour = new Date().getHours();
+  useEffect(() => {
+    currentHour >= 19 || currentHour < 6
+      ? dispatch({ type: "NIGHT_NOW" })
+      : dispatch({ type: "DAY_NOW" });
+  }, []);
+  const dark = useSelector((state: StoreType) => state.dark.dark);
+  ///////////////
   return (
     <Wrapper $dark={dark} $overflowHidden={isContentOverflowing}>
       <Login />
@@ -80,7 +77,7 @@ useEffect(() => {
           >
             <Button>Open my CV</Button>
           </a>
-          <ModalWindow />
+          <SendMessage />
         </div>
       </Title>
       <div className='rattingAndSkils'>
@@ -158,7 +155,6 @@ const Title = styled.div`
   color: blueviolet;
   text-align: center;
 `;
-function dispatch(arg0: { type: string; isNigth: boolean; }) {
+function dispatch(arg0: { type: string; isNigth: boolean }) {
   throw new Error("Function not implemented.");
 }
-

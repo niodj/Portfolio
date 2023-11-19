@@ -32,14 +32,11 @@ export const CostItem = (props:any) => {
         <CostDate date={props.date} />
         <Block2>
           <Description>
-            <EditableSpan
-              title={props.description}
-              
-            />
+            <EditableSpan value={props.description} />
           </Description>
 
           <Price>
-            <EditableSpan title={"$" + props.amount} />
+            <EditableSpan value={"$" + props.amount} />
           </Price>
           <div>
             <Button variant={"contained"} onClick={removeButtonClick}>
