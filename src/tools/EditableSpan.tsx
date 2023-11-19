@@ -37,28 +37,36 @@ export const EditableSpan: React.FC<EditableSpanProps> = (props) => {
   };
 
   const deactivateEditMode = () => {
-    if (value?.trim() && props.onSave) {
-      setEdit(false);
-      props.onSave(value);
-    }
-  };
+    const isConfirmed = window.confirm("Are you sure?");
+    if (isConfirmed) {
+      if (value?.trim() && props.onSave) {
+        setEdit(false);
+        props.onSave(value);
+      }
+    };
+  }
 
   const onChangeTitle = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setValue(event.currentTarget.value);
   };
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.ctrlKey && e.code === "Enter") {
-      e.preventDefault();
-      deactivateEditMode();
-    }
-  };
+
+      if (e.ctrlKey && e.code === "Enter") {
+        e.preventDefault();
+        deactivateEditMode();
+      }
+    };
+
 
   const handleClose = () => {
+    const isConfirmed = window.confirm("Are you sure?");
+    if (isConfirmed) {
+      setEdit(false);
 
-    setEdit(false);
-  props.onCancel && props.onCancel();
-  };
+      props.onCancel && props.onCancel();
+    };
+  }
 
   return edit ? (
     <>
