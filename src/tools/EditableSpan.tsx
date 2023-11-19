@@ -101,7 +101,8 @@ const TitleName = styled.div`
 display: flex;
 align-items: center;
 width: 100%;
-`;
+`
+
 const style = {
   display: "flex",
   flexDirection: "column",

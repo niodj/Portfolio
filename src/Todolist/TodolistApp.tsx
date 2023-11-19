@@ -126,7 +126,10 @@ export const TodolistApp = () => {
               </>
             )}
             {currentTodolist ? (
-              <Tasks currentTodolist={currentTodolist} />
+              <Tasks
+                currentTodolist={currentTodolist}
+                setCurrentTodo={setCurrentTodo}
+              />
             ) : (
               <div></div>
             )}
