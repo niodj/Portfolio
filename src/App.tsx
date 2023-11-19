@@ -98,7 +98,7 @@ export const App = React.memo(() => {
           <Route path='*' element={<div>.</div>} />
         </Route>
       </Routes>
-      <JokeComponent />
+      
     </Wrapper>
   );
 });
