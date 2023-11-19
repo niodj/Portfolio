@@ -13,7 +13,7 @@ import { Todolist } from "./Todolists";
 import useResize from "../tools/useResize";
 import MenuIcon from "@mui/icons-material/Menu";
 import { IconButton } from "@mui/material";
-
+import CloseIcon from "@mui/icons-material/Close";
 
 export type TaskType = {
   taskid: string;
@@ -29,7 +29,7 @@ export type TodoType = {
 };
 
 export const TodolistApp = () => {
-  const { todolists, isLoading } = useSelector((state: StoreType) => state);
+  const { todolists, isLoading, dark } = useSelector((state: StoreType) => state);
   const [currentTodo, setCurrentTodo] = useState("");
   const [initialized, setInitialized] = useState(false);
   const [width, height] = useResize();
@@ -90,7 +90,7 @@ export const TodolistApp = () => {
   };
 
   return (
-    <Wrapper>
+    <Wrapper $dark={dark.dark}>
       {isLoading.isLoading ? (
         <Isloading />
       ) : (
@@ -110,11 +110,13 @@ export const TodolistApp = () => {
               <>
                 {burgerState ? (
                   <div className='burgerMenu'>
+                    <IconButton onClick={closeBurger}>
+                      <CloseIcon color='primary'></CloseIcon>
+                    </IconButton>
                     <Todolist
                       changeTodo={changeTodo}
                       setCurrentTodo={setCurrentTodo}
                     />
-                    <IconButton onClick={closeBurger}>Close</IconButton>
                   </div>
                 ) : (
                   <div className='burger'>
@@ -140,7 +142,7 @@ export const TodolistApp = () => {
   );
 };
 
-const Wrapper = styled.div`
+const Wrapper = styled.div<{ $dark: boolean }>`
   //position: relative;
   width: 100%;
   .workWindow {
@@ -153,12 +155,13 @@ const Wrapper = styled.div`
     margin-left: 15px;
   }
   .burgerMenu {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
-    width: 80%;
+    width: 85%;
     height: 100%;
-    background-color: #fff;
+    background: rgba(0, 0, 0, 0.8);
+    color: ${(props: { $dark: boolean }) => (props.$dark ? "green" : "black")};
     padding: 20px;
     z-index: 2;
   }
