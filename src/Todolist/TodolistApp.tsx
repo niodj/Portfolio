@@ -6,10 +6,14 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { RootAction, StoreType } from "../state";
 import { ThunkDispatch } from "redux-thunk/es/types";
-import { addTodoListThunk, fetchTodoListsThunk } from "./thunksActions";
+import {  fetchTodoListsThunk } from "./thunksActions";
 import { Isloading } from "../tools/IsLoading/IsLoading";
 import { NavLink } from "react-router-dom";
 import { Todolist } from "./Todolists";
+import useResize from "../tools/useResize";
+import MenuIcon from "@mui/icons-material/Menu";
+import { IconButton } from "@mui/material";
+
 
 export type TaskType = {
   taskid: string;
@@ -28,10 +32,9 @@ export const TodolistApp = () => {
   const { todolists, isLoading } = useSelector((state: StoreType) => state);
   const [currentTodo, setCurrentTodo] = useState("");
   const [initialized, setInitialized] = useState(false);
-
+  const [width, height] = useResize();
   const dispatch: ThunkDispatch<StoreType, any, RootAction> = useDispatch();
-
-
+  const [burgerState, setburgerState] = useState(false);
   //получение тудулистов
   useEffect(() => {
     const fetchData = async () => {
@@ -39,10 +42,10 @@ export const TodolistApp = () => {
         dispatch({ type: "LOADING" });
         await dispatch(fetchTodoListsThunk());
         dispatch({ type: "LOADED" });
-         setInitialized(true);
+        setInitialized(true);
       } catch (error) {
-        alert('no todo');
-        console.log('err'+ error)
+        alert("no todo");
+        console.log("err" + error);
         // Обработка ошибок при загрузке данных
       }
     };
@@ -56,14 +59,11 @@ export const TodolistApp = () => {
     }
   }, [initialized]);
 
-
-
   //добавление листа
 
-
   const currentTodolist = todolists.find(
-  (item: any) => item.todoid === currentTodo
-);
+    (item: any) => item.todoid === currentTodo
+  );
 
   const changeTodo = async (todoid: string) => {
     try {
@@ -71,11 +71,22 @@ export const TodolistApp = () => {
       await dispatch(fetchTodoListsThunk());
       dispatch({ type: "LOADED" });
       setCurrentTodo(todoid);
+       setburgerState(false);
     } catch (error) {
       alert("no todo");
       console.log("err" + error);
+
     }
-  }
+  };
+
+  const openBurger = () => {
+    setburgerState(true);
+
+  };
+
+  const closeBurger = () => {
+    setburgerState(false);
+  };
 
   return (
     <Wrapper>
@@ -89,11 +100,34 @@ export const TodolistApp = () => {
           </h4>
 
           <div className='workWindow'>
-            <Todolist changeTodo={changeTodo} setCurrentTodo={setCurrentTodo} />
+            {width > 400 ? (
+              <Todolist
+                changeTodo={changeTodo}
+                setCurrentTodo={setCurrentTodo}
+              />
+            ) : (
+              <>
+                {burgerState ? (
+                  <div className='burgerMenu'>
+                    <Todolist
+                      changeTodo={changeTodo}
+                      setCurrentTodo={setCurrentTodo}
+                    />
+                    <IconButton onClick={closeBurger}>Close</IconButton>
+                  </div>
+                ) : (
+                  <div className='burger'>
+                    <IconButton onClick={openBurger}>
+                      <MenuIcon color='primary' />
+                    </IconButton>
+                  </div>
+                )}
+              </>
+            )}
             {currentTodolist ? (
               <Tasks currentTodolist={currentTodolist} />
             ) : (
-              <div>No todolist yet</div>
+              <div></div>
             )}
           </div>
         </>
@@ -103,15 +137,24 @@ export const TodolistApp = () => {
 };
 
 const Wrapper = styled.div`
+  position: relative;
   width: 100%;
   .workWindow {
     width: 100%;
-
     display: flex;
     flex-direction: row;
+    position: relative;
+  }
+  .burger {
+    margin-left: 15px;
+  }
+  .burgerMenu {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 80%;
+    background-color: #fff;
+    padding: 20px;
+    z-index: 2; /* Чтобы .burgerMenu был выше .burger */
   }
 `;
-
-
-
-
