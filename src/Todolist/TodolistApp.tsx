@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 
 import { Tasks } from "./Tasks";
 import { InputForm } from "./InputForm";
@@ -35,6 +35,11 @@ export const TodolistApp = () => {
   const [width, height] = useResize();
   const dispatch: ThunkDispatch<StoreType, any, RootAction> = useDispatch();
   const [burgerState, setburgerState] = useState(false);
+
+
+  //setCurrentScroll(window.scrollY);
+  //window.scrollTo(0, scroll);
+
   //получение тудулистов
   useEffect(() => {
     const fetchData = async () => {
@@ -46,7 +51,6 @@ export const TodolistApp = () => {
       } catch (error) {
         alert("no todo");
         console.log("err" + error);
-        // Обработка ошибок при загрузке данных
       }
     };
 
@@ -59,8 +63,7 @@ export const TodolistApp = () => {
     }
   }, [initialized]);
 
-  //добавление листа
-
+  //  смена листа
   const currentTodolist = todolists.find(
     (item: any) => item.todoid === currentTodo
   );
@@ -71,17 +74,15 @@ export const TodolistApp = () => {
       await dispatch(fetchTodoListsThunk());
       dispatch({ type: "LOADED" });
       setCurrentTodo(todoid);
-       setburgerState(false);
+      setburgerState(false);
     } catch (error) {
       alert("no todo");
       console.log("err" + error);
-
     }
   };
 
   const openBurger = () => {
     setburgerState(true);
-
   };
 
   const closeBurger = () => {
@@ -137,7 +138,7 @@ export const TodolistApp = () => {
 };
 
 const Wrapper = styled.div`
-  position: relative;
+  //position: relative;
   width: 100%;
   .workWindow {
     width: 100%;
@@ -156,6 +157,6 @@ const Wrapper = styled.div`
     height: 100%;
     background-color: #fff;
     padding: 20px;
-    z-index: 2; /* Чтобы .burgerMenu был выше .burger */
+    z-index: 2;
   }
 `;

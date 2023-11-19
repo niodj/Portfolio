@@ -33,7 +33,7 @@ const Wrapper = styled.div`
     border: 1px solid #313131;
     border-radius: 12px;
     background-color: #fefae1;
-    overflow: hidden;
+    
     display: flex;
     flex-direction: column;
     justify-content: flex-end;

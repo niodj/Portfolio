@@ -105,7 +105,7 @@ width: 100%;
 const style = {
   display: "flex",
   flexDirection: "column",
-  position: "absolute" as "absolute",
+  position: "fixed" as "fixed", // Изменено на fixed
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
