@@ -45,6 +45,7 @@ export const TodolistApp = () => {
   //получение тудулистов
   useEffect(() => {
     const fetchData = async () => {
+
       try {
         dispatch({ type: "LOADING" });
         await dispatch(fetchTodoListsThunk());
@@ -74,7 +75,7 @@ export const TodolistApp = () => {
   );
 
   const changeTodo = async (todoid: string) => {
-    dispatch({ type: "CHANGE_SCROLL", scroll: window.scrollY });
+     await dispatch({ type: "CHANGE_SCROLL", scroll: window.scrollY });
     try {
       dispatch({ type: "LOADING" });
       await dispatch(fetchTodoListsThunk());
@@ -96,13 +97,13 @@ export const TodolistApp = () => {
     setburgerState(false);
   };
 
-useEffect(() => {
+
   window.scrollTo(0, scroll.scroll);
-}, [scroll]);
+
 
   return (
     <Wrapper $dark={dark.dark}>
-      {scroll.scroll}
+
       {isLoading.isLoading ? (
         <Isloading />
       ) : (

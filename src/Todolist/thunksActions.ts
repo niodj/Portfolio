@@ -1,14 +1,15 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 import { Dispatch } from "redux";
-import {   serverPatch, thunkType } from "../state";
-import { todoActions } from "./todoReducer";
+import {   RootAction, StoreType, serverPatch, thunkType } from "../state";
+
 import { v1 } from "uuid";
 import { useDispatch } from "react-redux";
+import { ThunkDispatch } from "redux-thunk";
 
 
 export const fetchTodoListsThunk = () => {
-  return async (dispatch: Dispatch<todoActions>): Promise<void> => {
+  return async (dispatch: Dispatch<RootAction>): Promise<void> => {
     try {
       const token = Cookies.get("token");
       const email = Cookies.get("email");
@@ -23,11 +24,10 @@ export const fetchTodoListsThunk = () => {
           config
         );
         dispatch({ type: "RECEIVE_TODO", payload: response.data });
-
       }
     } catch (error) {
       console.error("Ошибка при получении списка тудулистов:", error);
-      alert('Error get todolists. Check your internet conection');
+      alert("Error get todolists. Check your internet conection");
     }
   };
 };

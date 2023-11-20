@@ -6,11 +6,10 @@ import { Button, Checkbox, IconButton } from "@mui/material";
 import { blue } from "@mui/material/colors";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useDispatch } from 'react-redux';
-import { RootAction, StoreType, serverPatch } from '../state';
-import { todoActions } from "./todoReducer";
+import { RootAction, StoreType } from '../state';
 import { TaskType, TodoType } from './TodolistApp';
 import { ThunkDispatch } from 'redux-thunk/es/types';
-import { addNewTaskThunk,  removeTaskThunk, removeTodoThunk, updateCheckedThunk, updateTaskNameThunk, updateTodoNameThunk } from './thunksActions';
+import { addNewTaskThunk,  removeTaskThunk, updateCheckedThunk, updateTaskNameThunk, updateTodoNameThunk } from './thunksActions';
 import { useSelector } from 'react-redux';
 
 type PropsType = {
@@ -21,20 +20,21 @@ type PropsType = {
 export const Tasks = (props: PropsType) => {
   const dark = useSelector((state: StoreType) => state.dark.dark);
   const dispatch: ThunkDispatch<StoreType, any, RootAction> = useDispatch();
-const todolists = useSelector((state: StoreType) => state.todolists);
+const { scroll } = useSelector(  (state: StoreType) => state
+);
 
 
-  const addNewTask = (trimmedValue: string) => {
+  const addNewTask = async (trimmedValue: string) => {
+    await dispatch({ type: "CHANGE_SCROLL", scroll: window.scrollY });
     dispatch({ type: "LOADING" });
-    dispatch(addNewTaskThunk(props.currentTodolist.todoid, trimmedValue)).then(
-      () => {
+    await dispatch(addNewTaskThunk(props.currentTodolist.todoid, trimmedValue))
         dispatch({ type: "LOADED" });
       }
-    );
-  };
+
 
   //удаление таски
-const removeTask = async (taskid: string) => {
+  const removeTask = async (taskid: string) => {
+      await dispatch({ type: "CHANGE_SCROLL", scroll: window.scrollY });
   const isConfirmed = window.confirm("Are you sure?");
   if (isConfirmed) {
     try {
@@ -52,6 +52,7 @@ const removeTask = async (taskid: string) => {
 
   //обновление checked
   const updateChecked = (taskid: string, checked: boolean) => {
+       await dispatch({ type: "CHANGE_SCROLL", scroll: window.scrollY });
     dispatch({ type: "LOADING" });
     dispatch(
       updateCheckedThunk(props.currentTodolist.todoid, taskid, checked)
@@ -61,10 +62,11 @@ const removeTask = async (taskid: string) => {
   };
 
   //обновление имени task
-  const updateTaskName = (taskid: string, newName: string) => {
+  const updateTaskName = async (taskid: string, newName: string) => {
+    await dispatch({ type: "CHANGE_SCROLL", scroll: window.scrollY });
     dispatch({ type: "LOADING" });
     dispatch(
-      updateTaskNameThunk(props.currentTodolist.todoid, taskid, newName)
+      await updateTaskNameThunk(props.currentTodolist.todoid, taskid, newName)
     ).then(() => {
       dispatch({ type: "LOADED" });
     });
@@ -72,6 +74,7 @@ const removeTask = async (taskid: string) => {
 
   //обновление имени todo
   const updateTodoName = async (newName: string) => {
+       await dispatch({ type: "CHANGE_SCROLL", scroll: window.scrollY });
     dispatch({ type: "LOADING" });
     dispatch(updateTodoNameThunk(props.currentTodolist.todoid, newName)).then(
       () => {
@@ -81,23 +84,20 @@ const removeTask = async (taskid: string) => {
   };
 
   //удаление листа
-const removeListHandler = (todoid: string) => {
-  const isConfirmed = window.confirm("Are you sure?");
-  if (isConfirmed) {
-    try {
-      dispatch({ type: "LOADING" });
-      dispatch(removeTodoThunk(todoid)).then(() => {
-        if (todolists[0].todoid) {
-          props.setCurrentTodo(todolists[0].todoid);
-        }
-        dispatch({ type: "LOADED" });
-      });
-    } catch (error) {
-      console.error("Error removing task:", error);
-    }
-  }
-};
-
+  const removeListHandler = async (taskid: string) => {
+     await dispatch({ type: "CHANGE_SCROLL", scroll: window.scrollY });
+   const isConfirmed = window.confirm("Are you sure?");
+   if (isConfirmed) {
+     try {
+       dispatch({ type: "LOADING" });
+       await dispatch(removeTaskThunk(props.currentTodolist.todoid, taskid));
+       dispatch({ type: "LOADED" });
+     } catch (error) {
+       // Обработка ошибок, если необходимо
+       console.error("Error removing task:", error);
+     }
+   }
+ };
 
 
 
@@ -122,6 +122,7 @@ const removeListHandler = (todoid: string) => {
   function changeFilter(value: string) {
     setFilter(value);
   }
+  window.scrollTo(0, scroll.scroll);
 
   return (
     <Wrapper $dark={dark}>

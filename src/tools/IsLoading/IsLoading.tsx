@@ -1,8 +1,14 @@
 
+import { ThunkDispatch } from "redux-thunk";
 import styled from "styled-components";
+import { RootAction, StoreType } from "../../state";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+
 
 
 export const Isloading = () => {
+
 
   return (
     <Wrapper>
