@@ -87,7 +87,7 @@ export const App = React.memo(() => {
 
       <Routes>
         <Route path='/' element={<NavMenu dark={dark} />}>
-          <Route index element={<Practice />}></Route>
+          <Route index element={<TodolistApp />}></Route>
           <Route path='costlist' element={<CostListApp />} />
           <Route path='counterapp' element={<CounterApp />} />
           <Route path='todolistapp' element={<TodolistApp />} />
@@ -98,7 +98,6 @@ export const App = React.memo(() => {
           <Route path='*' element={<div>.</div>} />
         </Route>
       </Routes>
-      
     </Wrapper>
   );
 });

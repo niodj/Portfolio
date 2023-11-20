@@ -29,16 +29,17 @@ export type TodoType = {
 };
 
 export const TodolistApp = () => {
-  const { todolists, isLoading, dark } = useSelector(
-    (state: StoreType) => state
-  );
+  const { todolists, isLoading, dark, scroll } = useSelector((state: StoreType) => state);
+
   const [currentTodo, setCurrentTodo] = useState("");
   const [initialized, setInitialized] = useState(false);
   const [width, height] = useResize();
   const dispatch: ThunkDispatch<StoreType, any, RootAction> = useDispatch();
   const [burgerState, setburgerState] = useState(false);
 
-  //setCurrentScroll(window.scrollY);
+
+
+  //window.scrollY;
   //window.scrollTo(0, scroll);
 
   //получение тудулистов
@@ -61,8 +62,11 @@ export const TodolistApp = () => {
   useEffect(() => {
     if (todolists && todolists.length > 0 && initialized) {
       setCurrentTodo(todolists[0].todoid);
+
     }
   }, [initialized]);
+
+
 
   //  смена листа
   const currentTodolist = todolists.find(
@@ -70,6 +74,7 @@ export const TodolistApp = () => {
   );
 
   const changeTodo = async (todoid: string) => {
+    dispatch({ type: "CHANGE_SCROLL", scroll: window.scrollY });
     try {
       dispatch({ type: "LOADING" });
       await dispatch(fetchTodoListsThunk());
@@ -82,6 +87,7 @@ export const TodolistApp = () => {
     }
   };
 
+
   const openBurger = () => {
     setburgerState(true);
   };
@@ -90,8 +96,13 @@ export const TodolistApp = () => {
     setburgerState(false);
   };
 
+useEffect(() => {
+  window.scrollTo(0, scroll.scroll);
+}, [scroll]);
+
   return (
     <Wrapper $dark={dark.dark}>
+      {scroll.scroll}
       {isLoading.isLoading ? (
         <Isloading />
       ) : (
