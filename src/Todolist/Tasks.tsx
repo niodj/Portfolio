@@ -51,7 +51,7 @@ const { scroll } = useSelector(  (state: StoreType) => state
 
 
   //обновление checked
-  const updateChecked = (taskid: string, checked: boolean) => {
+  const updateChecked = async (taskid: string, checked: boolean) => {
        await dispatch({ type: "CHANGE_SCROLL", scroll: window.scrollY });
     dispatch({ type: "LOADING" });
     dispatch(
