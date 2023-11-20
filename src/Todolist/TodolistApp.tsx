@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { RootAction, StoreType } from "../state";
 import { ThunkDispatch } from "redux-thunk/es/types";
-import {  fetchTodoListsThunk } from "./thunksActions";
+import { fetchTodoListsThunk } from "./thunksActions";
 import { Isloading } from "../tools/IsLoading/IsLoading";
 import { NavLink } from "react-router-dom";
 import { Todolist } from "./Todolists";
@@ -29,13 +29,14 @@ export type TodoType = {
 };
 
 export const TodolistApp = () => {
-  const { todolists, isLoading, dark } = useSelector((state: StoreType) => state);
+  const { todolists, isLoading, dark } = useSelector(
+    (state: StoreType) => state
+  );
   const [currentTodo, setCurrentTodo] = useState("");
   const [initialized, setInitialized] = useState(false);
   const [width, height] = useResize();
   const dispatch: ThunkDispatch<StoreType, any, RootAction> = useDispatch();
   const [burgerState, setburgerState] = useState(false);
-
 
   //setCurrentScroll(window.scrollY);
   //window.scrollTo(0, scroll);
@@ -99,33 +100,37 @@ export const TodolistApp = () => {
             this component works with the node js server on AWS Linux. Database
             is MongoDB
           </h4>
-
-          <div className='workWindow'>
+          {width < 400 ? (
+            <>
+              {burgerState ? (
+                <div className='burgerMenu'>
+                  <IconButton onClick={closeBurger}>
+                    <CloseIcon color='primary'></CloseIcon>
+                  </IconButton>
+                  <Todolist
+                    changeTodo={changeTodo}
+                    setCurrentTodo={setCurrentTodo}
+                  />
+                </div>
+              ) : (
+                <div className='burger'>
+                  <IconButton onClick={openBurger}>
+                    <MenuIcon color='primary' />
+                  </IconButton>
+                </div>
+              )}
+            </>
+          ) : (
+            <></>
+          )}
+          <div className='tasks'>
             {width > 400 ? (
               <Todolist
                 changeTodo={changeTodo}
                 setCurrentTodo={setCurrentTodo}
               />
             ) : (
-              <>
-                {burgerState ? (
-                  <div className='burgerMenu'>
-                    <IconButton onClick={closeBurger}>
-                      <CloseIcon color='primary'></CloseIcon>
-                    </IconButton>
-                    <Todolist
-                      changeTodo={changeTodo}
-                      setCurrentTodo={setCurrentTodo}
-                    />
-                  </div>
-                ) : (
-                  <div className='burger'>
-                    <IconButton onClick={openBurger}>
-                      <MenuIcon color='primary' />
-                    </IconButton>
-                  </div>
-                )}
-              </>
+              <></>
             )}
             {currentTodolist ? (
               <Tasks
@@ -133,7 +138,7 @@ export const TodolistApp = () => {
                 setCurrentTodo={setCurrentTodo}
               />
             ) : (
-              <div></div>
+              <></>
             )}
           </div>
         </>
@@ -148,11 +153,13 @@ const Wrapper = styled.div<{ $dark: boolean }>`
   .workWindow {
     width: 100%;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     position: relative;
   }
   .burger {
     margin-left: 15px;
+    display: flex;
+    align-items: flex-start;
   }
   .burgerMenu {
     position: fixed;
@@ -164,5 +171,9 @@ const Wrapper = styled.div<{ $dark: boolean }>`
     color: ${(props: { $dark: boolean }) => (props.$dark ? "green" : "black")};
     padding: 20px;
     z-index: 2;
+  }
+  .tasks{
+    display: flex;
+
   }
 `;
