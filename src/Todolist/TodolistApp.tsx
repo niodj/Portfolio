@@ -104,9 +104,12 @@ export const TodolistApp = () => {
             <>
               {burgerState ? (
                 <div className='burgerMenu'>
-                  <IconButton onClick={closeBurger}>
-                    <CloseIcon color='primary'></CloseIcon>
-                  </IconButton>
+                    <div onClick={closeBurger} className="close">
+                      Close
+                    <IconButton>
+                      <CloseIcon color='primary'></CloseIcon>
+                    </IconButton>
+                  </div>
                   <Todolist
                     changeTodo={changeTodo}
                     setCurrentTodo={setCurrentTodo}
@@ -168,12 +171,15 @@ const Wrapper = styled.div<{ $dark: boolean }>`
     width: 85%;
     height: 100%;
     background: rgba(0, 0, 0, 0.8);
-    color: ${(props: { $dark: boolean }) => (props.$dark ? "green" : "black")};
+    color: white;
+    font-size: 20px;
     padding: 20px;
     z-index: 2;
   }
-  .tasks{
+  .tasks {
     display: flex;
-
+  }
+  .close{
+    margin-bottom:20px;
   }
 `;
