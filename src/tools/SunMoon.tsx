@@ -1,9 +1,9 @@
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import { StoreType } from "../state";
+import { StoreType } from "../store";
 
 export const SunMoon = () => {
-  const dark = useSelector((state:StoreType)=>state.dark.dark)
+  const dark = useSelector((state: StoreType) => state.appProp.dark);
   return (
     <RotatingDiv $dark={dark}>
       <img
@@ -20,7 +20,7 @@ export const SunMoon = () => {
   );
 };
 
-const RotatingDiv = styled.div<{$dark:boolean}>`
+const RotatingDiv = styled.div<{ $dark: boolean }>`
   margin-bottom: -50px;
   animation: rotation 70s infinite linear;
   @keyframes rotation {
@@ -32,20 +32,22 @@ const RotatingDiv = styled.div<{$dark:boolean}>`
     }
   }
 
-
   .imgdark {
-   position: absolute;
+    position: absolute;
     width: 200px;
     height: 200px;
     transition: opacity 6s ease-in-out; /* Плавное изменение opacity */
-    opacity: ${(props) => (props.$dark ? 1 : 0)}; /* Прозрачность зависит от props.dark */
+    opacity: ${(props) =>
+      props.$dark ? 1 : 0}; /* Прозрачность зависит от props.dark */
   }
 
   .imgnodark {
-
     width: 200px;
     height: 200px;
     transition: opacity 6s ease-in-out; /* Плавное изменение opacity */
-    opacity: ${(props) => (props.$dark ? 0 : 1)}; /* Прозрачность инвертирована относительно props.dark */
+    opacity: ${(props) =>
+      props.$dark
+        ? 0
+        : 1}; /* Прозрачность инвертирована относительно props.dark */
   }
 `;

@@ -1,158 +1,168 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
-import {Button} from "@mui/material";
-import { useSelector } from 'react-redux';
-import { StoreType } from '../state';
+import { Button } from "@mui/material";
+import { useSelector } from "react-redux";
+import { StoreType } from "../store";
 
 type TableType = {
-    id: number;
-    first_name: string;
-    last_name: string;
-}
+  id: number;
+  first_name: string;
+  last_name: string;
+};
 
 export const SqlConnect = () => {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [tableData, setTableData] = useState<TableType[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<null | string>(null);
+  const dark = useSelector((state: StoreType) => state.appProp.dark);
+  useEffect(() => {
+    axios.get<any>("https://asfalter.com.ua/script.php").then((response) => {
+      setTableData(response.data);
+      setLoading(false);
+    });
+  }, []);
 
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [tableData, setTableData] = useState<TableType[]>([]);
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState<null | string>(null)
-    const dark = useSelector((state:StoreType)=>state.dark.dark)
-    useEffect(() => {
-        axios.get<any>('https://asfalter.com.ua/script.php').then(response => {
-            setTableData(response.data);
-            setLoading(false)
-        })
-    }, []);
-
-    const handleSubmit = (event: any) => {
-        event.preventDefault()
-        if (firstName.trim() && lastName.trim()) {
-            event.preventDefault();
-            axios.post('https://asfalter.com.ua/script.php', {firstName, lastName}, {
-                headers: {'Content-Type': 'application/json'}
-            }).then(response => {
-                const data = response.data;
-                setTableData(data);
-                setFirstName('')
-                setLastName('')
-                setError(null)
-            })
-        } else {
-            setError('Empty string');
+  const handleSubmit = (event: any) => {
+    event.preventDefault();
+    if (firstName.trim() && lastName.trim()) {
+      event.preventDefault();
+      axios
+        .post(
+          "https://asfalter.com.ua/script.php",
+          { firstName, lastName },
+          {
+            headers: { "Content-Type": "application/json" },
+          }
+        )
+        .then((response) => {
+          const data = response.data;
+          setTableData(data);
+          setFirstName("");
+          setLastName("");
+          setError(null);
+        });
+    } else {
+      setError("Empty string");
+    }
+  };
+  const handleDelete = (id: number) => {
+    axios
+      .post(
+        "https://asfalter.com.ua/script.php",
+        { action: "delete", id },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
+      )
+      .then((response) => {
+        const data = response.data;
+        setTableData(data);
+      });
+  };
+  return (
+    <Wrapper $dark={dark}>
+      <Title>
+        This component keeps names in SQL database. PHP script is also added
+        into the .tsx in comments{" "}
+      </Title>
 
-    };
-    const handleDelete = (id: number) => {
-
-        axios.post('https://asfalter.com.ua/script.php', {action: 'delete', id}, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-            .then(response => {
-                const data = response.data;
-                setTableData(data);
-            });
-    };
-    return (
-        <Wrapper $dark={dark}>
-            <Title>This component keeps names in SQL database.
-                PHP script is also added into the .tsx in comments </Title>
-
-            <TableForm onSubmit={handleSubmit}>
-                <div>
-                    <FormFieldName>
-                        Name:
-                    </FormFieldName>
-                    <input type="text" value={firstName} onChange={e => setFirstName(e.target.value)}/>
-                    {firstName && error ? <div></div> : <Error>{error}</Error>}
-                </div>
-                <div>
-                    <FormFieldName>
-                        LastName:
-                    </FormFieldName>
-                    <input type="text" value={lastName} onChange={e => setLastName(e.target.value)}/>
-                    {lastName && error ? <div></div> : <Error>{error}</Error>}
-                </div>
-                <Button type="submit" value="Add new member" variant={"outlined"}>Add</Button>
-            </TableForm>
-            {loading ? 'loading' :
-                <table>
-                    <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>LastName</th>
-                        <th>Action</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {tableData.map(row => (
-                        <tr key={row.id}>
-                            <td>{row.first_name}</td>
-                            <td>{row.last_name}</td>
-                            <td>
-                                <Button onClick={() => handleDelete(row.id)}>Delete</Button>
-                            </td>
-                        </tr>
-                    ))}
-                    </tbody>
-                </table>
-            }
-        </Wrapper>
-
-    );
-}
-
+      <TableForm onSubmit={handleSubmit}>
+        <div>
+          <FormFieldName>Name:</FormFieldName>
+          <input
+            type='text'
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+          />
+          {firstName && error ? <div></div> : <Error>{error}</Error>}
+        </div>
+        <div>
+          <FormFieldName>LastName:</FormFieldName>
+          <input
+            type='text'
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+          />
+          {lastName && error ? <div></div> : <Error>{error}</Error>}
+        </div>
+        <Button type='submit' value='Add new member' variant={"outlined"}>
+          Add
+        </Button>
+      </TableForm>
+      {loading ? (
+        "loading"
+      ) : (
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>LastName</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {tableData.map((row) => (
+              <tr key={row.id}>
+                <td>{row.first_name}</td>
+                <td>{row.last_name}</td>
+                <td>
+                  <Button onClick={() => handleDelete(row.id)}>Delete</Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+    </Wrapper>
+  );
+};
 
 const Wrapper = styled.div<{ $dark: boolean }>`
-
   display: flex;
   flex-direction: column;
   align-items: center;
 
   button {
-
-    padding:0;
-
+    padding: 0;
   }
-
 
   table {
     border-collapse: collapse;
     width: 380px;
-    background: ${(props: { $dark: boolean }) => (props.$dark ? "black" : "white")};
+    background: ${(props: { $dark: boolean }) =>
+      props.$dark ? "black" : "white"};
     color: ${(props: { $dark: boolean }) => (props.$dark ? "green" : "black")};
-
   }
 
   th {
-
-    border: solid ${(props: { $dark: boolean }) => (props.$dark ? "green" : "black")};
+    border: solid
+      ${(props: { $dark: boolean }) => (props.$dark ? "green" : "black")};
   }
 
   td {
-    border: solid ${(props: { $dark: boolean }) => (props.$dark ? "green" : "black")};
+    border: solid
+      ${(props: { $dark: boolean }) => (props.$dark ? "green" : "black")};
     color: ${(props: { $dark: boolean }) => (props.$dark ? "white" : "black")};
   }
-
-`
+`;
 const TableForm = styled.form`
   margin-bottom: 20px;
-
-`
+`;
 const Title = styled.h3`
   text-align: center;
   width: 70%;
-`
+`;
 const FormFieldName = styled.label`
   display: block;
-`
+`;
 const Error = styled.div`
   color: red;
-`
-
+`;
 
 //  <?php
 // $servername = "bora.cityhost.com.ua";

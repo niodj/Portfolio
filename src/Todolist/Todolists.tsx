@@ -1,7 +1,7 @@
 import { styled } from "styled-components";
 import { InputForm } from "./InputForm";
 import { useDispatch, useSelector } from "react-redux";
-import { RootAction, StoreType } from "../state";
+import { RootAction, StoreType } from "../store";
 import { Button, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { ThunkDispatch } from "redux-thunk";
@@ -13,24 +13,19 @@ import {
 import { useState } from "react";
 import { EditableSpan } from "../tools/EditableSpan";
 
-
-export const Todolist = (props:any) => {
-const dark = useSelector((state: StoreType) => state.dark.dark);
-const todolists = useSelector((state: StoreType) => state.todolists);
-const dispatch: ThunkDispatch<StoreType, any, RootAction> = useDispatch();
-const [modalAddTodo, setModalAddTodo] = useState(false);
-
-
+export const Todolist = (props: any) => {
+  const dark = useSelector((state: StoreType) => state.appProp.dark);
+  const todolists = useSelector((state: StoreType) => state.todolists);
+  const dispatch: ThunkDispatch<StoreType, any, RootAction> = useDispatch();
+  const [modalAddTodo, setModalAddTodo] = useState(false);
 
   //add Todo
   const addTodolist = (newName: string) => {
-
-      dispatch({ type: "LOADING" });
-      dispatch(addTodoListThunk(newName))
-        .then(() => dispatch(fetchTodoListsThunk()))
-        .then(() => dispatch({ type: "LOADED" }));
-    };
-
+    dispatch({ type: "LOADING" });
+    dispatch(addTodoListThunk(newName))
+      .then(() => dispatch(fetchTodoListsThunk()))
+      .then(() => dispatch({ type: "LOADED" }));
+  };
 
   return (
     <Wrapper $dark={dark}>
@@ -51,7 +46,7 @@ const [modalAddTodo, setModalAddTodo] = useState(false);
             Add new
           </Button>
 
-            {todolists.map((item: any) => (
+          {todolists.map((item: any) => (
             <div
               className='todoButton'
               key={item.todoid}
@@ -59,7 +54,6 @@ const [modalAddTodo, setModalAddTodo] = useState(false);
             >
               {item.name}
               <span> ({item.tasks.length})</span>
-
             </div>
           ))}
         </>

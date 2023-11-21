@@ -1,16 +1,22 @@
-import  { useState} from 'react';
-import {InputForm} from "./InputForm";
+import { useState } from "react";
+import { InputForm } from "./InputForm";
 import styled from "styled-components";
-import {EditableSpan} from "../tools/EditableSpan";
+import { EditableSpan } from "../tools/EditableSpan";
 import { Button, Checkbox, IconButton } from "@mui/material";
 import { blue } from "@mui/material/colors";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { useDispatch } from 'react-redux';
-import { RootAction, StoreType } from '../state';
-import { TaskType, TodoType } from './TodolistApp';
-import { ThunkDispatch } from 'redux-thunk/es/types';
-import { addNewTaskThunk,  removeTaskThunk, updateCheckedThunk, updateTaskNameThunk, updateTodoNameThunk } from './thunksActions';
-import { useSelector } from 'react-redux';
+import { useDispatch } from "react-redux";
+import { RootAction, StoreType } from "../store";
+import { TaskType, TodoType } from "./TodolistApp";
+import { ThunkDispatch } from "redux-thunk/es/types";
+import {
+  addNewTaskThunk,
+  removeTaskThunk,
+  updateCheckedThunk,
+  updateTaskNameThunk,
+  updateTodoNameThunk,
+} from "./thunksActions";
+import { useSelector } from "react-redux";
 
 type PropsType = {
   currentTodolist: TodoType;
@@ -18,41 +24,35 @@ type PropsType = {
 };
 
 export const Tasks = (props: PropsType) => {
-  const dark = useSelector((state: StoreType) => state.dark.dark);
+  const dark = useSelector((state: StoreType) => state.appProp.dark);
   const dispatch: ThunkDispatch<StoreType, any, RootAction> = useDispatch();
-const { scroll } = useSelector(  (state: StoreType) => state
-);
 
 
   const addNewTask = async (trimmedValue: string) => {
-    await dispatch({ type: "CHANGE_SCROLL", scroll: window.scrollY });
     dispatch({ type: "LOADING" });
-    await dispatch(addNewTaskThunk(props.currentTodolist.todoid, trimmedValue))
-        dispatch({ type: "LOADED" });
-      }
-
+    await dispatch(addNewTaskThunk(props.currentTodolist.todoid, trimmedValue));
+    dispatch({ type: "LOADED" });
+  };
 
   //удаление таски
   const removeTask = async (taskid: string) => {
-      await dispatch({ type: "CHANGE_SCROLL", scroll: window.scrollY });
-  const isConfirmed = window.confirm("Are you sure?");
-  if (isConfirmed) {
-    try {
-      dispatch({ type: "LOADING" });
-      await dispatch(removeTaskThunk(props.currentTodolist.todoid, taskid));
-      dispatch({ type: "LOADED" });
-    } catch (error) {
-      // Обработка ошибок, если необходимо
-      console.error("Error removing task:", error);
 
+    const isConfirmed = window.confirm("Are you sure?");
+    if (isConfirmed) {
+      try {
+        dispatch({ type: "LOADING" });
+        await dispatch(removeTaskThunk(props.currentTodolist.todoid, taskid));
+        dispatch({ type: "LOADED" });
+      } catch (error) {
+        // Обработка ошибок, если необходимо
+        console.error("Error removing task:", error);
+      }
     }
-  }
-};
-
+  };
 
   //обновление checked
   const updateChecked = async (taskid: string, checked: boolean) => {
-       await dispatch({ type: "CHANGE_SCROLL", scroll: window.scrollY });
+
     dispatch({ type: "LOADING" });
     dispatch(
       updateCheckedThunk(props.currentTodolist.todoid, taskid, checked)
@@ -63,7 +63,7 @@ const { scroll } = useSelector(  (state: StoreType) => state
 
   //обновление имени task
   const updateTaskName = async (taskid: string, newName: string) => {
-    await dispatch({ type: "CHANGE_SCROLL", scroll: window.scrollY });
+
     dispatch({ type: "LOADING" });
     dispatch(
       await updateTaskNameThunk(props.currentTodolist.todoid, taskid, newName)
@@ -74,7 +74,7 @@ const { scroll } = useSelector(  (state: StoreType) => state
 
   //обновление имени todo
   const updateTodoName = async (newName: string) => {
-       await dispatch({ type: "CHANGE_SCROLL", scroll: window.scrollY });
+
     dispatch({ type: "LOADING" });
     dispatch(updateTodoNameThunk(props.currentTodolist.todoid, newName)).then(
       () => {
@@ -85,21 +85,19 @@ const { scroll } = useSelector(  (state: StoreType) => state
 
   //удаление листа
   const removeListHandler = async (taskid: string) => {
-     await dispatch({ type: "CHANGE_SCROLL", scroll: window.scrollY });
-   const isConfirmed = window.confirm("Are you sure?");
-   if (isConfirmed) {
-     try {
-       dispatch({ type: "LOADING" });
-       await dispatch(removeTaskThunk(props.currentTodolist.todoid, taskid));
-       dispatch({ type: "LOADED" });
-     } catch (error) {
-       // Обработка ошибок, если необходимо
-       console.error("Error removing task:", error);
-     }
-   }
- };
 
-
+    const isConfirmed = window.confirm("Are you sure?");
+    if (isConfirmed) {
+      try {
+        dispatch({ type: "LOADING" });
+        await dispatch(removeTaskThunk(props.currentTodolist.todoid, taskid));
+        dispatch({ type: "LOADED" });
+      } catch (error) {
+        // Обработка ошибок, если необходимо
+        console.error("Error removing task:", error);
+      }
+    }
+  };
 
   let [filter, setFilter] = useState("all");
   let filtered = [...props.currentTodolist.tasks];
@@ -122,7 +120,7 @@ const { scroll } = useSelector(  (state: StoreType) => state
   function changeFilter(value: string) {
     setFilter(value);
   }
-  window.scrollTo(0, scroll.scroll);
+
 
   return (
     <Wrapper $dark={dark}>
@@ -133,7 +131,9 @@ const { scroll } = useSelector(  (state: StoreType) => state
           title={"Edit todo name"}
         />
 
-        <IconButton onClick={() => removeListHandler(props.currentTodolist.todoid)}>
+        <IconButton
+          onClick={() => removeListHandler(props.currentTodolist.todoid)}
+        >
           <DeleteIcon color='primary' />
         </IconButton>
       </div>
@@ -262,5 +262,3 @@ const LiItem = styled.div<{ $checked: boolean }>`
 
   ${(props) => props.$checked && "opacity: 0.5;"}
 `;
-
-

@@ -13,15 +13,15 @@ import { Button } from "@mui/material";
 import { CostListApp } from "./Costlist/CostListApp";
 import { SocialNetworkApp } from "./SocialNetwork/SocialNetworkApp";
 import { Skills } from "./tools/Skills";
-import {  SendMessage } from "./tools/SendMessage";
+import { SendMessage } from "./tools/SendMessage";
 import { SunMoon } from "./tools/SunMoon";
-import { ClockApp } from "./tools/Clock/ClockApp";
+import { ClockApp } from "./tools/ClockApp";
 import { useDispatch } from "react-redux";
-import { JokeComponent } from "./tools/Weather/JokeComponent";
+
 import Login from "./tools/Login/Login";
 import { Practice } from "./Practice";
 import { useSelector } from "react-redux";
-import { StoreType } from "./state";
+import { StoreType } from "./store";
 
 export const App = React.memo(() => {
   const [width, height] = useResize();
@@ -36,7 +36,7 @@ export const App = React.memo(() => {
       ? dispatch({ type: "NIGHT_NOW" })
       : dispatch({ type: "DAY_NOW" });
   }, []);
-  const dark = useSelector((state: StoreType) => state.dark.dark);
+  const dark = useSelector((state: StoreType) => state.appProp.dark);
   ///////////////
   return (
     <Wrapper $dark={dark} $overflowHidden={isContentOverflowing}>

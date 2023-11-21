@@ -4,10 +4,10 @@ import { Tasks } from "./Tasks";
 import { InputForm } from "./InputForm";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
-import { RootAction, StoreType } from "../state";
+import { RootAction, StoreType } from "../store";
 import { ThunkDispatch } from "redux-thunk/es/types";
 import { fetchTodoListsThunk } from "./thunksActions";
-import { Isloading } from "../tools/IsLoading/IsLoading";
+import { Isloading } from "../tools/IsLoading";
 import { NavLink } from "react-router-dom";
 import { Todolist } from "./Todolists";
 import useResize from "../tools/useResize";
@@ -29,15 +29,12 @@ export type TodoType = {
 };
 
 export const TodolistApp = () => {
-  const { todolists, isLoading, dark, scroll } = useSelector((state: StoreType) => state);
-
+  const state  = useSelector((state: StoreType) => state);
   const [currentTodo, setCurrentTodo] = useState("");
   const [initialized, setInitialized] = useState(false);
   const [width, height] = useResize();
   const dispatch: ThunkDispatch<StoreType, any, RootAction> = useDispatch();
   const [burgerState, setburgerState] = useState(false);
-
-
 
   //window.scrollY;
   //window.scrollTo(0, scroll);
@@ -45,7 +42,6 @@ export const TodolistApp = () => {
   //получение тудулистов
   useEffect(() => {
     const fetchData = async () => {
-
       try {
         dispatch({ type: "LOADING" });
         await dispatch(fetchTodoListsThunk());
@@ -61,21 +57,17 @@ export const TodolistApp = () => {
   }, []);
 
   useEffect(() => {
-    if (todolists && todolists.length > 0 && initialized) {
-      setCurrentTodo(todolists[0].todoid);
-
+    if (state.todolists && state.todolists.length > 0 && initialized) {
+      setCurrentTodo(state.todolists[0].todoid);
     }
   }, [initialized]);
 
-
-
   //  смена листа
-  const currentTodolist = todolists.find(
+  const currentTodolist = state.todolists.find(
     (item: any) => item.todoid === currentTodo
   );
 
   const changeTodo = async (todoid: string) => {
-     await dispatch({ type: "CHANGE_SCROLL", scroll: window.scrollY });
     try {
       dispatch({ type: "LOADING" });
       await dispatch(fetchTodoListsThunk());
@@ -88,7 +80,6 @@ export const TodolistApp = () => {
     }
   };
 
-
   const openBurger = () => {
     setburgerState(true);
   };
@@ -97,14 +88,9 @@ export const TodolistApp = () => {
     setburgerState(false);
   };
 
-
-  window.scrollTo(0, scroll.scroll);
-
-
   return (
-    <Wrapper $dark={dark.dark}>
-
-      {isLoading.isLoading ? (
+    <Wrapper $dark={state.appProp.dark}>
+      {state.appProp.isLoading ? (
         <Isloading />
       ) : (
         <>
@@ -116,8 +102,8 @@ export const TodolistApp = () => {
             <>
               {burgerState ? (
                 <div className='burgerMenu'>
-                    <div onClick={closeBurger} className="close">
-                      Close
+                  <div onClick={closeBurger} className='close'>
+                    Close
                     <IconButton>
                       <CloseIcon color='primary'></CloseIcon>
                     </IconButton>
@@ -191,7 +177,7 @@ const Wrapper = styled.div<{ $dark: boolean }>`
   .tasks {
     display: flex;
   }
-  .close{
-    margin-bottom:20px;
+  .close {
+    margin-bottom: 20px;
   }
 `;

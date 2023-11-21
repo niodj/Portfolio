@@ -1,12 +1,11 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 import { Dispatch } from "redux";
-import {   RootAction, StoreType, serverPatch, thunkType } from "../state";
+import { RootAction, StoreType, serverPatch, thunkType } from "../store";
 
 import { v1 } from "uuid";
 import { useDispatch } from "react-redux";
 import { ThunkDispatch } from "redux-thunk";
-
 
 export const fetchTodoListsThunk = () => {
   return async (dispatch: Dispatch<RootAction>): Promise<void> => {
@@ -32,40 +31,38 @@ export const fetchTodoListsThunk = () => {
   };
 };
 
-
 export const addTodoListThunk = (trimmedValue: string) => {
- return async (dispatch: thunkType) => {
-   //добавление листа
-   try {
-     const token = Cookies.get("token");
-     const email = Cookies.get("email");
-     if (token && email) {
-       const config = {
-         headers: {
-           Authorization: token,
-         },
-       };
-       const todoid = v1(); // Генерируйте уникальный идентификатор для нового тудулиста
-       const newTodoList = {
-         email: email,
-         todoid: todoid,
-         name: trimmedValue,
-         filter: "all",
-         tasks: [],
-       };
+  return async (dispatch: thunkType) => {
+    //добавление листа
+    try {
+      const token = Cookies.get("token");
+      const email = Cookies.get("email");
+      if (token && email) {
+        const config = {
+          headers: {
+            Authorization: token,
+          },
+        };
+        const todoid = v1(); // Генерируйте уникальный идентификатор для нового тудулиста
+        const newTodoList = {
+          email: email,
+          todoid: todoid,
+          name: trimmedValue,
+          filter: "all",
+          tasks: [],
+        };
 
-       await axios.post(`${serverPatch}/todolists`, newTodoList, config);
-     }
-     await dispatch(fetchTodoListsThunk());
-   } catch (error) {
-     console.error("Ошибка при добавлении тудулиста:", error);
-     alert("Error add todolists. Check your internet conection");
-   }
- };
+        await axios.post(`${serverPatch}/todolists`, newTodoList, config);
+      }
+      await dispatch(fetchTodoListsThunk());
+    } catch (error) {
+      console.error("Ошибка при добавлении тудулиста:", error);
+      alert("Error add todolists. Check your internet conection");
+    }
+  };
 };
 
 export const addNewTaskThunk = (todoid: string, name: string) => {
-
   return async (dispatch: thunkType) => {
     try {
       const token = Cookies.get("token");
@@ -87,19 +84,18 @@ export const addNewTaskThunk = (todoid: string, name: string) => {
           newTodoList,
           config
         );
-          await dispatch(fetchTodoListsThunk());
+        await dispatch(fetchTodoListsThunk());
       }
     } catch (error) {
       console.error("Ошибка при добавлении таски:", error);
       alert("Error add task. Check your internet conection");
     }
   };
-}
+};
 
-
-export const removeTaskThunk = (todoid:string, taskid: string) => {
+export const removeTaskThunk = (todoid: string, taskid: string) => {
   return async (dispatch: Dispatch<any>): Promise<void> => {
-     try {
+    try {
       const token = Cookies.get("token");
       const email = Cookies.get("email");
       if (token && email) {
@@ -112,16 +108,16 @@ export const removeTaskThunk = (todoid:string, taskid: string) => {
           `${serverPatch}/tasks/${todoid}/${taskid}`,
           config
         );
-      await dispatch(fetchTodoListsThunk());
+        await dispatch(fetchTodoListsThunk());
       }
     } catch (error) {
-       console.error("Ошибка при удалении  таски:", error);
-       alert("Error delete task. Check your internet conection");
+      console.error("Ошибка при удалении  таски:", error);
+      alert("Error delete task. Check your internet conection");
     }
   };
-}
+};
 
-export const removeTodoThunk = (todoid:string) => {
+export const removeTodoThunk = (todoid: string) => {
   return async (dispatch: thunkType) => {
     //удаление листа
 
@@ -141,48 +137,53 @@ export const removeTodoThunk = (todoid:string) => {
         dispatch(fetchTodoListsThunk()); // Обратите внимание на вызов thunk здесь
       }
     } catch (error) {
-     console.error("Ошибка при удалении  таски:", error);
-     alert("Error delete todo. Check your internet conection");
+      console.error("Ошибка при удалении  таски:", error);
+      alert("Error delete todo. Check your internet conection");
     }
   };
 };
 
-export const updateCheckedThunk = (todoid:string, taskid:string, checked:boolean) => {
+export const updateCheckedThunk = (
+  todoid: string,
+  taskid: string,
+  checked: boolean
+) => {
   return async (dispatch: thunkType) => {
     //обновление checked
 
-      try {
-        const token = Cookies.get("token");
-        const email = Cookies.get("email");
-        if (token && email) {
-          const config = {
-            headers: {
-              Authorization: token,
-            },
-          };
-          const data = {
-            checked: !checked,
-          };
-           await axios.put(
-            `${serverPatch}/tasks/${todoid}/${taskid}`,
-            data,
-            config
-          );
-          dispatch(fetchTodoListsThunk());
-        }
-      } catch (error) {
-        console.error("Ошибка при обновлении состояния задачи:", error);
-           alert("Error update task. Check your internet conection");
+    try {
+      const token = Cookies.get("token");
+      const email = Cookies.get("email");
+      if (token && email) {
+        const config = {
+          headers: {
+            Authorization: token,
+          },
+        };
+        const data = {
+          checked: !checked,
+        };
+        await axios.put(
+          `${serverPatch}/tasks/${todoid}/${taskid}`,
+          data,
+          config
+        );
+        dispatch(fetchTodoListsThunk());
       }
-    };
+    } catch (error) {
+      console.error("Ошибка при обновлении состояния задачи:", error);
+      alert("Error update task. Check your internet conection");
+    }
+  };
 };
 
-
- //обновление имени task
-export const updateTaskNameThunk = (todoid: string, taskid: string, newName: string) => {
-
+//обновление имени task
+export const updateTaskNameThunk = (
+  todoid: string,
+  taskid: string,
+  newName: string
+) => {
   return async (dispatch: thunkType) => {
-
     try {
       const token = Cookies.get("token");
       const email = Cookies.get("email");
@@ -207,35 +208,33 @@ export const updateTaskNameThunk = (todoid: string, taskid: string, newName: str
       alert("Error update task. Check your internet conection");
     }
   };
-}
-
+};
 
 //обновление имени todo
-  export const updateTodoNameThunk =  (todoid: string, newName: string) => {
-    return async (dispatch: thunkType) => {
-      try {
-        const token = Cookies.get("token");
-        const email = Cookies.get("email");
-        if (token && email) {
-          const config = {
-            headers: {
-              Authorization: token,
-            },
-          };
-          const data = {
-            name: newName,
-          };
-          const response = await axios.put(
-            `${serverPatch}/todolists/${todoid}`,
-            data,
-            config
-          );
-          dispatch(fetchTodoListsThunk());
-        }
-      } catch (error) {
-        console.error("Ошибка при обновлении состояния задачи:", error);
-        alert("Error update name todo. Check your internet conection");
+export const updateTodoNameThunk = (todoid: string, newName: string) => {
+  return async (dispatch: thunkType) => {
+    try {
+      const token = Cookies.get("token");
+      const email = Cookies.get("email");
+      if (token && email) {
+        const config = {
+          headers: {
+            Authorization: token,
+          },
+        };
+        const data = {
+          name: newName,
+        };
+        const response = await axios.put(
+          `${serverPatch}/todolists/${todoid}`,
+          data,
+          config
+        );
+        dispatch(fetchTodoListsThunk());
       }
-    };
-  }
-
+    } catch (error) {
+      console.error("Ошибка при обновлении состояния задачи:", error);
+      alert("Error update name todo. Check your internet conection");
+    }
+  };
+};

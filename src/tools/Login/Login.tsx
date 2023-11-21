@@ -4,11 +4,9 @@ import styled from "styled-components";
 import Cookies from "js-cookie";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { RootAction, StoreType, UserState, serverPatch } from "../../state";
-
+import { RootAction, StoreType, UserStateType, serverPatch } from "../../store";
 import { Dispatch } from "redux";
 import { ThunkDispatch } from "redux-thunk";
-import { UserAction } from "./loginReducer";
 import { fetchTodoListsThunk } from "../../Todolist/thunksActions";
 
 const Login: React.FC = () => {
@@ -17,7 +15,7 @@ const Login: React.FC = () => {
   const loggedIn = useSelector((store: StoreType) => store.user.loggedIn);
   const userEmail = useSelector((store: StoreType) => store.user.userEmail);
 
-  const dispatch: ThunkDispatch<UserState, any, RootAction> = useDispatch();
+  const dispatch: ThunkDispatch<UserStateType, any, RootAction> = useDispatch();
 
   useEffect(() => {
     const checkLoginStatus = async () => {
@@ -33,7 +31,9 @@ const Login: React.FC = () => {
           dispatch({ type: "ADD_USER_USEREMAIL", userEmail: emailFromCookie });
         } catch (error) {
           console.error("Ошибка при проверке токена:", error);
-          alert("Error token check. Check your internet conection or accses to cookes");
+          alert(
+            "Error token check. Check your internet conection or accses to cookes"
+          );
         }
       }
     };
@@ -60,9 +60,7 @@ const Login: React.FC = () => {
       //обновление тудулистов при логине
       dispatch(fetchTodoListsThunk()); // Обратите внимание на вызов thunk здесь
     } catch (error) {
-      alert(
-        "Please check your login and password. Also internet conection."
-      );
+      alert("Please check your login and password. Also internet conection.");
       console.error("Ошибка входа!", error);
     }
   };
@@ -85,7 +83,9 @@ const Login: React.FC = () => {
       //обновление тудулистов при входе
       dispatch(fetchTodoListsThunk()); // Обратите внимание на вызов thunk здесь
     } catch (error) {
-      alert("Registration error. This login already used. Also check your internet connection");
+      alert(
+        "Registration error. This login already used. Also check your internet connection"
+      );
       console.error("Ошибка регистрации!", error);
     }
   };
@@ -111,9 +111,7 @@ const Login: React.FC = () => {
       dispatch({ type: "RECEIVE_TODO", payload: [] });
     } catch (error) {
       console.error("Ошибка при выходе пользователя", error);
-      alert(
-        "Exit error. Check your internet connection."
-      );
+      alert("Exit error. Check your internet connection.");
     }
   };
   if (loggedIn) {
@@ -153,7 +151,6 @@ const Login: React.FC = () => {
         />
         <button onClick={handleLogin}>Login</button>
         <button onClick={handleRegister}>Register</button>
-
       </Modal>
     </Wrapper>
   );
@@ -166,7 +163,6 @@ const Logout = styled.div`
   position: fixed;
   top: 10px;
   right: 30px;
-
 `;
 const Backdrop = styled.div`
   position: fixed;

@@ -1,4 +1,4 @@
-import { initialState } from "../state";
+import { initialState } from "../store";
 
 export const counterReducer = (state = initialState.counter, action: any) => {
   switch (action.type) {

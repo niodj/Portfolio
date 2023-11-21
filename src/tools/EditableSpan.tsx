@@ -4,31 +4,29 @@ import { Backdrop, Box, Button, TextField } from "@mui/material";
 import React, { ChangeEvent, useState, useEffect } from "react";
 import { styled } from "styled-components";
 import { useSelector } from "react-redux";
-import { StoreType } from "../state";
+import { StoreType } from "../store";
 
 type EditableSpanProps = {
   title?: string;
   value?: string;
   onSave?: (newName: string) => void;
-  editMode?: boolean
+  editMode?: boolean;
   onCancel?: () => void;
-
 };
 
 export const EditableSpan: React.FC<EditableSpanProps> = (props) => {
   const [edit, setEdit] = useState(false);
   const [value, setValue] = useState(props.value);
 
-
   useEffect(() => {
     if (props.editMode) {
-  setEdit(true)
-}
-  if (edit) {
-    document.body.style.overflow = "hidden";
-  } else {
-    document.body.style.overflow = "auto";
-  }
+      setEdit(true);
+    }
+    if (edit) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
   }, [edit]);
 
   const activateEditMode = () => {
@@ -43,21 +41,19 @@ export const EditableSpan: React.FC<EditableSpanProps> = (props) => {
         setEdit(false);
         props.onSave(value);
       }
-    };
-  }
+    }
+  };
 
   const onChangeTitle = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setValue(event.currentTarget.value);
   };
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
-
-      if (e.ctrlKey && e.code === "Enter") {
-        e.preventDefault();
-        deactivateEditMode();
-      }
-    };
-
+    if (e.ctrlKey && e.code === "Enter") {
+      e.preventDefault();
+      deactivateEditMode();
+    }
+  };
 
   const handleClose = () => {
     const isConfirmed = window.confirm("Are you sure?");
@@ -65,8 +61,8 @@ export const EditableSpan: React.FC<EditableSpanProps> = (props) => {
       setEdit(false);
 
       props.onCancel && props.onCancel();
-    };
-  }
+    }
+  };
 
   return edit ? (
     <>
@@ -98,10 +94,10 @@ export const EditableSpan: React.FC<EditableSpanProps> = (props) => {
 };
 
 const TitleName = styled.div`
-display: flex;
-align-items: center;
-width: 100%;
-`
+  display: flex;
+  align-items: center;
+  width: 100%;
+`;
 
 const style = {
   display: "flex",
@@ -116,4 +112,3 @@ const style = {
   boxShadow: 24,
   p: 4,
 };
-
