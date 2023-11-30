@@ -90,10 +90,8 @@ export const TodolistApp = () => {
 
   return (
     <Wrapper $dark={state.appProp.dark}>
-      {state.appProp.isLoading ? (
-        <Isloading />
-      ) : (
-        <>
+      {state.appProp.isLoading && <Isloading />}
+
           <h4>
             this component works with the node js server on AWS Linux. Database
             is MongoDB
@@ -142,8 +140,7 @@ export const TodolistApp = () => {
               <></>
             )}
           </div>
-        </>
-      )}
+
     </Wrapper>
   );
 };

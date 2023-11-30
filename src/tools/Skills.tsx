@@ -98,6 +98,12 @@ export const Skills = () => {
               <td>SCSS</td>
             </tr>
             <tr>
+              <td>Ant.Desing</td>
+            </tr>
+            <tr>
+              <td>Material-UI</td>
+            </tr>
+            <tr>
               <td>Animation</td>
             </tr>
             <tr>

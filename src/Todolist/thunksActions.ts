@@ -7,8 +7,7 @@ import { v1 } from "uuid";
 import { useDispatch } from "react-redux";
 import { ThunkDispatch } from "redux-thunk";
 
-export const fetchTodoListsThunk = () => {
-  return async (dispatch: Dispatch<RootAction>): Promise<void> => {
+export const fetchTodoListsThunk = () => {return async (dispatch: Dispatch<RootAction>): Promise<void> => {
     try {
       const token = Cookies.get("token");
       const email = Cookies.get("email");
