@@ -68,11 +68,11 @@ export const App = React.memo(() => {
       </div>
 
       <Title>
-        <div>Anton Potapenko JS/TS React Developer</div>
-        <div>Welcome to my pet projects portfolio page</div>
+        <div>Anton Potapenko Full Stack Developer</div>
+        <div>Welcome to the portfolio page of my pet projects</div>
         <div className='bntModalandCv'>
           <a
-            href={"https://asfalter.com.ua/CV_Anton_React.pdf"}
+            href={"https://asfalter.com.ua/CV_Anton_Fullstack_JS.pdf"}
             target={"_blank"}
           >
             <Button>Open my CV</Button>
