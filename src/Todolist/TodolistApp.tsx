@@ -92,55 +92,52 @@ export const TodolistApp = () => {
     <Wrapper $dark={state.appProp.dark}>
       {state.appProp.isLoading && <Isloading />}
 
-          <h4>
-            this component works with the node js server on AWS Linux. Database
-            is MongoDB
-          </h4>
-          {width < 400 ? (
-            <>
-              {burgerState ? (
-                <div className='burgerMenu'>
-                  <div onClick={closeBurger} className='close'>
-                    Close
-                    <IconButton>
-                      <CloseIcon color='primary'></CloseIcon>
-                    </IconButton>
-                  </div>
-                  <Todolist
-                    changeTodo={changeTodo}
-                    setCurrentTodo={setCurrentTodo}
-                  />
-                </div>
-              ) : (
-                <div className='burger'>
-                  <IconButton onClick={openBurger}>
-                    <MenuIcon color='primary' />
-                  </IconButton>
-                </div>
-              )}
-            </>
-          ) : (
-            <></>
-          )}
-          <div className='tasks'>
-            {width > 400 ? (
+      <h4>
+        this component works with the node js server on AWS Linux. Database is
+        MongoDB
+      </h4>
+      {width < 400 ? (
+        <>
+          {burgerState ? (
+            <div className='burgerMenu'>
+              <div onClick={closeBurger} className='close'>
+                Close
+                <IconButton>
+                  <CloseIcon color='primary'></CloseIcon>
+                </IconButton>
+              </div>
               <Todolist
                 changeTodo={changeTodo}
                 setCurrentTodo={setCurrentTodo}
               />
-            ) : (
-              <></>
-            )}
-            {currentTodolist ? (
-              <Tasks
-                currentTodolist={currentTodolist}
-                setCurrentTodo={setCurrentTodo}
-              />
-            ) : (
-              <></>
-            )}
-          </div>
-
+            </div>
+          ) : (
+            <div className='burger'>
+              <IconButton onClick={openBurger}>
+                <MenuIcon color='primary' />
+              </IconButton>
+            </div>
+          )}
+        </>
+      ) : (
+        <></>
+      )}
+      <div className='tasks'>
+        {width > 400 ? (
+          <Todolist changeTodo={changeTodo} setCurrentTodo={setCurrentTodo} />
+        ) : (
+          <></>
+        )}
+        {currentTodolist ? (
+          <Tasks
+            currentTodolist={currentTodolist}
+            setCurrentTodo={setCurrentTodo}
+          />
+        ) : (
+          <></>
+        )}
+      </div>
+      {state.appProp.isLoading && <Isloading />}
     </Wrapper>
   );
 };
