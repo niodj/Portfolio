@@ -40,7 +40,7 @@ const Login: React.FC = () => {
 
     checkLoginStatus();
   }, []);
-  //////////////////////////////////логинизация///////////////////////////
+  //////логинизация///////////////////////////
   const handleLogin = async () => {
     try {
       const response = await axios.post(`${serverPatch}/login`, {
@@ -52,8 +52,8 @@ const Login: React.FC = () => {
       Cookies.set("token", response.data.token, { expires: 7 });
       Cookies.set("email", email, { expires: 7 });
 
-      alert("Успешный вход!");
-      console.log("Успешный вход!", response.data);
+      alert("Succses login");
+
       dispatch({ type: "ADD_USER_setLoggedIn", loggedIn: true });
       dispatch({ type: "ADD_USER_USEREMAIL", userEmail: email });
 
@@ -80,6 +80,7 @@ const Login: React.FC = () => {
       console.log("Успешная регистрация!", response.data);
       dispatch({ type: "ADD_USER_USEREMAIL", userEmail: email });
       handleLogin();
+
       //обновление тудулистов при входе
       dispatch(fetchTodoListsThunk()); // Обратите внимание на вызов thunk здесь
     } catch (error) {

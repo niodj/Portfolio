@@ -19,7 +19,7 @@ import { ClockApp } from "./tools/ClockApp";
 import { useDispatch } from "react-redux";
 
 import Login from "./tools/Login/Login";
-import { Practice } from "./Practice";
+
 import { useSelector } from "react-redux";
 import { StoreType } from "./store";
 
@@ -84,6 +84,11 @@ export const App = React.memo(() => {
         <Rating />
         <Skills />
       </div>
+      <StyledNavLink
+        onClick={() => window.open("https://niodj.github.io/market/", "_blank")}
+      >
+        My current project
+      </StyledNavLink>
 
       <Routes>
         <Route path='/' element={<NavMenu dark={dark} />}>
@@ -154,6 +159,32 @@ const Title = styled.div`
   color: blueviolet;
   text-align: center;
 `;
-function dispatch(arg0: { type: string; isNigth: boolean }) {
-  throw new Error("Function not implemented.");
-}
+
+
+const StyledNavLink = styled.div`
+  text-decoration: none;
+  padding: 1rem;
+  border: lightgreen solid;
+  margin: 10px;
+  color: darkviolet;
+  background: rgba(255, 255, 255, 0.6);
+
+
+  &:hover {
+    background-color: lightgreen;
+    cursor: pointer;
+
+  }
+
+  &.active {
+    background-color: lightgreen;
+    border-radius: 20px;
+  }
+
+  /* &.active:hover {
+    border-radius: 20px;
+
+  } */
+
+
+`

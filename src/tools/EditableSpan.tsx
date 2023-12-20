@@ -3,8 +3,6 @@ import { Backdrop, Box, Button, TextField } from "@mui/material";
 
 import React, { ChangeEvent, useState, useEffect } from "react";
 import { styled } from "styled-components";
-import { useSelector } from "react-redux";
-import { StoreType } from "../store";
 
 type EditableSpanProps = {
   title?: string;

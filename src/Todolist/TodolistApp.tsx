@@ -36,8 +36,6 @@ export const TodolistApp = () => {
   const dispatch: ThunkDispatch<StoreType, any, RootAction> = useDispatch();
   const [burgerState, setburgerState] = useState(false);
 
-  //window.scrollY;
-  //window.scrollTo(0, scroll);
 
   //получение тудулистов
   useEffect(() => {
