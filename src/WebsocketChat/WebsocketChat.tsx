@@ -23,7 +23,7 @@ const clearChat = () => {
     socket.on("chatCleared", () => {
       setChat([]);
     });
-    
+
       socket.on("chatData", ({ messageHistory, newMessage }) => {
         setChat(messageHistory);
       });
@@ -47,7 +47,11 @@ const sendMessage = (e: React.FormEvent) => {
 
   return (
     <div className={s.wrapper}>
-      <h3>Welcome to chatter</h3>
+
+      <h4>
+        This chat operates on WebSockets. If you open multiple tabs, the
+        messages will be instantly synchronized.{" "}
+      </h4>
       <textarea
         value={chat
           .map((payload) => `${payload.userName}: ${payload.message}\n`)
@@ -71,7 +75,7 @@ const sendMessage = (e: React.FormEvent) => {
         }}
       ></Input>
       <Button onClick={sendMessage}>Send</Button>
-      <Button onClick={clearChat}>Send</Button>
+      <Button onClick={clearChat}>Clear Chat</Button>
     </div>
   );
 };
