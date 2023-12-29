@@ -15,6 +15,7 @@ export const NavMenu = React.memo((props: { dark: boolean }) => {
         <Button><StyledNavLink to="/todolistapp">Todolists (AWS Linux + node.js+mongoDB)</StyledNavLink></Button>
         <Button><StyledNavLink to="/queueapp">electronic queue</StyledNavLink></Button>
         <Button><StyledNavLink to="/counterapp">CounterApp</StyledNavLink></Button>
+        <Button><StyledNavLink to="/chat">Websockets Chat</StyledNavLink></Button>
         <Button><StyledNavLink to="/costlist">Cost List</StyledNavLink></Button>
     </Projects>
     <Outlet/>

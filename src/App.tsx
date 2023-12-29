@@ -6,22 +6,19 @@ import { QueueApp } from "./Queue/QueueApp";
 import { Rating } from "./tools/Rating";
 import React, { useEffect, useState } from "react";
 import { SqlConnect } from "./SqlConnect/SqlConnect";
-import { UseParamsApp } from "./tools/UseParamsApp";
 import useResize from "./tools/useResize";
 import { NavMenu } from "./tools/NavMenu";
 import { Button } from "@mui/material";
 import { CostListApp } from "./Costlist/CostListApp";
-import { SocialNetworkApp } from "./SocialNetwork/SocialNetworkApp";
 import { Skills } from "./tools/Skills";
 import { SendMessage } from "./tools/SendMessage";
 import { SunMoon } from "./tools/SunMoon";
 import { ClockApp } from "./tools/ClockApp";
 import { useDispatch } from "react-redux";
-
 import Login from "./tools/Login/Login";
-
 import { useSelector } from "react-redux";
 import { StoreType } from "./store";
+import { WebsocketChat } from "./WebsocketChat/WebsocketChat";
 
 export const App = React.memo(() => {
   const [width, height] = useResize();
@@ -98,8 +95,7 @@ export const App = React.memo(() => {
           <Route path='todolistapp' element={<TodolistApp />} />
           <Route path='queueapp' element={<QueueApp />} />
           <Route path='sqlconnect' element={<SqlConnect />} />
-          <Route path='useparamsapp' element={<UseParamsApp />} />
-          <Route path='socialnetworkapp/*' element={<SocialNetworkApp />} />
+          <Route path='chat' element={<WebsocketChat />} />
           <Route path='*' element={<div>.</div>} />
         </Route>
       </Routes>
