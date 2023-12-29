@@ -3,6 +3,7 @@ import io from "socket.io-client";
 import s from './websocket.module.css'
 import Input from "@mui/material/Input/Input";
 import Button from "@mui/material/Button";
+import { serverPatch } from "../store";
 
  type ChatMessage ={
   userName: string;
@@ -10,7 +11,7 @@ import Button from "@mui/material/Button";
 }
 
 export const WebsocketChat = () => {
-  const socket = io("https://localhost:4444");
+  const socket = io(serverPatch);
   const [userName, setUserName] = useState('Admin');
   const [message, setMessage] = useState("");
   const [chat, setChat] = useState<ChatMessage[]>([]);
