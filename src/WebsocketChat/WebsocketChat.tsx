@@ -10,7 +10,7 @@ import { serverPatch } from "../store";
   message: string;
 }
 export const WebsocketChat: React.FC = () => {
-  // Инициализация соединения с сервером WebSocket
+  // Инициализация соединения с сервером WebSocket. Благодаря юсстейту нет создания повторного соединения при перерендеривании.
   const [socket] = useState(() => io(serverPatch));
 
   // Состояния для имени пользователя, введенного сообщения и истории чата
