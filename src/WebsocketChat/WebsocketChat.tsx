@@ -10,7 +10,7 @@ import Button from "@mui/material/Button";
 }
 
 export const WebsocketChat = () => {
-  const socket = io("http://localhost:4444");
+  const socket = io("https://localhost:4444");
   const [userName, setUserName] = useState('Admin');
   const [message, setMessage] = useState("");
   const [chat, setChat] = useState<ChatMessage[]>([]);
