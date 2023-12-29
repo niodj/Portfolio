@@ -65,7 +65,7 @@ const sendMessage = (e: React.FormEvent) => {
         cols={50}
       />
       <div>
-        User name: {" "}
+        User name:{" "}
         <Input
           value={userName}
           onChange={(e) => {
@@ -73,14 +73,15 @@ const sendMessage = (e: React.FormEvent) => {
           }}
         ></Input>
       </div>
-
-      <Input
-        placeholder='Type message'
-        value={message}
-        onChange={(e) => {
-          setMessage(e.target.value);
-        }}
-      ></Input>
+      <div>
+        <Input
+          placeholder='Type message'
+          value={message}
+          onChange={(e) => {
+            setMessage(e.target.value);
+          }}
+        ></Input>
+      </div>
       <Button onClick={sendMessage}>Send</Button>
       <Button onClick={clearChat}>Clear Chat</Button>
     </div>
