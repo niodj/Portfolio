@@ -9,43 +9,44 @@ import { serverPatch } from "../store";
   userName: string;
   message: string;
 }
+export const WebsocketChat: React.FC = () => {
+  // Инициализация соединения с сервером WebSocket
+  const [socket] = useState(() => io(serverPatch));
 
-export const WebsocketChat = () => {
-  const socket = io(serverPatch);
-  const [userName, setUserName] = useState('Admin');
+  // Состояния для имени пользователя, введенного сообщения и истории чата
+  const [userName, setUserName] = useState("Admin");
   const [message, setMessage] = useState("");
   const [chat, setChat] = useState<ChatMessage[]>([]);
 
-const clearChat = () => {
-  socket.emit("clearChat");
-  };
+  const clearChat = () => {socket.emit("clearChat")};
+  const handleChatCleared = () => {setChat([])};
+  const handleChatData = ({ messageHistory, }: { messageHistory: ChatMessage[]; }) => { setChat(messageHistory); };
 
+// Обработчик события для получения нового сообщения
+    const handleMessage = (payload: ChatMessage) => {setChat((prevChat) => [...prevChat, payload])};
+
+  // Эффект React для подписки на события WebSocket при монтировании компонента
   useEffect(() => {
-    socket.on("chatCleared", () => {
-      setChat([]);
-    });
+      // Подписываемся на события сервера WebSocket
+    socket.on("chatData", handleChatData);
+    socket.on("message", handleMessage);
+    socket.on("chatCleared", handleChatCleared);
 
-      socket.on("chatData", ({ messageHistory }) => {
-        setChat(messageHistory);
-      });
-
-    socket.on("message", (payload: ChatMessage) => {
-      setChat((prevChat) => [...prevChat, payload]);
-    });
+    // Отписываемся от событий при размонтировании компонента
     return () => {
-      socket.off("chatData");
-      socket.off("chatCleared");
-      socket.off("message");
+      socket.off("chatCleared", handleChatCleared);
+      socket.off("chatData", handleChatData);
+      socket.off("message", handleMessage);
     };
-  }, []);
+  }, [socket]);
 
-const sendMessage = (e: React.FormEvent) => {
-  e.preventDefault();
-  if (message.trim() !== "") {
-    socket.emit("message", { userName, message });
-    setMessage("");
-  }
-};
+  // Функция для отправки нового сообщения
+  const sendMessage = (e: any) => {
+    if (message.trim() !== "") {
+      socket.emit("message", { userName, message });
+      setMessage("");
+    }
+  };
 
   return (
     <div className={s.wrapper}>
@@ -73,14 +74,14 @@ const sendMessage = (e: React.FormEvent) => {
           }}
         ></Input>
       </div>
-    
-        <Input
-          placeholder='Type message'
-          value={message}
-          onChange={(e) => {
-            setMessage(e.target.value);
-          }}
-        ></Input>
+
+      <Input
+        placeholder='Type message'
+        value={message}
+        onChange={(e) => {
+          setMessage(e.target.value);
+        }}
+      ></Input>
 
       <Button onClick={sendMessage}>Send</Button>
       <Button onClick={clearChat}>Clear Chat</Button>
