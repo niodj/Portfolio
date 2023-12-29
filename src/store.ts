@@ -4,8 +4,8 @@ import { counterReducer } from "./Counter/counterReducer";
 import { todoActions, todoReducer } from "./Todolist/todoReducer";
 import { IsDarkAction, LoadingAction, appPropReducer } from "./tools/appPropReducer";
 import { LoginAction, loginReducer } from "./tools/Login/loginReducer";
-// export const serverPatch = "https://backend.asfalter.com.ua";
-export const serverPatch = "http://localhost:4444";
+ export const serverPatch = "https://backend.asfalter.com.ua";
+//export const serverPatch = "http://localhost:4444";
 export const initialState = {
   user: {
     email: "",
