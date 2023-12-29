@@ -24,7 +24,7 @@ const clearChat = () => {
       setChat([]);
     });
 
-      socket.on("chatData", ({ messageHistory, newMessage }) => {
+      socket.on("chatData", ({ messageHistory }) => {
         setChat(messageHistory);
       });
 
@@ -32,7 +32,8 @@ const clearChat = () => {
       setChat((prevChat) => [...prevChat, payload]);
     });
     return () => {
-      socket.off("messageHistory");
+      socket.off("chatData");
+      socket.off("chatCleared");
       socket.off("message");
     };
   }, []);
@@ -47,10 +48,12 @@ const sendMessage = (e: React.FormEvent) => {
 
   return (
     <div className={s.wrapper}>
-
       <h4>
-        This chat operates on WebSockets. If you open multiple tabs, the
-        messages will be instantly synchronized.{" "}
+        This chat operates on WebSockets. If you{" "}
+        <a href={window.location.href} target='_blank'>
+          open new multiple tabs
+        </a>
+        , the messages will be instantly synchronized.
       </h4>
       <textarea
         value={chat
@@ -60,13 +63,16 @@ const sendMessage = (e: React.FormEvent) => {
         rows={10}
         cols={50}
       />
-      <Input
-        value={userName}
-        onChange={(e) => {
-          setUserName(e.target.value);
-        }}
-      ></Input>
-      :
+      <div>
+        User name: {" "}
+        <Input
+          value={userName}
+          onChange={(e) => {
+            setUserName(e.target.value);
+          }}
+        ></Input>
+      </div>
+
       <Input
         placeholder='Type message'
         value={message}
