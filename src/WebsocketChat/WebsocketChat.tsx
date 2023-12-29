@@ -73,7 +73,7 @@ const sendMessage = (e: React.FormEvent) => {
           }}
         ></Input>
       </div>
-      <div>
+    
         <Input
           placeholder='Type message'
           value={message}
@@ -81,7 +81,7 @@ const sendMessage = (e: React.FormEvent) => {
             setMessage(e.target.value);
           }}
         ></Input>
-      </div>
+
       <Button onClick={sendMessage}>Send</Button>
       <Button onClick={clearChat}>Clear Chat</Button>
     </div>

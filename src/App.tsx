@@ -84,7 +84,7 @@ export const App = React.memo(() => {
       <StyledNavLink
         onClick={() => window.open("https://niodj.github.io/market/", "_blank")}
       >
-        My current project
+        My current pet project "Market"
       </StyledNavLink>
 
       <Routes>
