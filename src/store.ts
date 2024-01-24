@@ -4,6 +4,7 @@ import { counterReducer } from "./Counter/counterReducer";
 import { todoActions, todoReducer } from "./Todolist/todoReducer";
 import { IsDarkAction, LoadingAction, appPropReducer } from "./tools/appPropReducer";
 import { LoginAction, loginReducer } from "./tools/Login/loginReducer";
+import { tasktrackerReducer } from "./Tasktracker/TasktrackerReducer";
  export const serverPatch = "https://backend.asfalter.com.ua";
 //export const serverPatch = "http://localhost:4444";
 export const initialState = {
@@ -21,11 +22,43 @@ export const initialState = {
     buttonStatus: false,
     counterState: true,
   },
+
+  tasktracker: {
+    tasks: [
+      {
+        id: 1,
+        priority: "low",
+        user: "Mika",
+        title: "number or short title",
+        startDate: "22/12/2023 12:10",
+        dueDate: "22/12/2023 00:10",
+        description: "Make new feature",
+        statusList: ["added", "on work", "returned for reworking", "done"],
+        status: [
+          {
+            statusdate: "22/12/2023 12:10",
+            user: "",
+            status: "added",
+            statusDescription: "need Accountable person",
+          },
+        ],
+      },
+    ],
+    priorityList: ["low", "middle", "hight"],
+    users: [
+      {
+        id: 1,
+        name: "Mika",
+        accsesGroup: "admin",
+      },
+    ],
+  },
+
   todolists: [],
   sqlConnect: {},
   appProp: {
     isLoading: false,
-    dark: false
+    dark: false,
   },
 };
 
@@ -35,6 +68,20 @@ export type UserStateType = {
   loggedIn: boolean;
   userEmail: string;
 };
+export type TasktrackerType = [
+  prioritysList: [string],
+  priority: string,
+  user: string,
+  title: string,
+  startDate: string,
+  dueDate: string,
+  statusList: [string],
+  status: {
+    user: string;
+    status: string;
+    description: string;
+  }
+]
 
 export type CounterStateType = {
   count: any;
@@ -68,7 +115,7 @@ export const rootReducer = combineReducers({
   todolists: todoReducer,
   appProp: appPropReducer,
   user: loginReducer,
-
+  tasktracker: tasktrackerReducer,
 });
 
 export type StoreType = ReturnType<typeof rootReducer>;

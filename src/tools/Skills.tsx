@@ -17,10 +17,13 @@ export const Skills = () => {
               <td>Typescrypt</td>
             </tr>
             <tr>
-              <td>Redux/Redux Toolkit</td>
+              <td>Redux/Redux</td>
             </tr>
             <tr>
               <td>Node.js/Express</td>
+            </tr>
+            <tr>
+              <td>Websockets</td>
             </tr>
             <tr>
               <td>PHP</td>

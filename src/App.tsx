@@ -19,6 +19,7 @@ import Login from "./tools/Login/Login";
 import { useSelector } from "react-redux";
 import { StoreType } from "./store";
 import { WebsocketChat } from "./WebsocketChat/WebsocketChat";
+import { Tasktracker } from "./Tasktracker/Tasktracker";
 
 export const App = React.memo(() => {
   const [width, height] = useResize();
@@ -69,7 +70,9 @@ export const App = React.memo(() => {
         <div>Welcome to the portfolio page of my pet projects</div>
         <div className='bntModalandCv'>
           <a
-            href={"https://asfalter.com.ua/CV_Anton_Fullstack_JS.pdf"}
+            href={
+              "https://cv.djinni.co/ce/43960c85ce2c1b5b8b0ad72ddae9dd/CV_Anton_Fullstack_JS.pdf"
+            }
             target={"_blank"}
           >
             <Button>Open my CV</Button>
@@ -81,11 +84,7 @@ export const App = React.memo(() => {
         <Rating />
         <Skills />
       </div>
-      <StyledNavLink
-        onClick={() => window.open("https://niodj.github.io/market/", "_blank")}
-      >
-        My current pet project "Market"
-      </StyledNavLink>
+      
 
       <Routes>
         <Route path='/' element={<NavMenu dark={dark} />}>
@@ -96,6 +95,7 @@ export const App = React.memo(() => {
           <Route path='queueapp' element={<QueueApp />} />
           <Route path='sqlconnect' element={<SqlConnect />} />
           <Route path='chat' element={<WebsocketChat />} />
+          <Route path='tasktracker' element={<Tasktracker />} />
           <Route path='*' element={<div>.</div>} />
         </Route>
       </Routes>

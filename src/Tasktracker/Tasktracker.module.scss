@@ -1,0 +1,49 @@
+.wrapper {
+width: 100%;
+}
+
+.tableWrapper {
+   border-collapse: collapse;
+width: 100%;
+margin: 20px;
+}
+.tableWrapper th, td{
+   border:solid black 1px;
+}
+
+
+
+.priority-low{
+  background-color: rgba(144, 238, 144, 0.4)
+}
+.priority-medium {
+  background-color: rgba(173, 216, 230, 0.4);
+}
+
+.priority-high {
+  background-color: rgba(255, 0, 0, 0.4)
+}
+
+.icon{
+  font-size:25px;
+}
+.icon:hover{
+
+  cursor: pointer;
+}
+
+.dates {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.statusUserAndDesc {
+  display: flex;
+  flex-direction: row;
+}
+.statusCell{
+  max-width: 100%;
+  word-break: break-word;
+
+}
