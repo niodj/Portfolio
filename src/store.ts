@@ -4,9 +4,11 @@ import { counterReducer } from "./Counter/counterReducer";
 import { todoActions, todoReducer } from "./Todolist/todoReducer";
 import { IsDarkAction, LoadingAction, appPropReducer } from "./tools/appPropReducer";
 import { LoginAction, loginReducer } from "./tools/Login/loginReducer";
-import { tasktrackerReducer } from "./Tasktracker/TasktrackerReducer";
- export const serverPatch = "https://backend.asfalter.com.ua";
-//export const serverPatch = "http://localhost:4444";
+import {  TasktrackerActions, tasktrackerReducer } from "./Tasktracker/TasktrackerReducer";
+
+
+ //export const serverPatch = "https://backend.asfalter.com.ua";
+export const serverPatch = "http://localhost:4444";
 export const initialState = {
   user: {
     email: "",
@@ -23,37 +25,7 @@ export const initialState = {
     counterState: true,
   },
 
-  tasktracker: {
-    tasks: [
-      {
-        id: 1,
-        priority: "low",
-        user: "Mika",
-        title: "number or short title",
-        startDate: "22/12/2023 12:10",
-        dueDate: "22/12/2023 00:10",
-        description: "Make new feature",
-        statusList: ["added", "on work", "returned for reworking", "done"],
-        status: [
-          {
-            statusdate: "22/12/2023 12:10",
-            user: "",
-            status: "added",
-            statusDescription: "need Accountable person",
-          },
-        ],
-      },
-    ],
-    priorityList: ["low", "middle", "hight"],
-    users: [
-      {
-        id: 1,
-        name: "Mika",
-        accsesGroup: "admin",
-      },
-    ],
-  },
-
+  tasktrackers: [],
   todolists: [],
   sqlConnect: {},
   appProp: {
@@ -68,20 +40,34 @@ export type UserStateType = {
   loggedIn: boolean;
   userEmail: string;
 };
-export type TasktrackerType = [
-  prioritysList: [string],
-  priority: string,
-  user: string,
-  title: string,
-  startDate: string,
-  dueDate: string,
-  statusList: [string],
-  status: {
+export type TaskTrackerState =
+  {
+  id: string,
+  projectTitle: string,
+  description: string,
+  tasks: {
+    id: string;
+    priority: string;
     user: string;
-    status: string;
+    title: string;
+    startDate: string;
+    dueDate: string;
     description: string;
-  }
-]
+    status: {
+      statusdate: string;
+      user: string;
+      status: string;
+      statusDescription: string;
+    }[];
+  }[];
+  statusList: string[];
+  priorityList: string[];
+  users: {
+    id: string;
+    name: string;
+    accessGroup: string[];
+  }[];
+  }[];
 
 export type CounterStateType = {
   count: any;
@@ -107,7 +93,14 @@ export type appPropStateType = {
 
 
 
-export type RootAction = todoActions | LoadingAction | LoginAction | IsDarkAction;
+export type RootAction =
+  | todoActions
+  | LoadingAction
+  | LoginAction
+  | IsDarkAction
+  | TasktrackerActions;
+
+
 
 
 export const rootReducer = combineReducers({
@@ -115,7 +108,7 @@ export const rootReducer = combineReducers({
   todolists: todoReducer,
   appProp: appPropReducer,
   user: loginReducer,
-  tasktracker: tasktrackerReducer,
+  tasktrackers: tasktrackerReducer,
 });
 
 export type StoreType = ReturnType<typeof rootReducer>;

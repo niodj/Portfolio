@@ -1,15 +1,18 @@
 import { Modal, Button } from "react-bootstrap";
 import s from "./PopupAddTask.module.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { StoreType } from "../../store";
+import { RootAction, StoreType } from "../../store";
 import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { userEvent } from "@storybook/testing-library";
+
+import { ThunkDispatch } from "redux-thunk/es/types";
+
 
 type PopupPropsType = {
   onHide: () => void;
   showPopup: boolean;
-  onConfirm: () => void;
+  onConfirm: (data: FormData) => void;
+
 };
 
 type FormData = {
@@ -22,8 +25,9 @@ type FormData = {
 };
 
 export const PopupAddTask = (props: PopupPropsType) => {
-  const tasktracker = useSelector((state: StoreType) => state.tasktracker);
-  const dispatch = useDispatch();
+
+  const tasktrackers = useSelector((state: StoreType) => state.tasktrackers);
+  const dispatch: ThunkDispatch<StoreType, any, RootAction> = useDispatch();
 
   ////////react hook form
   const {
@@ -34,27 +38,24 @@ export const PopupAddTask = (props: PopupPropsType) => {
     formState: { errors },
   } = useForm<FormData>();
 
-const updateDate = ()=>{    const currentDate = new Date().toISOString().slice(0, 16);
-setValue("startDate", currentDate);}
 
   useEffect(() => {
-  updateDate()
+    const currentDate = new Date().toISOString().slice(0, 16);
+    setValue("startDate", currentDate);
 })
-
   ////////////////////////
   const onHide = () => {
-    // Reset form state after submitting
     reset();
     props.onHide();
   };
 
-  const addtask = (data: FormData) => {
-    console.log(data)
-    reset()
-    dispatch({type: "ADD-TASK-TASKTRACKER",});
-    onHide();
-  };
-console.log(tasktracker.priorityList);
+   const onSubmit = (data: FormData) => {
+     props.onConfirm(data);
+     reset();
+     onHide();
+   };
+
+
   return (
     <div>
       <Modal
@@ -64,34 +65,25 @@ console.log(tasktracker.priorityList);
         centered
       >
         <Modal.Header closeButton>
-          <Modal.Title className={s.title}>
-            New task#{" "}
-            {tasktracker.tasks.length
-              ? tasktracker.tasks[tasktracker.tasks.length - 1].id + 1
-              : ""}
-          </Modal.Title>
+          <Modal.Title className={s.title}>New task# </Modal.Title>
         </Modal.Header>
 
         <Modal.Body className={s.modalWrapper}>
-          <form onSubmit={handleSubmit(addtask)} className={s.form}>
+          <form onSubmit={handleSubmit(onSubmit)} className={s.form}>
             <div>
               <label>Title:</label>
               <input
                 type='text'
                 {...register("taskTitle", { required: true })}
                 placeholder='Enter task title'
-
               />
             </div>
 
             <div>
               <label>Accountable:</label>
-              <select
-                {...register("selectedUser", { required: true })}
-
-              >
+              <select {...register("selectedUser", { required: true })}>
                 <option value=''>Select user</option>
-                {tasktracker.users.map((item: any) => (
+                {tasktrackers[0]?.users.map((item: any) => (
                   <option key={item.id} value={item.name}>
                     {item.name}
                   </option>
@@ -101,13 +93,10 @@ console.log(tasktracker.priorityList);
 
             <div>
               <label>Priority:</label>
-              <select
-                {...register("priority", { required: true })}
-
-              >
+              <select {...register("priority", { required: true })}>
                 <option value=''>Select priority</option>
-                {tasktracker.priorityList.map((item: any) => (
-                  <option key={item.id} value={item}>
+                {tasktrackers[0]?.priorityList.map((item: any, idx: number) => (
+                  <option key={idx} value={item}>
                     {item}
                   </option>
                 ))}
@@ -119,17 +108,12 @@ console.log(tasktracker.priorityList);
               <input
                 type='datetime-local'
                 {...register("startDate", { required: true })}
-
               />
             </div>
 
             <div>
               <label>Due date:</label>
-              <input
-                type='datetime-local'
-                {...register("dueDate")}
-
-              />
+              <input type='datetime-local' {...register("dueDate")} />
             </div>
 
             <div>
@@ -137,7 +121,6 @@ console.log(tasktracker.priorityList);
               <textarea
                 {...register("taskDescription")}
                 placeholder='Enter task title'
-             
               />
             </div>
 
@@ -157,3 +140,4 @@ console.log(tasktracker.priorityList);
     </div>
   );
 };
+

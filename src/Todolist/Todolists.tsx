@@ -23,7 +23,6 @@ export const Todolist = (props: any) => {
   const addTodolist = (newName: string) => {
     dispatch({ type: "LOADING" });
     dispatch(addTodoListThunk(newName))
-      .then(() => dispatch(fetchTodoListsThunk()))
       .then(() => dispatch({ type: "LOADED" }));
   };
 

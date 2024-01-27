@@ -1,7 +1,20 @@
-import { initialState } from "../store";
+import {  TaskTrackerState, initialState } from "../store";
 
-type tasktrackerActions={type:'RECIVE-TASKS',payload:any}
+export type TasktrackerActions = {
+  type: "RECIVE-TASKS-TASKTRACKER";
+  payload: TaskTrackerState;
+};
 
-export const tasktrackerReducer = (state: any = initialState.tasktracker, action: tasktrackerActions): any => {
-return state
-}
+export const tasktrackerReducer = (
+
+  state: TaskTrackerState = initialState.tasktrackers,
+  action: TasktrackerActions
+): TaskTrackerState => {
+
+  switch (action.type) {
+    case "RECIVE-TASKS-TASKTRACKER":
+      return action.payload
+    default:
+      return state;
+  }
+};

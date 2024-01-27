@@ -19,7 +19,7 @@ import Login from "./tools/Login/Login";
 import { useSelector } from "react-redux";
 import { StoreType } from "./store";
 import { WebsocketChat } from "./WebsocketChat/WebsocketChat";
-import { Tasktracker } from "./Tasktracker/Tasktracker";
+import { TasktrackerApp } from "./Tasktracker/TaskrackerApp";
 
 export const App = React.memo(() => {
   const [width, height] = useResize();
@@ -84,7 +84,6 @@ export const App = React.memo(() => {
         <Rating />
         <Skills />
       </div>
-      
 
       <Routes>
         <Route path='/' element={<NavMenu dark={dark} />}>
@@ -95,7 +94,7 @@ export const App = React.memo(() => {
           <Route path='queueapp' element={<QueueApp />} />
           <Route path='sqlconnect' element={<SqlConnect />} />
           <Route path='chat' element={<WebsocketChat />} />
-          <Route path='tasktracker' element={<Tasktracker />} />
+          <Route path='tasktracker' element={<TasktrackerApp />} />
           <Route path='*' element={<div>.</div>} />
         </Route>
       </Routes>
