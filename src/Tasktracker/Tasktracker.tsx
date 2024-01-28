@@ -9,16 +9,19 @@ import { useState } from "react";
 import { PopupAddTask } from "./PopupAddTask/PopupAddTask";
 import { PopupProject } from "./PopupAddProject/PopupAddProject";
 import { ThunkDispatch } from "redux-thunk";
-import { deleteTaskThunk, fetchProjectThunk } from "./thunksTaskTrackerActions";
+import { fetchProjectThunk } from "./thunksTaskTrackerActions";
 import { v1 } from "uuid";
+import { PopupUpdateTask } from "./PopupUpdateTask/PopupUpdateTask";
 
 
 export const Tasktracker = (props: any) => {
   const tasktrackers = useSelector((state: StoreType) => state.tasktrackers);
   const [addTaskPopapShow, setAddPopupShow] = useState(false);
+  const [addUpdatePopapShow, setUpdatePopupShow] = useState(false);
   const [addProjectPopapShow, setAddProjectPopupShow] = useState(false);
   const dispatch: ThunkDispatch<StoreType, any, RootAction> = useDispatch();
   const [projectId, setProjectId] = useState(tasktrackers[0]?.id);
+  const [taskId, setTaskId] = useState(tasktrackers[0]?.tasks[0]?.id);
 
 
   const addProject = async (data: any) => {
@@ -60,17 +63,33 @@ export const Tasktracker = (props: any) => {
     props.socket.emit("addTaskForTracker", newTaskTracker);
   };
 
-  const deleteTask =  (id: any) => {
-     dispatch(deleteTaskThunk(projectId, id,props.socket))
-    }
-
-  const editTask = (id:any) => {};
+  const deleteTask = (id: any) => {
+     props.socket.emit("deleteTask", projectId, id);
+  }
+  const updateTask = (data: any) => {
+    const updateTaskData = {
+      projectId: projectId,
+      id: taskId,
+      priority: data.priority,
+      user: data.selectedUser,
+      title: data.taskTitle,
+      startDate: data.startDate,
+      dueDate: data.dueDate,
+      description: data.taskDescription,
+      status: {
+        statusdate: data.startDate,
+        user: data.selectedUser,
+        status: "added",
+        statusDescription: "need Accountable person",
+      },
+    };
+    props.socket.emit("updateTaskForTracker", updateTaskData);
+  };
 
   const send = async () => {
     await dispatch(fetchProjectThunk(props.socket));
   }
 
-  console.log('f')
   return (
     <div className={s.wrapper}>
       <button onClick={send}>l</button>
@@ -84,6 +103,12 @@ export const Tasktracker = (props: any) => {
         onHide={() => setAddPopupShow(false)}
         onConfirm={(data) => addNewTask(data)}
       />
+      <PopupUpdateTask
+        showPopup={addUpdatePopapShow}
+        onHide={() => setUpdatePopupShow(false)}
+        onConfirm={(data) => updateTask(data)}
+        current={{ projectId, taskId }}
+      />
       <div>Tasktracker</div>
       <Button variant='primary' onClick={() => setAddProjectPopupShow(true)}>
         Add new project
@@ -94,7 +119,7 @@ export const Tasktracker = (props: any) => {
           {item.projectTitle}
           <Button
             onClick={() => {
-             setAddPopupShow(true);
+              setAddPopupShow(true);
             }}
           >
             add task
@@ -138,7 +163,8 @@ export const Tasktracker = (props: any) => {
                   <CiEdit
                     className={s.icon}
                     onClick={() => {
-                      editTask(item.id);
+                      setTaskId(item.id);
+                      setUpdatePopupShow(true);
                     }}
                   />
                 </td>
