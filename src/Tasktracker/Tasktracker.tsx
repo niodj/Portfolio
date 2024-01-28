@@ -1,5 +1,4 @@
 import Button from "react-bootstrap/Button";
-import { styled } from "styled-components";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { useDispatch, useSelector } from "react-redux";
 import { RootAction, StoreType, serverPatch } from "../store";
@@ -11,7 +10,6 @@ import { PopupAddTask } from "./PopupAddTask/PopupAddTask";
 import { PopupProject } from "./PopupAddProject/PopupAddProject";
 import { ThunkDispatch } from "redux-thunk";
 import { deleteTaskThunk, fetchProjectThunk } from "./thunksTaskTrackerActions";
-import { io } from "socket.io-client";
 import { v1 } from "uuid";
 
 
@@ -29,17 +27,14 @@ export const Tasktracker = (props: any) => {
       projectTitle: data.projectTitle,
       description: data.description,
     };
-    console.log(newProject.projectTitle);
-    await props.socket.emit("addNewProject", newProject);
-    await dispatch(fetchProjectThunk(props.socket));
+    props.socket.emit("addNewProject", newProject);
     setAddPopupShow(false);
   };
 
-  const deleteProject = async (id: string) => {
+  const deleteProject =  (id: string) => {
     try {
-      await props.socket.emit("deleteProject", id);
-      await dispatch(fetchProjectThunk(props.socket));
-    } catch (error) {
+      props.socket.emit("deleteProject", id);
+      } catch (error) {
       console.error("Ошибка при удалении проекта:", error);
     }
   };
@@ -65,16 +60,20 @@ export const Tasktracker = (props: any) => {
     props.socket.emit("addTaskForTracker", newTaskTracker);
   };
 
-
-  const deleteTask = async (id: any) => {
-    await dispatch(deleteTaskThunk(projectId, id,props.socket))
-    await dispatch(fetchProjectThunk(props.socket));
+  const deleteTask =  (id: any) => {
+     dispatch(deleteTaskThunk(projectId, id,props.socket))
     }
 
   const editTask = (id:any) => {};
 
+  const send = async () => {
+    await dispatch(fetchProjectThunk(props.socket));
+  }
+
+  console.log('f')
   return (
     <div className={s.wrapper}>
+      <button onClick={send}>l</button>
       <PopupProject
         showPopup={addProjectPopapShow}
         onHide={() => setAddProjectPopupShow(false)}
