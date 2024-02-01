@@ -2,8 +2,8 @@ import { Modal, Button } from "react-bootstrap";
 import s from "./PopupAddTask.module.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { RootAction, StoreType } from "../../store";
-import { useEffect, useState } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { useEffect} from "react";
+import { useForm, } from "react-hook-form";
 
 import { ThunkDispatch } from "redux-thunk/es/types";
 
@@ -16,10 +16,10 @@ type PopupPropsType = {
 };
 
 type FormData = {
-  taskTitle: string;
-  taskDescription: string;
+  title: string;
+  description: string;
   user: string;
-  priority: string;
+  priority: [];
   startDate: string;
   dueDate: string;
 };
@@ -74,7 +74,7 @@ export const PopupAddTask = (props: PopupPropsType) => {
               <label>Title:</label>
               <input
                 type='text'
-                {...register("taskTitle", { required: true })}
+                {...register("title", { required: true })}
                 placeholder='Enter task title'
               />
             </div>
@@ -95,11 +95,14 @@ export const PopupAddTask = (props: PopupPropsType) => {
               <label>Priority:</label>
               <select {...register("priority", { required: true })}>
                 <option value=''>Select priority</option>
-                {tasktracker.params.priorityList.map((item: any, idx: number) => (
-                  <option key={idx} value={item}>
-                    {item}
-                  </option>
-                ))}
+                {tasktracker.params.priorityList.map(
+                  (item: any, idx: number) => (
+                    <option key={idx} value={item.title}>
+                      {item.title}
+                      {item.color}
+                    </option>
+                  )
+                )}
               </select>
             </div>
 
@@ -119,7 +122,7 @@ export const PopupAddTask = (props: PopupPropsType) => {
             <div>
               <label>Description:</label>
               <textarea
-                {...register("taskDescription")}
+                {...register("description")}
                 placeholder='Enter task title'
               />
             </div>

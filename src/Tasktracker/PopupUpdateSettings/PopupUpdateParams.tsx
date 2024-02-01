@@ -4,21 +4,22 @@ import { useSelector } from "react-redux";
 import { StoreType } from "../../store";
 import { useState } from "react";
 import React, { useRef, useEffect } from "react";
-import { v1 } from "uuid";
+
+import { RgbaStringColorPicker } from "react-colorful";
 
 type PopupPropsType = {
   onHide: () => void;
   showPopup: boolean;
-  onConfirm: (data: DataType) => void;
+  onConfirm: (params: paramsType) => void;
 };
 
-type DataType = {
+type paramsType = {
   priorityList: { title: string; color: string }[];
   statusList: string[];
   usersList: string[];
 };
-type FormData = {
-  data: {
+type Formparams = {
+  params: {
     priorityList: { title: string; color: string }[];
     statusList: string[];
     usersList: string[];
@@ -26,19 +27,18 @@ type FormData = {
   service: {
     inputPriority: string;
     errorPriority: boolean;
+    inputColor: string;
     inputStatus: string;
-    errorStatusList: boolean;
-    inputName: string;
-    errorName: boolean;
-    inputAccessGroup: string;
-    errorAccessGroup: boolean;
+    errorStatus: boolean;
+    inputUser: string;
+    errorUser: boolean;
   };
 };
 
 export const PopupUpdateParams = (props: PopupPropsType) => {
   const tasktracker = useSelector((state: StoreType) => state.tasktracker);
-  const [state, setState] = useState<FormData>({
-    data: {
+  const [state, setState] = useState<Formparams>({
+    params: {
       priorityList: tasktracker.params.priorityList ?? [],
       statusList: tasktracker.params.statusList ?? [],
       usersList: tasktracker.params.usersList ?? [],
@@ -46,12 +46,11 @@ export const PopupUpdateParams = (props: PopupPropsType) => {
     service: {
       inputPriority: "",
       errorPriority: false,
+      inputColor: "",
       inputStatus: "",
-      errorStatusList: false,
-      inputName: "",
-      errorName: false,
-      inputAccessGroup: "",
-      errorAccessGroup: false,
+      errorStatus: false,
+      inputUser: "",
+      errorUser: false,
     },
   });
 
@@ -66,26 +65,26 @@ export const PopupUpdateParams = (props: PopupPropsType) => {
 
   const onSubmit = () => {
     if (
-      state.data.priorityList.length > 0 ||
-      state.data.statusList.length > 0 ||
-      state.data.usersList.length > 0
+      state.params.priorityList.length > 0 ||
+      state.params.statusList.length > 0 ||
+      state.params.usersList.length > 0
     ) {
       setState((prevState) => ({
         ...prevState,
         service: {
           ...prevState.service,
           errorPriority: false,
-          errorStatusList: false,
+          errorStatus: false,
         },
       }));
 
-      props.onConfirm(state.data);
+      props.onConfirm(state.params);
       props.onHide();
     } else {
-      if (state.data.priorityList.length === 0) {
+      if (state.params.priorityList.length === 0) {
         priorityRef.current?.focus();
       }
-      if (state.data.statusList.length === 0) {
+      if (state.params.statusList.length === 0) {
         statusRef.current?.focus();
       }
 
@@ -94,11 +93,13 @@ export const PopupUpdateParams = (props: PopupPropsType) => {
         service: {
           ...prevState.service,
           errorPriority: true,
-          errorStatusList: true,
+          errorStatus: true,
         },
       }));
     }
   };
+console.log(state.service.inputStatus);
+
   return (
     <div>
       <Modal
@@ -108,7 +109,7 @@ export const PopupUpdateParams = (props: PopupPropsType) => {
         centered
       >
         <Modal.Header closeButton>
-          <Modal.Title className={s.title}>Database settings</Modal.Title>
+          <Modal.Title className={s.title}>paramsbase settings</Modal.Title>
         </Modal.Header>
 
         <Modal.Body className={s.modalWrapper}>
@@ -143,14 +144,14 @@ export const PopupUpdateParams = (props: PopupPropsType) => {
                   if (inputPriority.trim() !== "") {
                     const newPriority = {
                       title: inputPriority,
-                      color: "defaultColor",
+                      color: state.service.inputColor,
                     };
                     setState((prevState) => ({
                       ...prevState,
-                      data: {
-                        ...prevState.data,
+                      params: {
+                        ...prevState.params,
                         priorityList: [
-                          ...prevState.data.priorityList,
+                          ...prevState.params.priorityList,
                           newPriority,
                         ],
                       },
@@ -165,21 +166,41 @@ export const PopupUpdateParams = (props: PopupPropsType) => {
               >
                 +
               </button>
+              <RgbaStringColorPicker
+                color={state.service.inputColor}
+                onChange={(color) =>
+                  setState({
+                    ...state,
+                    service: {
+                      ...state.service,
+                      inputColor: color,
+                    },
+                  })
+                }
+              />
             </div>
 
             <ul>
-              {state.data.priorityList.map((priority, index) => (
+              {state.params.priorityList.map((priority, index) => (
                 <li key={index}>
-                  {priority.title} {priority.color}
-                  {"red"}
+                  {priority.title}
+                  <div
+                    style={{
+                      width: "30px",
+                      height: "30px",
+                      backgroundColor: priority.color,
+                      border: "1px solid #000",
+                    }}
+                  ></div>
+
                   <button
                     onClick={(e) => {
                       e.preventDefault();
                       setState({
                         ...state,
-                        data: {
-                          ...state.data,
-                          priorityList: state.data.priorityList.filter(
+                        params: {
+                          ...state.params,
+                          priorityList: state.params.priorityList.filter(
                             (item: any) => item !== priority
                           ),
                         },
@@ -192,23 +213,23 @@ export const PopupUpdateParams = (props: PopupPropsType) => {
               ))}
             </ul>
 
-            {/* g//////////////////////////////////////////////////////////////////////////////////////////////// */}
+            {/* g///////////////////////status///////////////////////////////////////////////////////////////////////// */}
             <div>
-              <label>Set status type:</label>
+              <label>Set statu types:</label>
               <input
                 ref={statusRef}
                 type='text'
                 placeholder='Enter new status type'
                 value={state.service.inputStatus}
-                onChange={(e) =>
+                onChange={(e) => {
                   setState({
                     ...state,
                     service: {
                       ...state.service,
                       inputStatus: e.currentTarget.value,
                     },
-                  })
-                }
+                  });
+                }}
               />
               <button
                 onClick={(e) => {
@@ -217,16 +238,81 @@ export const PopupUpdateParams = (props: PopupPropsType) => {
                     setState((prevState) => {
                       return {
                         ...prevState,
-                        data: {
-                          ...prevState.data,
+                        params: {
+                          ...prevState.params,
                           statusList: [
-                            ...prevState.data.statusList,
+                            ...prevState.params.statusList,
                             prevState.service.inputStatus,
+                          ],
+                        },
+                        service: { ...prevState.service, inputStatus: "" },
+                      };
+                    });
+                  }
+                }}
+              >
+                +
+              </button>
+              <ul>
+                {state.params.statusList.map((status, index) => (
+                  <li key={index}>
+                    {status}{" "}
+                    <button
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setState({
+                          ...state,
+                          params: {
+                            ...state.params,
+                            statusList: state.params.statusList.filter(
+                              (item: any) => item !== status
+                            ),
+                          },
+                        });
+                      }}
+                    >
+                      x
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* ////////////users/////////// */}
+            <div>
+              <label>Create users:</label>
+              <input
+                ref={usersRef}
+                type='text'
+                placeholder='Add new user'
+                value={state.service.inputUser}
+                onChange={(e) =>
+                  setState({
+                    ...state,
+                    service: {
+                      ...state.service,
+                      inputUser: e.currentTarget.value,
+                    },
+                  })
+                }
+              />
+              <button
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (state.service.inputUser.trim() !== "") {
+                    setState((prevState) => {
+                      return {
+                        ...prevState,
+                        params: {
+                          ...prevState.params,
+                          usersList: [
+                            ...prevState.params.usersList,
+                            prevState.service.inputUser,
                           ],
                         },
                         service: {
                           ...prevState.service,
-                          inputStatus: "",
+                          inputUser: "",
                         },
                       };
                     });
@@ -236,20 +322,19 @@ export const PopupUpdateParams = (props: PopupPropsType) => {
                 +
               </button>
             </div>
-
             <ul>
-              {state.data.statusList.map((status, index) => (
+              {state.params.usersList.map((user, index) => (
                 <li key={index}>
-                  {status}{" "}
+                  {user}{" "}
                   <button
                     onClick={(e) => {
                       e.preventDefault();
                       setState({
                         ...state,
-                        data: {
-                          ...state.data,
-                          statusList: state.data.statusList.filter(
-                            (item: any) => item !== status
+                        params: {
+                          ...state.params,
+                          usersList: state.params.usersList.filter(
+                            (item: any) => item !== user
                           ),
                         },
                       });
@@ -277,4 +362,3 @@ export const PopupUpdateParams = (props: PopupPropsType) => {
     </div>
   );
 };
-

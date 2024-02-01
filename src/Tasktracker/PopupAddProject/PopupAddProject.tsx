@@ -14,12 +14,12 @@ type PopupPropsType = {
 };
 
 type FormData = {
-  projectTitle: string;
+  title: string;
   description: string;
   startDate: string;
 };
 
-export const PopupProject = (props: PopupPropsType) => {
+export const PopupAddProject = (props: PopupPropsType) => {
   ////////react hook form
   const { register, handleSubmit, reset, setValue } = useForm<FormData>();
 
@@ -40,7 +40,6 @@ export const PopupProject = (props: PopupPropsType) => {
     onHide();
   };
 
-
   return (
     <div>
       <Modal
@@ -59,7 +58,7 @@ export const PopupProject = (props: PopupPropsType) => {
               <label>Project Title:</label>
               <input
                 type='text'
-                {...register("projectTitle", { required: true })}
+                {...register("title", { required: true })}
                 placeholder='Enter task title'
               />
             </div>

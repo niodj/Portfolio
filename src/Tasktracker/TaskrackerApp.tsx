@@ -10,7 +10,7 @@ import s from "./Tasktracker.module.scss";
 import { MdOutlineDeleteForever } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
 import { PopupAddTask } from "./PopupAddTask/PopupAddTask";
-import { PopupProject } from "./PopupAddProject/PopupAddProject";
+import { PopupAddProject } from "./PopupAddProject/PopupAddProject";
 import { v1 } from "uuid";
 import { PopupUpdateTask } from "./PopupUpdateTask/PopupUpdateTask";
 import { PopupUpdateParams } from "./PopupUpdateSettings/PopupUpdateParams";
@@ -27,13 +27,13 @@ export const TasktrackerApp = () => {
   const [projectId, setProjectId] = useState(tasktracker.projects[0]?.projectId??'');
   const [taskId, setTaskId] = useState(tasktracker.projects[0]?.tasks[0]?.taskId??'');
   //console.log('redux',tasktracker);
- console.log('пришло с сервака',received);
+ //console.log('пришло с сервака',received);
 
   useEffect(() => {
 
     dispatch({ type: "LOADING" });
      socket.on("dataResponse", (data: any) => {
-  //console.log("server responce", data);
+  //console.log("получено сокетом", data);
       setReceived(data);
       //show first project
       //data.projects.length!==0&&setProjectId(data.project[0]?.id)
@@ -50,28 +50,24 @@ export const TasktrackerApp = () => {
   }, [received]);
 
 
-  const updateParams = (data: any) => {
-
-console.log({ ...data });
-    socket.emit("updateParams", data);
+  const updateParams = (params: any) => {
+    socket.emit("updateParams", params);
     setParamsPopupShow(false);
   };
-
-
-
     const addProject = async (data: any) => {
     const newProject = {
-      id: v1(),
-      projectTitle: data.projectTitle,
+      projectId: v1(),
+      title: data.title,
       description: data.description,
-    };
+      };
+//console.log(newProject);
     socket.emit("addNewProject", newProject);
     setAddPopupShow(false);
   };
 
-  const deleteProject = (id: string) => {
+  const deleteProject = (projectId: string) => {
     try {
-      socket.emit("deleteProject", id);
+      socket.emit("deleteProject", projectId);
     } catch (error) {
       console.error("Ошибка при удалении проекта:", error);
     }
@@ -80,7 +76,7 @@ console.log({ ...data });
   const addNewTask = (data: any) => {
     const newTaskTracker = {
       projectId: projectId,
-      id: v1(),
+      taskId: v1(),
       priority: data.priority,
       user: data.selectedUser,
       title: data.taskTitle,
@@ -88,22 +84,22 @@ console.log({ ...data });
       dueDate: data.dueDate,
       description: data.taskDescription,
       status: {
-        statusdate: data.startDate,
-        user: data.selectedUser,
+        date: data.startDate,
+        user: data.user,
         status: "added",
-        statusDescription: "need Accountable person",
+        statusDescription: "",
       },
     };
     socket.emit("addTaskForTracker", newTaskTracker);
   };
 
   const deleteTask = (id: any) => {
-    socket.emit("deleteTask", projectId, id);
+    socket.emit("deleteTask", projectId, taskId);
   };
   const updateTask = (data: any) => {
     const updateTaskData = {
       projectId: projectId,
-      id: taskId,
+      taskId: taskId,
       priority: data.priority,
       user: data.selectedUser,
       title: data.taskTitle,
@@ -111,8 +107,8 @@ console.log({ ...data });
       dueDate: data.dueDate,
       description: data.taskDescription,
       status: {
-        statusdate: data.startDate,
-        user: data.selectedUser,
+        date: data.date,
+        user: data.user,
         status: "added",
         statusDescription: "need Accountable person",
       },
@@ -129,7 +125,7 @@ console.log({ ...data });
       />
       {received ? (
         <>
-          <PopupProject
+          <PopupAddProject
             showPopup={addProjectPopapShow}
             onHide={() => setAddProjectPopupShow(false)}
             onConfirm={(data) => addProject(data)}
@@ -158,7 +154,7 @@ console.log({ ...data });
           >
             Add new project
           </Button>
-          <Button variant='primary' onClick={() => setUpdatePopupShow(true)}>
+          <Button variant='primary' onClick={() => setParamsPopupShow(true)}>
             Setting
           </Button>
 
