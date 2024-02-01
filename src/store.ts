@@ -25,7 +25,13 @@ export const initialState = {
     counterState: true,
   },
 
-  tasktrackers: [],
+  tasktracker: {
+    projects: [], params: {
+      priorityList: [],
+      statusList: [],
+      usersList: []
+    }
+  },
   todolists: [],
   sqlConnect: {},
   appProp: {
@@ -40,34 +46,33 @@ export type UserStateType = {
   loggedIn: boolean;
   userEmail: string;
 };
-export type TaskTrackerState =
-  {
-  id: string,
-  projectTitle: string,
-  description: string,
-  tasks: {
-    id: string;
-    priority: string;
-    user: string;
+export type TaskTrackerState = {
+  projects: {
+    projectId: string;
     title: string;
-    startDate: string;
-    dueDate: string;
     description: string;
-    status: {
-      statusdate: string;
+    tasks: {
+      taskId: string;
+      priority: string;
       user: string;
-      status: string;
-      statusDescription: string;
+      title: string;
+      startDate: string;
+      dueDate: string;
+      description: string;
+      status: {
+        date: string;
+        user: string;
+        status: string;
+        statusDescription: string;
+      }[];
     }[];
   }[];
-  statusList: string[];
-  priorityList: string[];
-  users: {
-    id: string;
-    name: string;
-    accessGroup: string[];
-  }[];
-  }[];
+  params: {
+    priorityList: { title: string; color: string }[];
+    statusList: string[];
+    usersList: string[];
+  };
+};
 
 export type CounterStateType = {
   count: any;
@@ -108,7 +113,7 @@ export const rootReducer = combineReducers({
   todolists: todoReducer,
   appProp: appPropReducer,
   user: loginReducer,
-  tasktrackers: tasktrackerReducer,
+  tasktracker: tasktrackerReducer,
 });
 
 export type StoreType = ReturnType<typeof rootReducer>;

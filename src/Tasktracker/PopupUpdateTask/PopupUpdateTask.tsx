@@ -5,13 +5,10 @@ import { RootAction, StoreType } from "../../store";
 import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 
-import { ThunkDispatch } from "redux-thunk/es/types";
-
-
 type PopupPropsType = {
   onHide: () => void;
   showPopup: boolean;
-  onConfirm: (data: FormData) => void;
+  onConfirm: (date: Data) => void;
   current: {
     projectId?: string | undefined;
     taskId?: string | undefined;
@@ -19,50 +16,66 @@ type PopupPropsType = {
 };
 
 
+ type Data = {
+
+    taskTitle: string;
+    taskDescription: string;
+    user: string;
+    priority: string;
+    startDate: string;
+    dueDate: string;
+
+};
+
+ type Service = {
+   inputTitle: string;
+   selectUser: string;
+   selectPriority: string;
+   inputStartDate: string;
+   inputDueDate: string;
+   inputDescription:string
+ };
 type FormData = {
-  taskTitle: string;
-  taskDescription: string;
-  selectedUser: string;
-  priority: string;
-  startDate: string;
-  dueDate: string;
+  data: Data;
+  service: Service;
+
 };
 
 export const PopupUpdateTask = (props: PopupPropsType) => {
+  const tasktracker = useSelector((state: StoreType) => state.tasktracker);
+  const currtask = tasktracker.projects
+    .find((project: any) => project.projectId === props.current.projectId)
+    ?.tasks.find((task: any) => task.taskId === props.current.taskId);
 
-  const tasktrackers = useSelector((state: StoreType) => state.tasktrackers);
-  const currtask = tasktrackers.find((project:any)=>project.id===props.current.projectId)?.tasks.find((task:any)=>task.id===props.current.taskId)
+const currDate = new Date().toISOString().slice(0, 16).replace("T", " ")
+  const [state, setState] = useState<FormData>({
+    data: {
+      taskTitle: currtask?.title ?? "",
+      taskDescription: currtask?.description ?? "",
+      user: currtask?.user ?? "",
+      priority: currtask?.priority ?? "",
+      startDate: currDate,
+      dueDate: currtask?.dueDate ?? "",
+    },
+    service: {
+      inputTitle: "",
+      selectUser: "-",
+      selectPriority: "-",
+      inputStartDate: currDate,
+      inputDueDate: currDate,
+      inputDescription:''
+    },
+  });
 
-  ////////react hook form
-  const {
-    register,
-    handleSubmit,
-    reset,
-    setValue,
-    formState: { errors },
-  } = useForm<FormData>();
-console.log(currtask);
-  useEffect(() => {
-        const currentDate = new Date().toISOString().slice(0, 16);
-   setValue("startDate", currentDate);
-   setValue("taskTitle", currtask?.title ?? "");
-   setValue("taskDescription", currtask?.description ?? "");
-   setValue("selectedUser", currtask?.user ?? "");
-   setValue("priority", currtask?.priority ?? "");
-   setValue("dueDate", currtask?.dueDate ?? "");
-},[])
   ////////////////////////
   const onHide = () => {
-
     props.onHide();
   };
 
-   const onSubmit = (data: FormData) => {
-     props.onConfirm(data);
-     
-     onHide();
-   };
-
+  const onSubmit = () => {
+    props.onConfirm(state.data);
+    onHide();
+  };
 
   return (
     <div>
@@ -77,34 +90,42 @@ console.log(currtask);
         </Modal.Header>
 
         <Modal.Body className={s.modalWrapper}>
-          <form onSubmit={handleSubmit(onSubmit)} className={s.form}>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              onSubmit();
+            }}
+            className={s.form}
+          >
             <div>
               <label>Title:</label>
               <input
                 type='text'
-                {...register("taskTitle", { required: true })}
+                value={state.data.taskTitle}
+                onChange={(e) => {}}
                 placeholder='Enter task title'
               />
             </div>
 
             <div>
               <label>Accountable:</label>
-              <select {...register("selectedUser", { required: true })}>
-                <option value=''>Select user</option>
-                {tasktrackers[0]?.users.map((item: any) => (
-                  <option key={item.id} value={item.name}>
-                    {item.name}
+              <select>
+                <option value={state.service.selectUser}>Select user</option>
+                {tasktracker.params.usersList.map((item: any) => (
+                  <option key={item.id} value={item}>
+                    {item}
                   </option>
                 ))}
               </select>
             </div>
-
             <div>
               <label>Priority:</label>
-              <select {...register("priority", { required: true })}>
-                <option value=''>Select priority</option>
-                {tasktrackers[0]?.priorityList.map((item: any, idx: number) => (
-                  <option key={idx} value={item}>
+              <select>
+                <option value={state.service.selectPriority}>
+                  Select user
+                </option>
+                {tasktracker.params.priorityList.map((item: any) => (
+                  <option key={item.id} value={item}>
                     {item}
                   </option>
                 ))}
@@ -115,19 +136,22 @@ console.log(currtask);
               <label>Start date:</label>
               <input
                 type='datetime-local'
-                {...register("startDate", { required: true })}
+                value={state.service.inputStartDate}
               />
             </div>
 
             <div>
               <label>Due date:</label>
-              <input type='datetime-local' {...register("dueDate")} />
+              <input
+                type='datetime-local'
+                value={state.service.inputDueDate}
+              />
             </div>
 
             <div>
               <label>Description:</label>
               <textarea
-                {...register("taskDescription")}
+               value={state.service.inputDescription}
                 placeholder='Enter task title'
               />
             </div>
@@ -148,4 +172,3 @@ console.log(currtask);
     </div>
   );
 };
-

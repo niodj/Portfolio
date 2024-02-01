@@ -18,7 +18,7 @@ type PopupPropsType = {
 type FormData = {
   taskTitle: string;
   taskDescription: string;
-  selectedUser: string;
+  user: string;
   priority: string;
   startDate: string;
   dueDate: string;
@@ -26,7 +26,7 @@ type FormData = {
 
 export const PopupAddTask = (props: PopupPropsType) => {
 
-  const tasktrackers = useSelector((state: StoreType) => state.tasktrackers);
+  const tasktracker = useSelector((state: StoreType) => state.tasktracker);
   const dispatch: ThunkDispatch<StoreType, any, RootAction> = useDispatch();
 
   ////////react hook form
@@ -81,9 +81,9 @@ export const PopupAddTask = (props: PopupPropsType) => {
 
             <div>
               <label>Accountable:</label>
-              <select {...register("selectedUser", { required: true })}>
+              <select {...register("user", { required: true })}>
                 <option value=''>Select user</option>
-                {tasktrackers[0]?.users.map((item: any) => (
+                {tasktracker.params.usersList.map((item: any) => (
                   <option key={item.id} value={item.name}>
                     {item.name}
                   </option>
@@ -95,7 +95,7 @@ export const PopupAddTask = (props: PopupPropsType) => {
               <label>Priority:</label>
               <select {...register("priority", { required: true })}>
                 <option value=''>Select priority</option>
-                {tasktrackers[0]?.priorityList.map((item: any, idx: number) => (
+                {tasktracker.params.priorityList.map((item: any, idx: number) => (
                   <option key={idx} value={item}>
                     {item}
                   </option>
