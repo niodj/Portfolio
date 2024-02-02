@@ -9,20 +9,20 @@ import { useDispatch, useSelector } from "react-redux";
 import s from "./Tasktracker.module.scss";
 import { MdOutlineDeleteForever } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
-import { PopupAddTask } from "./PopupAddTask/PopupAddTask";
-import { PopupAddProject } from "./PopupAddProject/PopupAddProject";
+import { PopupAddTask } from "./PopupTaskPopup/PopupAddTask";
+import { PopupUpdateProject } from "./PopupProject/PopupUpdateProject";
 import { v1 } from "uuid";
-import { PopupUpdateTask } from "./PopupUpdateTask/PopupUpdateTask";
-import { PopupUpdateParams } from "./PopupUpdateSettings/PopupUpdateParams";
+
+import { PopupParams } from "./PopupParams/PopupParams";
 
 export const TasktrackerApp = () => {
   const dispatch: ThunkDispatch<StoreType, any, RootAction> = useDispatch();
   const [socket] = useState(() => io(serverPatch));
   const [received, setReceived] = useState();
   const tasktracker = useSelector((state: StoreType) => state.tasktracker);
-  const [addTaskPopapShow, setAddPopupShow] = useState(false);
-  const [addUpdatePopapShow, setUpdatePopupShow] = useState(false);
-  const [addProjectPopapShow, setAddProjectPopupShow] = useState(false);
+  //const [addTaskPopapShow, setAddTaskPopupShow] = useState(false);
+  const [taskUpdatePopap, setTaskUpdatePopup] = useState(false);
+  const [projectUpdatePopap, setProjectUpdatePopup] = useState(false);
   const [paramsPopapShow, setParamsPopupShow] = useState(false);
   const [projectId, setProjectId] = useState(tasktracker.projects[0]?.projectId??'');
   const [taskId, setTaskId] = useState(tasktracker.projects[0]?.tasks[0]?.taskId??'');
@@ -49,20 +49,14 @@ export const TasktrackerApp = () => {
     }
   }, [received]);
 
-
   const updateParams = (params: any) => {
     socket.emit("updateParams", params);
     setParamsPopupShow(false);
   };
-    const addProject = async (data: any) => {
-    const newProject = {
-      projectId: v1(),
-      title: data.title,
-      description: data.description,
-      };
-//console.log(newProject);
-    socket.emit("addNewProject", newProject);
-    setAddPopupShow(false);
+
+  const UpdateProject = async (data: any) => {
+    socket.emit("UpdateProject", data);
+    setProjectUpdatePopup(false);
   };
 
   const deleteProject = (projectId: string) => {
@@ -78,15 +72,15 @@ export const TasktrackerApp = () => {
       projectId: projectId,
       taskId: v1(),
       priority: data.priority,
-      user: data.selectedUser,
-      title: data.taskTitle,
+      user: data.user,
+      title: data.title,
       startDate: data.startDate,
       dueDate: data.dueDate,
-      description: data.taskDescription,
+      description: data.description,
       status: {
         date: data.startDate,
-        user: data.user,
-        status: "added",
+        statusUser: data.statusUser,
+        statusTask: data.statusTask,
         statusDescription: "",
       },
     };
@@ -118,40 +112,31 @@ export const TasktrackerApp = () => {
 
   return (
     <div className={s.wrapper}>
-      <PopupUpdateParams
+      <PopupParams
         showPopup={paramsPopapShow}
         onHide={() => setParamsPopupShow(false)}
         onConfirm={(data) => updateParams(data)}
       />
       {received ? (
         <>
-          <PopupAddProject
-            showPopup={addProjectPopapShow}
-            onHide={() => setAddProjectPopupShow(false)}
-            onConfirm={(data) => addProject(data)}
+          <PopupUpdateProject
+            showPopup={projectUpdatePopap}
+            onHide={() => setProjectUpdatePopup(false)}
+            onConfirm={(data) => UpdateProject(data)}
+            projectId={projectId}
           />
           <PopupAddTask
-            showPopup={addTaskPopapShow}
-            onHide={() => setAddPopupShow(false)}
+            showPopup={taskUpdatePopap}
+            onHide={() => setTaskUpdatePopup(false)}
             onConfirm={(data) => addNewTask(data)}
-          />
-          <PopupUpdateTask
-            showPopup={addUpdatePopapShow}
-            onHide={() => setUpdatePopupShow(false)}
-            onConfirm={(data) => updateTask(data)}
-            current={{ projectId, taskId }}
           />
 
           <div>Tasktracker</div>
-          <button
-            onClick={() => {
-              setAddProjectPopupShow(true);
-            }}
-          ></button>
-          <Button
-            variant='primary'
-            onClick={() => setAddProjectPopupShow(true)}
-          >
+
+          <Button variant='primary' onClick={() => {
+            setProjectId('')
+            setProjectUpdatePopup(true)
+          }}>
             Add new project
           </Button>
           <Button variant='primary' onClick={() => setParamsPopupShow(true)}>
@@ -163,17 +148,27 @@ export const TasktrackerApp = () => {
               {item.title}
               <Button
                 onClick={() => {
-                  setAddPopupShow(true);
+                  setTaskUpdatePopup(true);
                 }}
               >
                 add task
               </Button>
+
               <Button
                 onClick={() => {
                   setProjectId(item.projectId);
                 }}
               >
                 show table
+              </Button>
+
+              <Button
+                onClick={() => {
+                  setProjectId(item.projectId);
+                  setProjectUpdatePopup(true);
+                }}
+              >
+                update {item.title}
               </Button>
               <Button onClick={() => deleteProject(item.projectId)}>
                 Delete {item.title}
@@ -211,7 +206,7 @@ export const TasktrackerApp = () => {
                         className={s.icon}
                         onClick={() => {
                           setTaskId(item.id);
-                          setUpdatePopupShow(true);
+                          setTaskUpdatePopup(true);
                         }}
                       />
                     </td>

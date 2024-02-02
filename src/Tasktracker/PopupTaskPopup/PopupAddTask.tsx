@@ -22,13 +22,14 @@ type FormData = {
   priority: [];
   startDate: string;
   dueDate: string;
+  statusTask: string;
 };
 
 export const PopupAddTask = (props: PopupPropsType) => {
 
   const tasktracker = useSelector((state: StoreType) => state.tasktracker);
   const dispatch: ThunkDispatch<StoreType, any, RootAction> = useDispatch();
-
+//console.log(tasktracker);
   ////////react hook form
   const {
     register,
@@ -42,6 +43,8 @@ export const PopupAddTask = (props: PopupPropsType) => {
   useEffect(() => {
     const currentDate = new Date().toISOString().slice(0, 16);
     setValue("startDate", currentDate);
+    setValue("statusTask", currentDate);
+
 })
   ////////////////////////
   const onHide = () => {
@@ -49,7 +52,9 @@ export const PopupAddTask = (props: PopupPropsType) => {
     props.onHide();
   };
 
-   const onSubmit = (data: FormData) => {
+  const onSubmit = (data: FormData) => {
+
+     console.log(data);
      props.onConfirm(data);
      reset();
      onHide();
@@ -80,12 +85,12 @@ export const PopupAddTask = (props: PopupPropsType) => {
             </div>
 
             <div>
-              <label>Accountable:</label>
+              <label>Users:</label>
               <select {...register("user", { required: true })}>
                 <option value=''>Select user</option>
                 {tasktracker.params.usersList.map((item: any) => (
-                  <option key={item.id} value={item.name}>
-                    {item.name}
+                  <option key={item.id} value={item}>
+                    {item}
                   </option>
                 ))}
               </select>
@@ -105,7 +110,17 @@ export const PopupAddTask = (props: PopupPropsType) => {
                 )}
               </select>
             </div>
-
+            <div>
+              <label>Status:</label>
+              <select {...register("statusTask", { required: true })}>
+                <option value=''>Select status</option>
+                {tasktracker.params.statusList.map((item: any, idx: number) => (
+                  <option key={idx} value={item}>
+                    {item}
+                  </option>
+                ))}
+              </select>
+            </div>
             <div>
               <label>Start date:</label>
               <input

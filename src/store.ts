@@ -61,8 +61,8 @@ export type TaskTrackerState = {
       description: string;
       status: {
         date: string;
-        user: string;
-        status: string;
+        statusUser: string;
+        statusTask: string;
         statusDescription: string;
       }[];
     }[];

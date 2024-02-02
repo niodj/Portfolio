@@ -1,9 +1,9 @@
 import { Modal, Button } from "react-bootstrap";
-import s from "./PopupUpdateParams.module.scss";
+import s from "./PopupParams.module.scss";
 import { useSelector } from "react-redux";
 import { StoreType } from "../../store";
 import { useState } from "react";
-import React, { useRef, useEffect } from "react";
+import  { useRef } from "react";
 
 import { RgbaStringColorPicker } from "react-colorful";
 
@@ -18,24 +18,22 @@ type paramsType = {
   statusList: string[];
   usersList: string[];
 };
+
+type U = {
+  inputPriority: string;
+  errorPriority: boolean;
+  inputColor: string;
+  inputStatus: string;
+  errorStatus: boolean;
+  inputUser: string;
+  errorUser: boolean;
+};
 type Formparams = {
-  params: {
-    priorityList: { title: string; color: string }[];
-    statusList: string[];
-    usersList: string[];
-  };
-  service: {
-    inputPriority: string;
-    errorPriority: boolean;
-    inputColor: string;
-    inputStatus: string;
-    errorStatus: boolean;
-    inputUser: string;
-    errorUser: boolean;
-  };
+  params: paramsType
+  service: U;
 };
 
-export const PopupUpdateParams = (props: PopupPropsType) => {
+export const PopupParams = (props: PopupPropsType) => {
   const tasktracker = useSelector((state: StoreType) => state.tasktracker);
   const [state, setState] = useState<Formparams>({
     params: {
@@ -64,19 +62,21 @@ export const PopupUpdateParams = (props: PopupPropsType) => {
   };
 
   const onSubmit = () => {
+
     if (
-      state.params.priorityList.length > 0 ||
-      state.params.statusList.length > 0 ||
-      state.params.usersList.length > 0
-    ) {
-      setState((prevState) => ({
-        ...prevState,
-        service: {
-          ...prevState.service,
-          errorPriority: false,
-          errorStatus: false,
-        },
-      }));
+      state.params.usersList.length  > 0 &&
+      state.params.statusList.length > 0 &&
+      state.params.priorityList.length > 0
+    ) {;
+      // setState((prevState) => ({
+      //   ...prevState,
+      //   service: {
+      //     ...prevState.service,
+      //     errorPriority: false,
+      //     errorStatus: false,
+      //     errorUser:false
+      //   },
+      // }));
 
       props.onConfirm(state.params);
       props.onHide();
@@ -87,18 +87,17 @@ export const PopupUpdateParams = (props: PopupPropsType) => {
       if (state.params.statusList.length === 0) {
         statusRef.current?.focus();
       }
+      if (state.params.usersList.length === 0) {
+        usersRef.current?.focus();
+      }
 
-      setState((prevState) => ({
-        ...prevState,
-        service: {
-          ...prevState.service,
-          errorPriority: true,
-          errorStatus: true,
-        },
-      }));
+      // setState((prevState) => ({
+      //   ...prevState,
+      //   service: {...prevState.service, errorPriority: true, errorStatus: true, errorUser:true}
+      // }));
     }
   };
-console.log(state.service.inputStatus);
+
 
   return (
     <div>
