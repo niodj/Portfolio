@@ -2,7 +2,7 @@ import { Modal, Button } from "react-bootstrap";
 import s from "./PopupParams.module.scss";
 import { useSelector } from "react-redux";
 import { StoreType } from "../../store";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import  { useRef } from "react";
 
 import { RgbaStringColorPicker } from "react-colorful";
@@ -11,6 +11,7 @@ type PopupPropsType = {
   onHide: () => void;
   showPopup: boolean;
   onConfirm: (params: paramsType) => void;
+  removeBase: () => void;
 };
 
 type paramsType = {
@@ -21,12 +22,12 @@ type paramsType = {
 
 type U = {
   inputPriority: string;
-  errorPriority: boolean;
+
   inputColor: string;
   inputStatus: string;
-  errorStatus: boolean;
+
   inputUser: string;
-  errorUser: boolean;
+
 };
 type Formparams = {
   params: paramsType
@@ -43,14 +44,30 @@ export const PopupParams = (props: PopupPropsType) => {
     },
     service: {
       inputPriority: "",
-      errorPriority: false,
       inputColor: "",
       inputStatus: "",
-      errorStatus: false,
-      inputUser: "",
-      errorUser: false,
+     inputUser: "",
+
     },
   });
+
+useEffect(() => {
+  setState((prevState) => ({
+    ...prevState,
+    params: {
+      priorityList: tasktracker.params.priorityList ?? [],
+      statusList: tasktracker.params.statusList ?? [],
+      usersList: tasktracker.params.usersList ?? [],
+    },
+    service: {
+      inputPriority: "",
+      inputColor: "",
+      inputStatus: "",
+      inputUser: "",
+    },
+  }));
+}, [props.showPopup]);
+
 
   const priorityRef = useRef<HTMLInputElement | null>(null);
   const statusRef = useRef<HTMLInputElement | null>(null);
@@ -68,15 +85,7 @@ export const PopupParams = (props: PopupPropsType) => {
       state.params.statusList.length > 0 &&
       state.params.priorityList.length > 0
     ) {;
-      // setState((prevState) => ({
-      //   ...prevState,
-      //   service: {
-      //     ...prevState.service,
-      //     errorPriority: false,
-      //     errorStatus: false,
-      //     errorUser:false
-      //   },
-      // }));
+
 
       props.onConfirm(state.params);
       props.onHide();
@@ -91,10 +100,7 @@ export const PopupParams = (props: PopupPropsType) => {
         usersRef.current?.focus();
       }
 
-      // setState((prevState) => ({
-      //   ...prevState,
-      //   service: {...prevState.service, errorPriority: true, errorStatus: true, errorUser:true}
-      // }));
+
     }
   };
 
@@ -344,6 +350,10 @@ export const PopupParams = (props: PopupPropsType) => {
                 </li>
               ))}
             </ul>
+            <Button onClick={() => {
+              props.removeBase()
+              props.onHide()
+            }}>Remove database</Button>
 
             <div className={s.buttonContainer}>
               <Button type='submit' variant='primary'>

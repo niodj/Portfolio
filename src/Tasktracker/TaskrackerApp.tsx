@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
-import { RootAction, serverPatch, StoreType, TaskTrackerState } from "../store";
+import { RootAction, serverPatch, StoreType } from "../store";
 import { ThunkDispatch } from "redux-thunk/es/types";
 import { fetchProjectThunk } from "./thunksTaskTrackerActions";
 import Button from "react-bootstrap/Button";
@@ -9,11 +9,11 @@ import { useDispatch, useSelector } from "react-redux";
 import s from "./Tasktracker.module.scss";
 import { MdOutlineDeleteForever } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
-import { PopupAddTask } from "./PopupTaskPopup/PopupAddTask";
-import { PopupUpdateProject } from "./PopupProject/PopupUpdateProject";
-import { v1 } from "uuid";
 
+import { ProjectUpdatePopup } from "./ProjectUpdatePopup/ProjectUpdatePopup";
+import { v1 } from "uuid";
 import { PopupParams } from "./PopupParams/PopupParams";
+import { TaskUpdatePopup } from "./PopupTaskPopup/TaskUpdatePopup";
 
 export const TasktrackerApp = () => {
   const dispatch: ThunkDispatch<StoreType, any, RootAction> = useDispatch();
@@ -24,38 +24,55 @@ export const TasktrackerApp = () => {
   const [taskUpdatePopap, setTaskUpdatePopup] = useState(false);
   const [projectUpdatePopap, setProjectUpdatePopup] = useState(false);
   const [paramsPopapShow, setParamsPopupShow] = useState(false);
-  const [projectId, setProjectId] = useState(tasktracker.projects[0]?.projectId??'');
-  const [taskId, setTaskId] = useState(tasktracker.projects[0]?.tasks[0]?.taskId??'');
-  //console.log('redux',tasktracker);
- //console.log('пришло с сервака',received);
+
+  const [projectId, setProjectId] = useState("");
+  const [taskId, setTaskId] = useState("");
 
   useEffect(() => {
-
     dispatch({ type: "LOADING" });
-     socket.on("dataResponse", (data: any) => {
-  //console.log("получено сокетом", data);
+    socket.on("dataResponse", (data: any) => {
       setReceived(data);
-      //show first project
-      //data.projects.length!==0&&setProjectId(data.project[0]?.id)
-     });
-     dispatch(fetchProjectThunk(socket));
+    });
+    dispatch(fetchProjectThunk(socket));
     dispatch({ type: "LOADED" });
   }, []);
 
   useEffect(() => {
     if (received) {
-      console.log('вернулось с бека', received)
+      console.log("вернулось с бека", received);
       dispatch({ type: "RECIVE-TASKS-TASKTRACKER", payload: received });
     }
   }, [received]);
+
+  // useEffect(() => {
+  //   if (tasktracker.projects.length > 0) {
+  //     setProjectId(tasktracker.projects[0]?.projectId ?? "");
+  //   }
+  // }, [tasktracker.projects]);
+
+  // useEffect(() => {
+  //   if (
+  //     tasktracker.projects.length > 0 &&
+  //     tasktracker.projects[0]?.tasks.length > 0
+  //   ) {
+  //     setTaskId(tasktracker.projects[0]?.tasks[0]?.taskId ?? "");
+  //   }
+  // }, [tasktracker.projects]);
 
   const updateParams = (params: any) => {
     socket.emit("updateParams", params);
     setParamsPopupShow(false);
   };
 
+  const removeBase=() => {
+    socket.emit("RemoveBase");
+  }
+
   const UpdateProject = async (data: any) => {
-    socket.emit("UpdateProject", data);
+    const newData = {
+      ...data,projectId:projectId?projectId:v1()
+    }
+    socket.emit("UpdateProject", newData);
     setProjectUpdatePopup(false);
   };
 
@@ -67,48 +84,23 @@ export const TasktrackerApp = () => {
     }
   };
 
-  const addNewTask = (data: any) => {
-    const newTaskTracker = {
-      projectId: projectId,
-      taskId: v1(),
-      priority: data.priority,
-      user: data.user,
-      title: data.title,
-      startDate: data.startDate,
-      dueDate: data.dueDate,
-      description: data.description,
-      status: {
-        date: data.startDate,
-        statusUser: data.statusUser,
-        statusTask: data.statusTask,
-        statusDescription: "",
-      },
-    };
-    socket.emit("addTaskForTracker", newTaskTracker);
+  console.log("projectId", projectId);
+ // console.log("data", taskId);
+
+
+
+
+  const updateTask = (data: any) => {
+
+    const newData = { ...data, taskId: taskId || v1() };
+
+    socket.emit("UpdateTask", projectId, newData);
+  };
+  const deleteTask = (id: any) => {
+    socket.emit("DeleteTask", projectId, id);
   };
 
-  const deleteTask = (id: any) => {
-    socket.emit("deleteTask", projectId, taskId);
-  };
-  const updateTask = (data: any) => {
-    const updateTaskData = {
-      projectId: projectId,
-      taskId: taskId,
-      priority: data.priority,
-      user: data.selectedUser,
-      title: data.taskTitle,
-      startDate: data.startDate,
-      dueDate: data.dueDate,
-      description: data.taskDescription,
-      status: {
-        date: data.date,
-        user: data.user,
-        status: "added",
-        statusDescription: "need Accountable person",
-      },
-    };
-    socket.emit("updateTaskForTracker", updateTaskData);
-  };
+
 
   return (
     <div className={s.wrapper}>
@@ -116,38 +108,48 @@ export const TasktrackerApp = () => {
         showPopup={paramsPopapShow}
         onHide={() => setParamsPopupShow(false)}
         onConfirm={(data) => updateParams(data)}
+        removeBase={removeBase}
       />
       {received ? (
         <>
-          <PopupUpdateProject
+          <ProjectUpdatePopup
             showPopup={projectUpdatePopap}
             onHide={() => setProjectUpdatePopup(false)}
             onConfirm={(data) => UpdateProject(data)}
             projectId={projectId}
           />
-          <PopupAddTask
+          <TaskUpdatePopup
             showPopup={taskUpdatePopap}
             onHide={() => setTaskUpdatePopup(false)}
-            onConfirm={(data) => addNewTask(data)}
+            onConfirm={(data) => updateTask(data)}
+            projectId={projectId}
+            taskId={taskId}
           />
 
           <div>Tasktracker</div>
 
-          <Button variant='primary' onClick={() => {
-            setProjectId('')
-            setProjectUpdatePopup(true)
-          }}>
+          <Button
+            variant='primary'
+            onClick={() => {
+              setProjectId("");
+              setProjectUpdatePopup(true);
+            }}
+          >
             Add new project
           </Button>
           <Button variant='primary' onClick={() => setParamsPopupShow(true)}>
             Setting
           </Button>
 
-          {tasktracker.projects.map((item) => (
-            <div key={item.projectId}>
-              {item.title}
+         {tasktracker.projects.map((item) => (
+  <div key={item.projectId} className={`${s.projectTitle} ${item.projectId === projectId ? s.act : ''}`}>
+    {item.title}
+
+
               <Button
                 onClick={() => {
+                  setProjectId(item.projectId);
+                  setTaskId("");
                   setTaskUpdatePopup(true);
                 }}
               >
@@ -184,7 +186,8 @@ export const TasktrackerApp = () => {
                 <th>Task title</th>
                 <th>Dates</th>
                 <th>Description</th>
-                <th>Actual status</th>
+                <th>User</th>
+                <th>Status</th>
               </tr>
             </thead>
             <tbody>
@@ -192,20 +195,23 @@ export const TasktrackerApp = () => {
                 .find((project) => project.projectId === projectId)
                 ?.tasks.map((item: any) => (
                   <tr
-                    key={item.id}
-                    className={`${s[`priority-${item.priority}`]}`}
+                    style={{
+                      backgroundColor: tasktracker.params.priorityList.find(
+                        (color) => color.title === item.priority
+                      )?.color,
+                    }}
                   >
                     <td>
                       <MdOutlineDeleteForever
                         className={s.icon}
                         onClick={() => {
-                          deleteTask(item.id);
+                          deleteTask(item.taskId);
                         }}
                       />
                       <CiEdit
                         className={s.icon}
                         onClick={() => {
-                          setTaskId(item.id);
+                          setTaskId(item.taskId);
                           setTaskUpdatePopup(true);
                         }}
                       />
@@ -216,27 +222,12 @@ export const TasktrackerApp = () => {
                     <td>
                       <div>
                         <div>start date {item.startDate}</div>
-                        <div>due date {item.startDate}</div>
+                        <div>due date {item.dueDate}</div>
                       </div>
                     </td>
                     <td>{item.description}</td>
-                    <td className={s.statusCell}>
-                      <div>
-                        {item.status[item.status.length - 1].statusdate}
-                      </div>
-                      <div>{item.status[item.status.length - 1].status}</div>
-                      <div>
-                        Person: &nbsp;
-                        <span>{item.status[item.status.length - 1].user}</span>
-                        &nbsp;
-                        <div>
-                          {
-                            item.status[item.status.length - 1]
-                              .statusDescription
-                          }
-                        </div>
-                      </div>
-                    </td>
+                    <td>{item.user}</td>
+                    <td> {item.status}</td>
                   </tr>
                 ))}
             </tbody>

@@ -26,10 +26,11 @@ export const initialState = {
   },
 
   tasktracker: {
-    projects: [], params: {
+    projects: [],
+    params: {
       priorityList: [],
-      statusList: [],
-      usersList: []
+      usersList: [],
+      statusList:[]
     }
   },
   todolists: [],
@@ -53,19 +54,14 @@ export type TaskTrackerState = {
     description: string;
     tasks: {
       taskId: string;
+      status: string;
       priority: string;
       user: string;
       title: string;
       startDate: string;
       dueDate: string;
-      description: string;
-      status: {
-        date: string;
-        statusUser: string;
-        statusTask: string;
-        statusDescription: string;
-      }[];
-    }[];
+      description: string
+        }[];
   }[];
   params: {
     priorityList: { title: string; color: string }[];
