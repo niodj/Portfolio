@@ -82,7 +82,7 @@ export const TaskUpdatePopup = (props: PopupPropsType) => {
         description: "",
       },
       u: {
-        title: currtask?.title || "",
+        title: currtask?.title ?? "",
         description: currtask?.description || "",
         user: currtask?.user || "",
         priority: currtask?.priority || "",
@@ -110,8 +110,12 @@ export const TaskUpdatePopup = (props: PopupPropsType) => {
         priority: state.u.priority,
         user: state.u.user,
         status: state.u.status,
-        startDate: state.u.startDate,
-        dueDate: state.u.dueDate,
+        startDate: state.u.startDate.includes("T")
+          ? state.u.startDate.replace("T", " ")
+          : state.u.startDate,
+        dueDate: state.u.dueDate.includes("T")
+          ? state.u.dueDate.replace("T", " ")
+          : state.u.dueDate,
       };
       setState((prevState) => ({
         ...prevState,
@@ -259,7 +263,7 @@ export const TaskUpdatePopup = (props: PopupPropsType) => {
                       ...state,
                       u: {
                         ...state.u,
-                        dueDate: e.currentTarget.value.replace("T", " "),
+                        dueDate: e.currentTarget.value,
                       },
                     });
                   }}

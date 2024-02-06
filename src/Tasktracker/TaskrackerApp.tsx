@@ -9,7 +9,6 @@ import { useDispatch, useSelector } from "react-redux";
 import s from "./Tasktracker.module.scss";
 import { MdOutlineDeleteForever } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
-
 import { ProjectUpdatePopup } from "./ProjectUpdatePopup/ProjectUpdatePopup";
 import { v1 } from "uuid";
 import { PopupParams } from "./PopupParams/PopupParams";
@@ -20,13 +19,12 @@ export const TasktrackerApp = () => {
   const [socket] = useState(() => io(serverPatch));
   const [received, setReceived] = useState();
   const tasktracker = useSelector((state: StoreType) => state.tasktracker);
-
   const [taskUpdatePopap, setTaskUpdatePopup] = useState(false);
   const [projectUpdatePopap, setProjectUpdatePopup] = useState(false);
   const [paramsPopapShow, setParamsPopupShow] = useState(false);
-
   const [projectId, setProjectId] = useState("");
   const [taskId, setTaskId] = useState("");
+
 
   useEffect(() => {
     dispatch({ type: "LOADING" });
@@ -44,20 +42,8 @@ export const TasktrackerApp = () => {
     }
   }, [received]);
 
-  // useEffect(() => {
-  //   if (tasktracker.projects.length > 0) {
-  //     setProjectId(tasktracker.projects[0]?.projectId ?? "");
-  //   }
-  // }, [tasktracker.projects]);
 
-  // useEffect(() => {
-  //   if (
-  //     tasktracker.projects.length > 0 &&
-  //     tasktracker.projects[0]?.tasks.length > 0
-  //   ) {
-  //     setTaskId(tasktracker.projects[0]?.tasks[0]?.taskId ?? "");
-  //   }
-  // }, [tasktracker.projects]);
+
 
   const updateParams = (params: any) => {
     socket.emit("updateParams", params);
@@ -72,7 +58,6 @@ export const TasktrackerApp = () => {
     const newData = {
       ...data,projectId:projectId?projectId:v1()
     }
-
     socket.emit("UpdateProject", newData);
     setProjectUpdatePopup(false);
   };
@@ -85,32 +70,29 @@ export const TasktrackerApp = () => {
     }
   };
 
-console.log("taskId до", taskId);
   const updateTask = (data: any) => {
-
     const newData = { ...data, taskId: taskId || v1() };
-
-
     setTaskId("");
     socket.emit("UpdateTask", projectId, newData);
-    console.log("newData", newData.taskId);
   };
+
   const deleteTask = (id: any) => {
     socket.emit("DeleteTask", projectId, id);
   };
-console.log("taskId после", taskId);
+
 
 
   return (
     <div className={s.wrapper}>
-      <PopupParams
-        showPopup={paramsPopapShow}
-        onHide={() => setParamsPopupShow(false)}
-        onConfirm={(data) => updateParams(data)}
-        removeBase={removeBase}
-      />
       {received ? (
         <>
+          <PopupParams
+            showPopup={paramsPopapShow}
+            onHide={() => setParamsPopupShow(false)}
+            onConfirm={(data) => updateParams(data)}
+            removeBase={removeBase}
+          />
+
           <ProjectUpdatePopup
             showPopup={projectUpdatePopap}
             onHide={() => setProjectUpdatePopup(false)}

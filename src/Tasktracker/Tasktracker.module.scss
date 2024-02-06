@@ -11,26 +11,18 @@ margin: 20px;
    border:solid black 1px;
 }
 
+.projectTitle {
+margin: 20px;
+
+}
 .projectTitle.act{
-border: solid greenyellow;
-}
-
-.priority-low{
-  background-color: rgba(144, 238, 144, 0.4)
-}
-.priority-medium {
-  background-color: rgba(173, 216, 230, 0.4);
-}
-
-.priority-high {
-  background-color: rgba(255, 0, 0, 0.4)
+border: solid blue;
 }
 
 .icon{
   font-size:25px;
 }
 .icon:hover{
-
   cursor: pointer;
 }
 

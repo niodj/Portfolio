@@ -7,8 +7,8 @@ import { LoginAction, loginReducer } from "./tools/Login/loginReducer";
 import {  TasktrackerActions, tasktrackerReducer } from "./Tasktracker/TasktrackerReducer";
 
 
- //export const serverPatch = "https://backend.asfalter.com.ua";
-export const serverPatch = "http://localhost:4444";
+ export const serverPatch = "https://backend.asfalter.com.ua";
+//export const serverPatch = "http://localhost:4444";
 export const initialState = {
   user: {
     email: "",
