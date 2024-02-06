@@ -20,7 +20,7 @@ export const TasktrackerApp = () => {
   const [socket] = useState(() => io(serverPatch));
   const [received, setReceived] = useState();
   const tasktracker = useSelector((state: StoreType) => state.tasktracker);
-  //const [addTaskPopapShow, setAddTaskPopupShow] = useState(false);
+
   const [taskUpdatePopap, setTaskUpdatePopup] = useState(false);
   const [projectUpdatePopap, setProjectUpdatePopup] = useState(false);
   const [paramsPopapShow, setParamsPopupShow] = useState(false);
@@ -72,6 +72,7 @@ export const TasktrackerApp = () => {
     const newData = {
       ...data,projectId:projectId?projectId:v1()
     }
+
     socket.emit("UpdateProject", newData);
     setProjectUpdatePopup(false);
   };
@@ -84,22 +85,20 @@ export const TasktrackerApp = () => {
     }
   };
 
-  console.log("projectId", projectId);
- // console.log("data", taskId);
-
-
-
-
+console.log("taskId до", taskId);
   const updateTask = (data: any) => {
 
     const newData = { ...data, taskId: taskId || v1() };
 
+
+    setTaskId("");
     socket.emit("UpdateTask", projectId, newData);
+    console.log("newData", newData.taskId);
   };
   const deleteTask = (id: any) => {
     socket.emit("DeleteTask", projectId, id);
   };
-
+console.log("taskId после", taskId);
 
 
   return (
@@ -141,10 +140,14 @@ export const TasktrackerApp = () => {
             Setting
           </Button>
 
-         {tasktracker.projects.map((item) => (
-  <div key={item.projectId} className={`${s.projectTitle} ${item.projectId === projectId ? s.act : ''}`}>
-    {item.title}
-
+          {tasktracker.projects.map((item) => (
+            <div
+              key={item.projectId}
+              className={`${s.projectTitle} ${
+                item.projectId === projectId ? s.act : ""
+              }`}
+            >
+              {item.title}
 
               <Button
                 onClick={() => {
@@ -193,8 +196,9 @@ export const TasktrackerApp = () => {
             <tbody>
               {tasktracker.projects
                 .find((project) => project.projectId === projectId)
-                ?.tasks.map((item: any) => (
+                ?.tasks.map((item, idx) => (
                   <tr
+                    key={idx}
                     style={{
                       backgroundColor: tasktracker.params.priorityList.find(
                         (color) => color.title === item.priority

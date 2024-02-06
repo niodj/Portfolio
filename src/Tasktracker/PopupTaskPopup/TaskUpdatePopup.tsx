@@ -179,8 +179,8 @@ export const TaskUpdatePopup = (props: PopupPropsType) => {
                   <option value={""} disabled>
                     {state.u.user}
                   </option>
-                  {tasktracker.params.usersList.map((item: any) => (
-                    <option key={item.id} value={item}>
+                  {tasktracker.params.usersList.map((item, idx) => (
+                    <option key={idx} value={item}>
                       {item}
                     </option>
                   ))}
