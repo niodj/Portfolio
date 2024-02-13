@@ -16,6 +16,8 @@ export const WebsocketChat: React.FC = () => {
   const [received, setReceived] = useState<ChatMessage>([]);
   const [userName, setUserName] = useState("Admin");
   const [message, setMessage] = useState("");
+
+
   useEffect(() => {
     socket.on("chatData", (data: ChatMessage) => {
       setReceived(data);
@@ -34,7 +36,7 @@ export const WebsocketChat: React.FC = () => {
     }
   };
    const clearChat = () => {socket.emit("clearChat")};
-
+console.log(received)
   return (
     <div className={s.wrapper}>
       <h4>
@@ -49,9 +51,13 @@ export const WebsocketChat: React.FC = () => {
           backgroundColor: `${dark ? "black" : ""}`,
           color: `${dark ? "white" : ""}`,
         }}
-        value={received
-          .map((payload) => `${payload.userName}: ${payload.message}\n`)
-          .join("")}
+        value={
+          Array.isArray(received)
+            ? received
+                .map((payload) => `${payload.userName}: ${payload.message}\n`)
+                .join("")
+            : ""
+        }
         readOnly
         rows={10}
         cols={50}
