@@ -3,50 +3,37 @@ import io from "socket.io-client";
 import s from './websocket.module.css'
 import Input from "@mui/material/Input/Input";
 import Button from "@mui/material/Button";
-import { serverPatch } from "../store";
+import { StoreType, serverPatch } from "../store";
+import { useSelector } from "react-redux";
 
- type ChatMessage ={
-  userName: string;
-  message: string;
-}
+
+type ChatMessage = {
+      userName: string;
+  message: string}[]
+
 export const WebsocketChat: React.FC = () => {
-  // Инициализация соединения с сервером WebSocket. Благодаря юсстейту нет создания повторного соединения при перерендеривании.
   const [socket] = useState(() => io(serverPatch));
-
-  // Состояния для имени пользователя, введенного сообщения и истории чата
+  const [received, setReceived] = useState<ChatMessage>([]);
   const [userName, setUserName] = useState("Admin");
   const [message, setMessage] = useState("");
-  const [chat, setChat] = useState<ChatMessage[]>([]);
-
-  const clearChat = () => {socket.emit("clearChat")};
-  const handleChatCleared = () => {setChat([])};
-  const handleChatData = ({ messageHistory, }: { messageHistory: ChatMessage[]; }) => { setChat(messageHistory); };
-
-// Обработчик события для получения нового сообщения
-    const handleMessage = (payload: ChatMessage) => {setChat((prevChat) => [...prevChat, payload])};
-
-  // Эффект React для подписки на события WebSocket при монтировании компонента
   useEffect(() => {
-      // Подписываемся на события сервера WebSocket
-    socket.on("chatData", handleChatData);
-    socket.on("message", handleMessage);
-    socket.on("chatCleared", handleChatCleared);
-
-    // Отписываемся от событий при размонтировании компонента
+    socket.on("chatData", (data: ChatMessage) => {
+      setReceived(data);
+    });
     return () => {
-      socket.off("chatCleared", handleChatCleared);
-      socket.off("chatData", handleChatData);
-      socket.off("message", handleMessage);
+      socket.off();
     };
-  }, [socket]);
+  }, []);
 
-  // Функция для отправки нового сообщения
+
+  const dark = useSelector((state: StoreType) => state.appProp.dark);
   const sendMessage = (e: any) => {
     if (message.trim() !== "") {
       socket.emit("message", { userName, message });
       setMessage("");
     }
   };
+   const clearChat = () => {socket.emit("clearChat")};
 
   return (
     <div className={s.wrapper}>
@@ -58,7 +45,11 @@ export const WebsocketChat: React.FC = () => {
         , the messages will be instantly synchronized.
       </h4>
       <textarea
-        value={chat
+        style={{
+          backgroundColor: `${dark ? "black" : ""}`,
+          color: `${dark ? "white" : ""}`,
+        }}
+        value={received
           .map((payload) => `${payload.userName}: ${payload.message}\n`)
           .join("")}
         readOnly
@@ -68,6 +59,10 @@ export const WebsocketChat: React.FC = () => {
       <div>
         User name:{" "}
         <Input
+          style={{
+            backgroundColor: `${dark ? "grey" : ""}`,
+            color: `${dark ? "white" : ""}`,
+          }}
           value={userName}
           onChange={(e) => {
             setUserName(e.target.value);
@@ -76,6 +71,10 @@ export const WebsocketChat: React.FC = () => {
       </div>
 
       <Input
+        style={{
+          backgroundColor: `${dark ? "grey" : ""}`,
+          color: `${dark ? "white" : ""}`,
+        }}
         placeholder='Type message'
         value={message}
         onChange={(e) => {

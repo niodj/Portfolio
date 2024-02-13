@@ -33,6 +33,7 @@ export const TasktrackerApp = () => {
     });
     dispatch(fetchProjectThunk(socket));
     dispatch({ type: "LOADED" });
+return ()=>{socket.off()}
   }, []);
 
   useEffect(() => {
@@ -108,6 +109,7 @@ export const TasktrackerApp = () => {
           />
 
           <div>Tasktracker</div>
+          <p>App works on webSockets, so information will update realtime. Using node express. MongoDB</p>
 
           <Button
             variant='primary'
